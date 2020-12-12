@@ -16,9 +16,10 @@ Known Bugs / Limitations
 -----
 
 - Spidertron equipment grids and logistics cannot function whilst the spidertron is not active
+- Compatibility with Spidertron Weapon Switcher and Spidertron Waypoints is a little unstable. It will work for the vast majority of the time, but there is the definite possibility of a crash, so please ensure that you are saving regularly if using these mods in combination together.
 
 -----
 
 Please let me know in the "Discussion" section of the mod portal if you have suggestions for this mod.
 
-Check out my other mods:  and [Spidertron Waypoints](https://mods.factorio.com/mod/SpidertronWaypoints) and [Spidertron Engineer](https://mods.factorio.com/mod/SpidertronEngineer)
+Check out my other mods: [Spidertron Waypoints](https://mods.factorio.com/mod/SpidertronWaypoints) and [Spidertron Engineer](https://mods.factorio.com/mod/SpidertronEngineer)

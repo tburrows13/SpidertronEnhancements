@@ -3,7 +3,7 @@ MAP_ENTITY_INVENTORY = {["cargo-wagon"] = defines.inventory.cargo_wagon,
                         ["car"] = defines.inventory.car_trunk,
                         ["character"] = defines.inventory.character_main,
                         ["logistic-container"] = defines.inventory.chest,
-                        ["spider-vehicle"] = defines.inventory.car_trunk}
+                        ["spider-vehicle"] = defines.inventory.spider_trunk}
 
 
 local spidertron_lib = {}
@@ -92,21 +92,21 @@ function spidertron_lib.serialise_spidertron(spidertron)
   serialised_data.last_user = spidertron.last_user
   serialised_data.color = spidertron.color
 
-  --serialised_data.vehicle_logistic_requests_enabled = spidertron.vehicle_logistic_requests_enabled
+  serialised_data.vehicle_logistic_requests_enabled = spidertron.vehicle_logistic_requests_enabled
   serialised_data.enable_logistics_while_moving = spidertron.enable_logistics_while_moving
   serialised_data.vehicle_automatic_targeting_parameters = spidertron.vehicle_automatic_targeting_parameters
 
   serialised_data.autopilot_destination = spidertron.autopilot_destination
-  --serialised_data.follow_target = spidertron.follow_target
-  --serialised_data.follow_offset = spidertron.follow_offset
+  serialised_data.follow_target = spidertron.follow_target
+  serialised_data.follow_offset = spidertron.follow_offset
 
   serialised_data.health = spidertron.get_health_ratio()
 
 
   -- Inventories
-  serialised_data.trunk = copy_inventory(spidertron.get_inventory(defines.inventory.car_trunk))
-  serialised_data.ammo = copy_inventory(spidertron.get_inventory(defines.inventory.car_ammo))
-  --serialised_data.trash = copy_inventory(spidertron.get_inventory(defines.inventory.spider_trash))
+  serialised_data.trunk = copy_inventory(spidertron.get_inventory(defines.inventory.spider_trunk))
+  serialised_data.ammo = copy_inventory(spidertron.get_inventory(defines.inventory.spider_ammo))
+  serialised_data.trash = copy_inventory(spidertron.get_inventory(defines.inventory.spider_trash))
 
   -- Equipment grid
   local grid_contents = {}
@@ -126,11 +126,11 @@ function spidertron_lib.serialise_spidertron(spidertron)
   serialised_data.equipment = grid_contents
 
   -- Logistic request slots
-  --local logistic_slots = {}
-  --for i = 1, spidertron.request_slot_count do
-  --  logistic_slots[i] = spidertron.get_vehicle_logistic_slot(i)
-  --end
-  --serialised_data.logistic_slots = logistic_slots
+  local logistic_slots = {}
+  for i = 1, spidertron.request_slot_count do
+    logistic_slots[i] = spidertron.get_vehicle_logistic_slot(i)
+  end
+  serialised_data.logistic_slots = logistic_slots
 
   -- Find all connected remotes in player inventories or in radius 30 around all players
   local connected_remotes = {}
@@ -171,13 +171,12 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
                             "direction",
                             "last_user",
                             "color",
-                            --"vehicle_logistic_requests_enabled",
+                            "vehicle_logistic_requests_enabled",
                             "enable_logistics_while_moving",
                             "vehicle_automatic_targeting_parameters",
                             "autopilot_destination",
-                            --"follow_target",
-                            --"follow_offset"
-                          } do
+                            "follow_target",
+                            "follow_offset"} do
     local value = serialised_data[attribute]
     if value ~= nil then
       spidertron[attribute] = value
@@ -204,7 +203,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
   -- Copy across trunk
   local previous_trunk = serialised_data.trunk
   if previous_trunk then
-    local new_trunk = spidertron.get_inventory(defines.inventory.car_trunk)
+    local new_trunk = spidertron.get_inventory(defines.inventory.spider_trunk)
     copy_inventory(previous_trunk.inventory, new_trunk, previous_trunk.filters)
     previous_trunk.inventory.destroy()
   end
@@ -212,19 +211,18 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
   -- Copy across ammo
   local previous_ammo = serialised_data.ammo
   if previous_ammo then
-    local new_ammo = spidertron.get_inventory(defines.inventory.car_ammo)
+    local new_ammo = spidertron.get_inventory(defines.inventory.spider_ammo)
     copy_inventory(previous_ammo.inventory, new_ammo, previous_ammo.filters)
     previous_ammo.inventory.destroy()
   end
 
   -- Copy across trash
-  --[[local previous_trash = serialised_data.trash
+  local previous_trash = serialised_data.trash
   if previous_trash then
     local new_trash = spidertron.get_inventory(defines.inventory.spider_trash)
     copy_inventory(previous_trash.inventory, new_trash, previous_trash.filters)
     previous_trash.inventory.destroy()
   end
-  
 
 
   -- Copy across logistic request slots
@@ -234,7 +232,6 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
       spidertron.set_vehicle_logistic_slot(i, slot)
     end
   end
-  ]]
 
   -- Copy across equipment grid
   local previous_grid_contents = serialised_data.equipment
