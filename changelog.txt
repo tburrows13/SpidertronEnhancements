@@ -1,0 +1,8 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 12 December 2020
+  Features:
+    - Initial release
+    - Enter a train or other vehicle without leaving the spidertron
+    - Quick toggle between engineer and spidertron with the push of a button
+    - Spill spidertron items on ground upon death
