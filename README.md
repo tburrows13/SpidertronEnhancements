@@ -10,13 +10,14 @@ Features
     - Press *Enter* or *U* near a vehicle whilst riding a spidertron to fit the spidertron inside it
 - Quick exiting of spidertrons
     - Press *U* to exit or re-enter the spidertron
+- Press *Shift + Q* over a spidertron to select a remote from your inventory connected to that spidertron
 - A spidertron's items are spilled on the ground when it dies instead of being deleted
 
 Known Bugs / Limitations
 -----
 
 - Spidertron equipment grids and logistics cannot function whilst the spidertron is not active
-- Compatibility with Spidertron Weapon Switcher and Spidertron Waypoints is a little unstable. It will work for the vast majority of the time, but there is the definite possibility of a crash, so please ensure that you are saving regularly if using these mods in combination together.
+- Compatibility with Spidertron Weapon Switcher is a little unstable. It will work for the vast majority of the time, but there is the definite possibility of a crash, so please ensure that you are saving regularly if using these mods together.
 
 -----
 

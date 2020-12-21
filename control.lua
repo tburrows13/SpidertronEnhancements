@@ -1,6 +1,7 @@
 spidertron_lib = require 'spidertron_lib'
 require 'spidertron_in_entity'
 require 'spill_on_death'
+require 'spidertron_pipette'
 
 script.on_init(
   function()
