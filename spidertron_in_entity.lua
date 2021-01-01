@@ -61,7 +61,7 @@ script.on_event(defines.events.on_player_driving_changed_state,
       end
 
       local spidertron = event.entity
-      if (not player.driving) and spidertron.type == "spider-vehicle" then
+      if (not player.driving) and spidertron and spidertron.type == "spider-vehicle" then
         enter_nearby_entity(player, spidertron)
       end
     else
