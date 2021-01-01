@@ -77,15 +77,22 @@ function spidertron_lib.serialise_spidertron(spidertron)
 
   serialised_data.driver_is_gunner = spidertron.driver_is_gunner
 
-  -- Eject player if any
+  -- Eject players if any
   local player = spidertron.get_driver()
   if player then
     spidertron.set_driver(nil)
-    --player.teleport(spidertron.position)
+    player.teleport(spidertron.position)
     serialised_data.player_occupied = player
   end
 
-  -- TODO Invalid check here
+  local passenger = spidertron.get_passenger()
+  if passenger then
+    spidertron.set_passenger(nil)
+    -- passenger.teleport(spidertron.position)  -- Might collide with player?
+    serialised_data.passenger = passenger
+  end
+
+  -- TODO spidertron can now be invalid because `set_driver` raises an event
 
   serialised_data.force = spidertron.force
   serialised_data.direction = spidertron.direction
@@ -96,9 +103,10 @@ function spidertron_lib.serialise_spidertron(spidertron)
   serialised_data.enable_logistics_while_moving = spidertron.enable_logistics_while_moving
   serialised_data.vehicle_automatic_targeting_parameters = spidertron.vehicle_automatic_targeting_parameters
 
-  serialised_data.autopilot_destination = spidertron.autopilot_destination
+  serialised_data.autopilot_destinations = spidertron.autopilot_destinations
   serialised_data.follow_target = spidertron.follow_target
   serialised_data.follow_offset = spidertron.follow_offset
+  serialised_data.selected_gun_index = spidertron.selected_gun_index
 
   serialised_data.health = spidertron.get_health_ratio()
 
@@ -174,12 +182,20 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
                             "vehicle_logistic_requests_enabled",
                             "enable_logistics_while_moving",
                             "vehicle_automatic_targeting_parameters",
-                            "autopilot_destination",
                             "follow_target",
-                            "follow_offset"} do
+                            "follow_offset",
+                            "selected_gun_index"} do
     local value = serialised_data[attribute]
     if value ~= nil then
       spidertron[attribute] = value
+    end
+  end
+
+  -- Add each autopilot destination separately
+  local autopilot_destinations = serialised_data.autopilot_destinations
+  if autopilot_destinations then
+    for _, position in pairs(autopilot_destinations) do
+      spidertron.add_autopilot_destination(position)
     end
   end
 
@@ -187,6 +203,10 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
   local player = serialised_data.player_occupied
   if player then
     spidertron.set_driver(player)
+  end
+  local passenger = serialised_data.passenger
+  if passenger then
+    spidertron.set_passenger(passenger)
   end
 
   local driver_is_gunner = serialised_data.driver_is_gunner
