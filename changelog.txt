@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.1
 Date: ???
+  Features:
+    - Added smoke effect when reactivating hidden spidertron
   Bugfixes:
     - Fixed selected weapon slot being reset to slot 1 when spidertron is reactivated
     - Fixed crash when a vehicle containing a player is destroyed

@@ -19,7 +19,7 @@ local function enter_nearby_entity(player, spidertron)
           log("Found entity to drive: " .. entity_to_drive.name)
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
           serialised_data.autopilot_destination = nil
-          serialised_data.follow_target = nil  
+          serialised_data.follow_target = nil
           entity_to_drive.set_driver(player)
           spidertron.destroy()
           global.stored_spidertrons[player.index] = serialised_data
@@ -39,7 +39,8 @@ local function enter_spidertron(player, serialised_data)
   local spidertron = surface.create_entity{
     name = serialised_data.name,
     position = position,
-    force = serialised_data.force
+    force = serialised_data.force,
+    create_build_effect_smoke=true
   }
   spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
   spidertron.set_driver(player)
