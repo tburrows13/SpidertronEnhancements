@@ -1,5 +1,6 @@
 spidertron_lib = require 'scripts.spidertron_lib'
 require 'scripts.hidden-spidertron'
+require 'scripts.auto-sort'
 require 'scripts.death-spill'
 require 'scripts.remote-pipette'
 
