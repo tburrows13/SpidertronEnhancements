@@ -13,6 +13,7 @@ Features
 - Quick exiting of spidertrons
     - Press *U* to exit or re-enter the spidertron
 - Press *Shift + Q* whilst hovering your cursor over a spidertron to select a remote from your inventory connected to that spidertron
+- Press *Shift + E* whilst in a vehicle (not just a spidertron!) to open its inventory
 - Spidertron inventories are automatically sorted the same as the player's
 - A spidertron's items are spilled on the ground when it dies instead of being deleted
 

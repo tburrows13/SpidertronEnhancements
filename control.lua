@@ -3,6 +3,7 @@ require 'scripts.hidden-spidertron'
 require 'scripts.auto-sort'
 require 'scripts.death-spill'
 require 'scripts.remote-pipette'
+require 'scripts.open-inventory'
 
 script.on_init(
   function()

@@ -10,4 +10,10 @@ local spidertron_pipette = {
   key_sequence = "SHIFT + Q",
 }
 
-data:extend{direct_control, spidertron_pipette}
+local open_inventory = {
+  type = "custom-input",
+  name = "spidertron-enhancements-open-vehicle-inventory",
+  key_sequence = "SHIFT + E",
+}
+
+data:extend{direct_control, spidertron_pipette, open_inventory}
