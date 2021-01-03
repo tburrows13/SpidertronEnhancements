@@ -1,8 +1,9 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.0
-Date: ???
+Date: 3 January 2020
   Features:
     - Automatically sorts spidertron inventory
+    - Shift + E to open the GUI of the vehicle that you are currently driving
     - Added smoke effect when reactivating hidden spidertron
   Bugfixes:
     - Fixed selected weapon slot being reset to slot 1 when spidertron is reactivated
