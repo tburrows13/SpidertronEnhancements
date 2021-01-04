@@ -2,6 +2,8 @@
 train_names = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon"}
 drivable_names = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon", "car", "spider-vehicle"}
 
+-- Intended for SpidertronEngineer compatibility but not used because
+-- SpidertronEngineer turns of all of the following features instead
 remote.add_interface("SpidertronEnhancements",
   {is_spidertron_in_vehicle = function(player_index) return global.stored_spidertrons[player_index] ~= nil end}
 )

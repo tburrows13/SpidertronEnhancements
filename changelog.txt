@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.2
+Date: 4 January 2020
+  Features:
+    - Completed changes required for Spidertron Engineer to depend on this mod
+---------------------------------------------------------------------------------------------------
 Version: 1.2.1
 Date: 4 January 2020
   Features:
