@@ -1,6 +1,6 @@
 local function sort_inventory(entity)
   if settings.global["spidertron-enhancements-auto-sort-inventory"].value then
-    if entity and entity.type == "spider-vehicle" then
+    if entity and entity.object_name == "LuaEntity" and entity.type == "spider-vehicle" then
       entity.get_inventory(defines.inventory.spider_trunk).sort_and_merge()
     end
   end
