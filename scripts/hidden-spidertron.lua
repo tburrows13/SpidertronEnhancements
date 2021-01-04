@@ -2,17 +2,17 @@
 train_names = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon"}
 drivable_names = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon", "car", "spider-vehicle"}
 
+remote.add_interface("SpidertronEnhancements",
+  {is_spidertron_in_vehicle = function(player_index) return global.stored_spidertrons[player_index] ~= nil end}
+)
+
 local function enter_nearby_entity(player, spidertron)
   --local allowed_into_entities = global.allowed_into_entities
   log("Searching for nearby entities to enter")
 
   for radius=1,6 do
     local nearby_entities
-    --if allowed_into_entities == "limited" then
-    --  nearby_entities = player.surface.find_entities_filtered{position=spidertron.position, radius=radius, type=train_names}
-    --elseif allowed_into_entities == "all" then
     nearby_entities = player.surface.find_entities_filtered{position=spidertron.position, radius=radius, type=drivable_names}
-    --end
     if nearby_entities and #nearby_entities >= 1 then
       for i, entity_to_drive in pairs(nearby_entities) do
         if entity_to_drive ~= spidertron then
@@ -119,5 +119,3 @@ script.on_event("spidertron-enhancements-enter-vehicles",
     end
   end
 )
-
-

@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.1
 Date: 4 January 2020
+  Features:
+    - Added is_spidertron_in_vehicle remote interface for future Spidertron Engineer compatibility
   Bugfixes:
     - Fixed crash when using non-entity GUIs with auto-sort enabled
 ---------------------------------------------------------------------------------------------------

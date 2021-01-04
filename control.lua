@@ -7,8 +7,8 @@ require 'scripts.open-inventory'
 
 script.on_init(
   function()
-    global.player_last_driving_change_tick = {}
-    global.stored_spidertrons = {}
-    global.stored_spidertrons_personal = {}
+    global.player_last_driving_change_tick = {}  -- Indexed by player.index
+    global.stored_spidertrons = {}  -- Indexed by player.index
+    global.stored_spidertrons_personal = {}  -- Indexed by player.index
   end
 )
