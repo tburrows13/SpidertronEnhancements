@@ -15,7 +15,14 @@ script.on_event(defines.events.on_tick,
         local vehicle = serialised_data.on_vehicle
         local spidertron = serialised_data.dummy_spidertron
         if vehicle and vehicle.valid and spidertron and spidertron.valid then
-          spidertron.teleport(vehicle.position)
+          -- Extra calculations to allow for the fact that the vehicle will move after the teleport
+          -- so we need to place the spidertron where the vehicle will be, not where it is now
+          local position = vehicle.position
+          local orientation = vehicle.orientation * 2 * math.pi
+          local speed = vehicle.speed
+          local y = position.y - (math.cos(orientation) * speed)
+          local x = position.x + (math.sin(orientation) * speed)
+          spidertron.teleport({x, y})
         end
       end
     end

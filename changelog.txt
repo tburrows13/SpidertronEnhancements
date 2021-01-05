@@ -3,6 +3,8 @@ Version: 1.2.3
 Date: ???
   Features:
     - Spidertron plays sounds when entering and exiting a vehicle
+  Bugfixes:
+    - Fixed spidertron on vehicle falling behind when the vehicle is moving fast
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.2
 Date: 5 January 2020
