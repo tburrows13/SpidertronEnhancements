@@ -1,7 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.2
-Date: 4 January 2020
+Date: 5 January 2020
   Features:
+    - Spidertron now rides on top of vehicles instead of inside. Experimental so off by default.
     - Completed changes required for Spidertron Engineer to depend on this mod
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.1

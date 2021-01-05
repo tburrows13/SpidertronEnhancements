@@ -15,6 +15,13 @@ data:extend({
     },
     {
         type = "bool-setting",
+        name = "spidertron-enhancements-show-spider-on-entity",
+        setting_type = "runtime-global",
+        default_value = false,
+        order = "ac"
+    },
+    {
+        type = "bool-setting",
         name = "spidertron-enhancements-enter-player",
         setting_type = "runtime-global",
         default_value = true,

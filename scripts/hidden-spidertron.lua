@@ -8,6 +8,21 @@ remote.add_interface("SpidertronEnhancements",
   {is_spidertron_in_vehicle = function(player_index) return global.stored_spidertrons[player_index] ~= nil end}
 )
 
+script.on_event(defines.events.on_tick,
+  function()
+    if settings.global["spidertron-enhancements-show-spider-on-entity"].value then
+      for _, serialised_data in pairs(global.stored_spidertrons) do
+        local vehicle = serialised_data.on_vehicle
+        local spidertron = serialised_data.dummy_spidertron
+        if vehicle and vehicle.valid and spidertron and spidertron.valid then
+          spidertron.teleport(vehicle.position)
+        end
+      end
+    end
+  end
+)
+
+
 local function enter_nearby_entity(player, spidertron)
   --local allowed_into_entities = global.allowed_into_entities
   log("Searching for nearby entities to enter")
@@ -23,6 +38,24 @@ local function enter_nearby_entity(player, spidertron)
           serialised_data.autopilot_destination = nil
           serialised_data.follow_target = nil
           entity_to_drive.set_driver(player)
+
+          if settings.global["spidertron-enhancements-show-spider-on-entity"].value then
+            serialised_data.vehicle_in = entity_to_drive
+            local dummy_spidertron = entity_to_drive.surface.create_entity{
+              name = "spidertron-enhancements-dummy-spidertron",
+              force = player.force,
+              position = entity_to_drive.position,
+              create_build_effect_smoke = true,
+            }
+            dummy_spidertron.active = false
+            serialised_data.player_occupied = nil
+            serialised_data.passenger = nil
+            spidertron_lib.deserialise_spidertron(dummy_spidertron, serialised_data)
+
+            -- Only store the information that is lost because we are going via the dummy
+            serialised_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive}
+          end
+
           spidertron.destroy()
           global.stored_spidertrons[player.index] = serialised_data
           return true
@@ -35,6 +68,23 @@ end
 
 local function enter_spidertron(player, serialised_data)
   -- The player just got out of a vehicle and needs to be put back into their spidertron
+  -- serialised_data may contain all the data, or just name and dummy_spidertron
+
+  local dummy_spidertron = serialised_data.dummy_spidertron
+  if dummy_spidertron then
+    if dummy_spidertron.valid then
+      new_serialised_data = spidertron_lib.serialise_spidertron(dummy_spidertron)
+      new_serialised_data.player_occupied = nil
+      new_serialised_data.passenger = nil
+      new_serialised_data.name = serialised_data.name
+      serialised_data = new_serialised_data
+      dummy_spidertron.destroy()
+    else
+      -- Dummy has been mined so we can exit here
+      log("Dummy Spidertron not found")
+      return
+    end
+  end
 
   local surface = player.surface
   local position = surface.find_non_colliding_position(serialised_data.name, player.position, 0, 0.5)
@@ -85,7 +135,6 @@ script.on_event("spidertron-enhancements-enter-vehicles",
       if player.driving and serialised_data then
         enter_spidertron(player, serialised_data)
         global.stored_spidertrons[player.index] = nil
-
         return
       end
 

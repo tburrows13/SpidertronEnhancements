@@ -1,3 +1,5 @@
+require "prototypes.dummy-spidertron"
+
 local direct_control = {
   type = "custom-input",
   name = "spidertron-enhancements-enter-vehicles",
