@@ -58,6 +58,9 @@ local function enter_nearby_entity(player, spidertron)
 
           spidertron.destroy()
           global.stored_spidertrons[player.index] = serialised_data
+
+          entity_to_drive.surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = entity_to_drive.position}
+
           return true
         end
       end
@@ -96,6 +99,8 @@ local function enter_spidertron(player, serialised_data)
   }
   spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
   spidertron.set_driver(player)
+
+  surface.play_sound{path = "spidertron-enhancements-vehicle-disembark", position = position}
 
 end
 
