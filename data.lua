@@ -1,4 +1,3 @@
-require "prototypes.dummy-spidertron"
 require "prototypes.spidertron-sound"
 
 local direct_control = {

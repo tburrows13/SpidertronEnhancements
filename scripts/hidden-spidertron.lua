@@ -49,7 +49,7 @@ local function enter_nearby_entity(player, spidertron)
           if settings.global["spidertron-enhancements-show-spider-on-entity"].value then
             serialised_data.vehicle_in = entity_to_drive
             local dummy_spidertron = entity_to_drive.surface.create_entity{
-              name = "spidertron-enhancements-dummy-spidertron",
+              name = "spidertron-enhancements-dummy-" .. spidertron.name,
               force = player.force,
               position = entity_to_drive.position,
               create_build_effect_smoke = true,

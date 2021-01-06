@@ -3,6 +3,8 @@ Version: 1.2.3
 Date: ???
   Features:
     - Spidertron plays sounds when entering and exiting a vehicle
+  Compatibility:
+    - Added support for modded spidertrons to ride on vehicles
   Bugfixes:
     - Fixed spidertron on vehicle falling behind when the vehicle is moving fast
 ---------------------------------------------------------------------------------------------------

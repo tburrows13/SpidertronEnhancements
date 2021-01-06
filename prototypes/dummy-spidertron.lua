@@ -8,14 +8,18 @@ local function remove_hitboxes(spidertron_leg)
 end
 
 
-local function create_spidertron(arguments)
+local function create_dummy_spidertron(arguments)
+  local spidertron = arguments.spidertron
   local scale = arguments.scale
   local leg_scale = scale * arguments.leg_scale
+  local name = "spidertron-enhancements-dummy-" .. spidertron.name
   data:extend(
   {
     {
       type = "spider-vehicle",
-      name = arguments.name,
+      name = name,
+      -- localised_name transforms e.g. "Spidertron MK2" into "Travelling Spidretron MK2"
+      localised_name = {"entity-name.spidertron-enhancements-dummy-spidertron", {"entity-name." .. spidertron.name}},
       collision_box = nil, --{{-1 * scale, -1 * scale}, {1 * scale, 1 * scale}},
       sticker_box = nil, --{{-1.5 * scale, -1.5 * scale}, {1.5 * scale, 1.5 * scale}},
       selection_box = {{-1 * scale, -1 * scale}, {1 * scale, 1 * scale}},
@@ -51,127 +55,81 @@ local function create_spidertron(arguments)
       friction_force = 1,
       flags = {"placeable-neutral", "player-creation", "placeable-off-grid"},
       collision_mask = {},
-      minable = {mining_time = 1, result = "spidertron"},
-      max_health = 3000,
-      resistances =
-      {
-        {
-          type = "fire",
-          decrease = 15,
-          percent = 60
-        },
-        {
-          type = "physical",
-          decrease = 15,
-          percent = 60
-        },
-        {
-          type = "impact",
-          decrease = 50,
-          percent = 80
-        },
-        {
-          type = "explosion",
-          decrease = 20,
-          percent = 75
-        },
-        {
-          type = "acid",
-          decrease = 0,
-          percent = 70
-        },
-        {
-          type = "laser",
-          decrease = 0,
-          percent = 70
-        },
-        {
-          type = "electric",
-          decrease = 0,
-          percent = 70
-        }
-      },
-      minimap_representation =
-      {
-        filename = "__base__/graphics/entity/spidertron/spidertron-map.png",
-        flags = {"icon"},
-        size = {128, 128},
-        scale = 0.5
-      },
-      corpse = "spidertron-remnants",
-      dying_explosion = "spidertron-explosion",
-      energy_per_hit_point = 1,
-      guns = { "spidertron-rocket-launcher-1", "spidertron-rocket-launcher-2", "spidertron-rocket-launcher-3", "spidertron-rocket-launcher-4" },
-      inventory_size = 80,
-      equipment_grid = "spidertron-equipment-grid",
-      trash_inventory_size = 20,
+      minable = spidertron.minable,
+      max_health = spidertron.max_health,
+      resistances = spidertron.resistances,
+      minimap_representation = spidertron.minimap_representation,
+      corpse = spidertron.corpse,
+      dying_explosion = spidertron.dying_explosion,
+      energy_per_hit_point = spidertron.energy_per_hit_point,
+      guns = spidertron.guns,
+      inventory_size = spidertron.inventory_size,
+      equipment_grid = spidertron.equipment_grid,
+      trash_inventory_size = spidertron.trash_inventory_size,
       height = 1.5  * scale * leg_scale,
       torso_rotation_speed = 0.005,
-      chunk_exploration_radius = 3,
+      chunk_exploration_radius = spidertron.chunk_exploration_radius,
       selection_priority = 51,
       graphics_set = spidertron_torso_graphics_set(scale),
-      energy_source =
-      {
-        type = "void"
-      },
-      movement_energy_consumption = "250kW",
-      automatic_weapon_cycling = true,
-      chain_shooting_cooldown_modifier = 0.5,
+      energy_source = spidertron.enery_source or {type = "void"},
+      movement_energy_consumption = spidertron.movement_energy_consumption,
+      automatic_weapon_cycling = spidertron.automatic_weapon_cycling,
+      chain_shooting_cooldown_modifier = spidertron.chain_shooting_cooldown_modifier,
       spider_engine =
       {
         legs =
         {
           { -- 1
-            leg = arguments.name .. "-leg-1",
+            leg = name .. "-leg-1",
             mount_position = util.by_pixel(15  * scale, -22 * scale),--{0.5, -0.75},
             ground_position = {2.25  * leg_scale, -2.5  * leg_scale},
             blocking_legs = {2},
             leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
           },
           { -- 2
-            leg = arguments.name .. "-leg-2",
+            leg = name .. "-leg-2",
             mount_position = util.by_pixel(23  * scale, -10  * scale),--{0.75, -0.25},
             ground_position = {3  * leg_scale, -1  * leg_scale},
             blocking_legs = {1, 3},
             leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
           },
           { -- 3
-            leg = arguments.name .. "-leg-3",
+            leg = name .. "-leg-3",
             mount_position = util.by_pixel(25  * scale, 4  * scale),--{0.75, 0.25},
             ground_position = {3  * leg_scale, 1  * leg_scale},
             blocking_legs = {2, 4},
             leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
           },
           { -- 4
-            leg = arguments.name .. "-leg-4",
+            leg = name .. "-leg-4",
             mount_position = util.by_pixel(15  * scale, 17  * scale),--{0.5, 0.75},
             ground_position = {2.25  * leg_scale, 2.5  * leg_scale},
             blocking_legs = {3},
             leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
           },
           { -- 5
-            leg = arguments.name .. "-leg-5",
+            leg = name .. "-leg-5",
             mount_position = util.by_pixel(-15 * scale, -22 * scale),--{-0.5, -0.75},
             ground_position = {-2.25 * leg_scale, -2.5 * leg_scale},
             blocking_legs = {6, 1},
             leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
           },
           { -- 6
-            leg = arguments.name .. "-leg-6",
+            leg = name .. "-leg-6",
             mount_position = util.by_pixel(-23 * scale, -10 * scale),--{-0.75, -0.25},
             ground_position = {-3 * leg_scale, -1 * leg_scale},
             blocking_legs = {5, 7},
             leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
           },
           { -- 7
-            leg = arguments.name .. "-leg-7",
+            leg = name .. "-leg-7",
             mount_position = util.by_pixel(-25 * scale, 4 * scale),--{-0.75, 0.25},
             ground_position = {-3 * leg_scale, 1 * leg_scale},
             blocking_legs = {6, 8},
             leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
           },
           { -- 8
-            leg = arguments.name .. "-leg-8",
+            leg = name .. "-leg-8",
             mount_position = util.by_pixel(-15 * scale, 17 * scale),--{-0.5, 0.75},
             ground_position = {-2.25 * leg_scale, 2.5 * leg_scale},
             blocking_legs = {7},
@@ -181,28 +139,27 @@ local function create_spidertron(arguments)
         military_target = "spidertron-military-target"
       }
     },
-    remove_hitboxes(make_spidertron_leg(arguments.name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 1)),
-    remove_hitboxes(make_spidertron_leg(arguments.name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 2)),
-    remove_hitboxes(make_spidertron_leg(arguments.name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 3)),
-    remove_hitboxes(make_spidertron_leg(arguments.name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 4)),
-    remove_hitboxes(make_spidertron_leg(arguments.name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 5)),
-    remove_hitboxes(make_spidertron_leg(arguments.name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 6)),
-    remove_hitboxes(make_spidertron_leg(arguments.name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 7)),
-    remove_hitboxes(make_spidertron_leg(arguments.name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 8)),
+    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 1)),
+    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 2)),
+    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 3)),
+    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 4)),
+    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 5)),
+    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 6)),
+    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 7)),
+    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 8)),
   })
 end
 
-local sprite_fields = {
-    "upper_part",
-    "lower_part",
-    "upper_part_shadow",
-    "lower_part_shadow",
-    "upper_part_water_reflection",
-    "lower_part_water_reflection",
-    "joint",
-    "joint_shadow",
-}
 
-create_spidertron{name = "spidertron-enhancements-dummy-spidertron", scale = 0.8, leg_scale = 0.5, leg_thickness = 1.5, leg_movement_speed = 1}
+-- Create a dummy spidertron for each spidertron in the game (to allow for modded spidertrons)
+local spidertrons = table.deepcopy(data.raw["spider-vehicle"])
+for _, spidertron in pairs(spidertrons) do
+  create_dummy_spidertron{spidertron = spidertron,
+                          scale = 0.8,
+                          leg_scale = 0.5,
+                          leg_thickness = 1.5,
+                          leg_movement_speed = 1,
+  }
+end
 -- leg_scale relative to scale
 -- leg_thickness relative to leg_scale
