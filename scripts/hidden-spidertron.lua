@@ -22,7 +22,14 @@ script.on_event(defines.events.on_tick,
           local speed = vehicle.speed
           local y = position.y - (math.cos(orientation) * speed)
           local x = position.x + (math.sin(orientation) * speed)
-          spidertron.teleport({x, y})
+          if vehicle.type == "spider-vehicle" then
+            -- Spidertrons have a different orientation definition and it doesn't look good to place the rider underneath their body
+            spidertron.teleport({x, y-1.4})
+            spidertron.torso_orientation = vehicle.torso_orientation
+          else
+            spidertron.teleport({x, y})
+            spidertron.torso_orientation = vehicle.orientation
+          end
         end
       end
     end

@@ -1,12 +1,32 @@
 require "__base__/prototypes/entity/spidertron-animations"
 
+local sprite_fields = {
+  "upper_part",
+  "lower_part",
+  "upper_part_shadow",
+  "lower_part_shadow",
+  "upper_part_water_reflection",
+  "lower_part_water_reflection",
+  "joint",
+  "joint_shadow",
+}
+
+
 local function remove_hitboxes(spidertron_leg)
   spidertron_leg.collision_box = nil
   spidertron_leg.selection_box = nil
   spidertron_leg.collision_mask = {}
+  for _, field in pairs(sprite_fields) do
+    spidertron_leg.graphics_set[field] = nil
+  end
   return spidertron_leg
 end
 
+local function adjust_render_layer(graphics_set)
+  graphics_set.base_render_layer = "entity-info-icon"
+  graphics_set.render_layer = "entity-info-icon"
+  return graphics_set
+end
 
 local function create_dummy_spidertron(arguments)
   local spidertron = arguments.spidertron
@@ -70,7 +90,7 @@ local function create_dummy_spidertron(arguments)
       torso_rotation_speed = 0.005,
       chunk_exploration_radius = spidertron.chunk_exploration_radius,
       selection_priority = 51,
-      graphics_set = spidertron_torso_graphics_set(scale),
+      graphics_set = adjust_render_layer(spidertron_torso_graphics_set(scale)),
       energy_source = spidertron.enery_source or {type = "void"},
       movement_energy_consumption = spidertron.movement_energy_consumption,
       automatic_weapon_cycling = spidertron.automatic_weapon_cycling,

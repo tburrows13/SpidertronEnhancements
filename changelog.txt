@@ -3,6 +3,8 @@ Version: 1.2.3
 Date: ???
   Features:
     - Spidertron plays sounds when entering and exiting a vehicle
+    - Spidertron now rotates with vehicle whilst on top of it
+    - Spidertron fully retracts legs whilst on top of a vehicle (this is because there are no rotation sprites for the legs)
   Compatibility:
     - Added support for modded spidertrons to ride on vehicles
   Bugfixes:
