@@ -95,7 +95,7 @@ function spidertron_lib.serialise_spidertron(spidertron)
   -- TODO spidertron can now be invalid because `set_driver` raises an event
 
   serialised_data.force = spidertron.force
-  serialised_data.direction = spidertron.direction
+  serialised_data.torso_orientation = spidertron.torso_orientation
   serialised_data.last_user = spidertron.last_user
   serialised_data.color = spidertron.color
 
@@ -176,7 +176,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
 
   -- Copy across generic attributes
   for _, attribute in pairs{"force",
-                            "direction",
+                            "torso_orientation",
                             "last_user",
                             "color",
                             "vehicle_logistic_requests_enabled",
