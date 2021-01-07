@@ -15,7 +15,7 @@ data:extend{
   }
 }
 
--- Call generator function from base.prototypes.entity.smoke-animations.lua
+-- Calls generator function from base.prototypes.entity.smoke-animations.lua
 local smoke = smoke_animations.trivial_smoke{
   name = "spidertron-enhancements-transition-smoke",
   duration = 50,

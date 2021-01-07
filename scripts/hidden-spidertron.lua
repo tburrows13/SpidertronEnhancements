@@ -1,6 +1,5 @@
 local util = require("__core__/lualib/util")
-train_names = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon"}
-drivable_names = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon", "car", "spider-vehicle"}
+drivable_types = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon", "car", "spider-vehicle"}
 
 -- Intended for SpidertronEngineer compatibility but not used because
 -- SpidertronEngineer turns of all of the following features instead
@@ -10,6 +9,7 @@ remote.add_interface("SpidertronEnhancements",
 
 local function play_smoke(surface, positions)
   for _ = 1, 6 do
+    -- Plays 6 smokes in the same area to make a thick cloud
     if #positions == 2 and util.distance(positions[1], positions[2]) < 0.3 then
       -- Don't do 2 smoke clouds in the 'same' location
       positions = {positions[1]}
@@ -55,7 +55,7 @@ local function enter_nearby_entity(player, spidertron)
 
   for radius=1,6 do
     local nearby_entities
-    nearby_entities = player.surface.find_entities_filtered{position=spidertron.position, radius=radius, type=drivable_names}
+    nearby_entities = player.surface.find_entities_filtered{position = spidertron.position, radius = radius, type = drivable_types}
     if nearby_entities and #nearby_entities >= 1 then
       for i, entity_to_drive in pairs(nearby_entities) do
         if entity_to_drive ~= spidertron then

@@ -1,10 +1,12 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.3
-Date: ???
+Date: 7 January 2020
   Features:
-    - Spidertron plays sounds when entering and exiting a vehicle
+    - Spidertron plays sounds and emits smoke when entering and exiting a vehicle
     - Spidertron now rotates with vehicle whilst on top of it
     - Spidertron fully retracts legs whilst on top of a vehicle (this is because there are no rotation sprites for the legs)
+  Changes:
+    - Spidertron riding on top of vehicles setting is now on by default and no longer experimental
   Compatibility:
     - Added support for modded spidertrons to ride on vehicles
   Bugfixes:
@@ -14,7 +16,7 @@ Date: ???
 Version: 1.2.2
 Date: 5 January 2020
   Features:
-    - Spidertron now rides on top of vehicles instead of inside. Experimental so off by default.
+    - Spidertron now rides on top of vehicles instead of inside. Experimental so off by default
     - Completed changes required for Spidertron Engineer to depend on this mod
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.1

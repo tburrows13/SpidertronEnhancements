@@ -9,7 +9,7 @@ Features
 -----
 
 - Enter a train or other vehicle without leaving the spidertron
-    - Press *Enter* or *U* near a vehicle whilst riding a spidertron to fit the spidertron inside it
+    - Press *Enter* or *U* near a vehicle whilst riding a spidertron to enter the vehicle whilst the spidertron rides on top
 - Quick exiting of spidertrons
     - Press *U* to exit or re-enter the spidertron
 - Press *Shift + Q* whilst hovering your cursor over a spidertron to select a remote from your inventory connected to that spidertron
