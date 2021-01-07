@@ -14,7 +14,7 @@ script.on_init(
     if game.active_mods["SpidertronEngineer"] then
       settings.global["spidertron-enhancements-enter-entity-base-game"] = {value = false}
       settings.global["spidertron-enhancements-enter-entity-custom"] = {value = false}
-      settings.global["spidertron-enhancements-show-spider-on-entity"] = {value = false}
+      settings.global["spidertron-enhancements-show-spider-on-vehicle"] = {value = false}
       settings.global["spidertron-enhancements-enter-player"] = {value = false}
     end
   end
@@ -25,7 +25,7 @@ script.on_configuration_changed(
     if game.active_mods["SpidertronEngineer"] then
       settings.global["spidertron-enhancements-enter-entity-base-game"] = {value = false}
       settings.global["spidertron-enhancements-enter-entity-custom"] = {value = false}
-      settings.global["spidertron-enhancements-show-spider-on-entity"] = {value = false}
+      settings.global["spidertron-enhancements-show-spider-on-vehicle"] = {value = false}
       settings.global["spidertron-enhancements-enter-player"] = {value = false}
     end
   end

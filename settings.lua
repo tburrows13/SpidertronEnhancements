@@ -15,9 +15,9 @@ data:extend({
     },
     {
         type = "bool-setting",
-        name = "spidertron-enhancements-show-spider-on-entity",
+        name = "spidertron-enhancements-show-spider-on-vehicle",
         setting_type = "runtime-global",
-        default_value = false,
+        default_value = true,
         order = "ac"
     },
     {

@@ -22,7 +22,7 @@ end
 
 script.on_event(defines.events.on_tick,
   function()
-    if settings.global["spidertron-enhancements-show-spider-on-entity"].value then
+    if settings.global["spidertron-enhancements-show-spider-on-vehicle"].value then
       for _, serialised_data in pairs(global.stored_spidertrons) do
         local vehicle = serialised_data.on_vehicle
         local spidertron = serialised_data.dummy_spidertron
@@ -68,7 +68,7 @@ local function enter_nearby_entity(player, spidertron)
 
           entity_to_drive.set_driver(player)
 
-          if settings.global["spidertron-enhancements-show-spider-on-entity"].value then
+          if settings.global["spidertron-enhancements-show-spider-on-vehicle"].value then
             serialised_data.vehicle_in = entity_to_drive
             local dummy_spidertron = surface.create_entity{
               name = "spidertron-enhancements-dummy-" .. spidertron.name,
