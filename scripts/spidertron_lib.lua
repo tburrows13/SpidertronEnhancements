@@ -201,11 +201,11 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
 
   -- Copy across driving state
   local player = serialised_data.player_occupied
-  if player then
+  if player and player.valid then
     spidertron.set_driver(player)
   end
   local passenger = serialised_data.passenger
-  if passenger then
+  if passenger and passenger.valid then
     spidertron.set_passenger(passenger)
   end
 
@@ -271,11 +271,10 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
             placed_equipment.burner.remaining_burning_fuel = equipment.burner_remaining_burning_fuel
           end
         else  -- No space in the grid because we have moved to a smaller grid
-          -- TODO Fix crash here (plyaer not defined)
-          player.surface.spill_item_stack(spidertron.position, {name=equipment.name})
+          spidertron.surface.spill_item_stack(spidertron.position, {name=equipment.name})
         end
-      else   -- No space in the grid because we have 'upgraded' to no grid
-        player.surface.spill_item_stack(spidertron.position, {name=equipment.name})
+      else   -- No space in the grid because the grid has gone entirely
+        spidertron.surface.spill_item_stack(spidertron.position, {name=equipment.name})
       end
     end
   end

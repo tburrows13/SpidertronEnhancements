@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.4
+Date: 7 January 2020
+  Bugfixes:
+    - Fixed crash when a player dies whilst their spidertron is inactive
+---------------------------------------------------------------------------------------------------
 Version: 1.2.3
 Date: 7 January 2020
   Features:
