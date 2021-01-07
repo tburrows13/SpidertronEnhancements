@@ -1,4 +1,4 @@
-require "prototypes.spidertron-sound"
+require "prototypes.spidertron-transitions"
 
 local direct_control = {
   type = "custom-input",

@@ -1,4 +1,4 @@
-
+local util = require("__core__/lualib/util")
 train_names = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon"}
 drivable_names = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon", "car", "spider-vehicle"}
 
@@ -7,6 +7,18 @@ drivable_names = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon",
 remote.add_interface("SpidertronEnhancements",
   {is_spidertron_in_vehicle = function(player_index) return global.stored_spidertrons[player_index] ~= nil end}
 )
+
+local function play_smoke(surface, positions)
+  for _ = 1, 6 do
+    if #positions == 2 and util.distance(positions[1], positions[2]) < 0.3 then
+      -- Don't do 2 smoke clouds in the 'same' location
+      positions = {positions[1]}
+    end
+    for _, position in pairs(positions) do
+      surface.create_trivial_smoke{name = "spidertron-enhancements-transition-smoke", position = position}
+    end
+  end
+end
 
 script.on_event(defines.events.on_tick,
   function()
@@ -51,11 +63,14 @@ local function enter_nearby_entity(player, spidertron)
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
           serialised_data.autopilot_destination = nil
           serialised_data.follow_target = nil
+          local surface = entity_to_drive.surface
+          play_smoke(surface, {entity_to_drive.position, player.position})
+
           entity_to_drive.set_driver(player)
 
           if settings.global["spidertron-enhancements-show-spider-on-entity"].value then
             serialised_data.vehicle_in = entity_to_drive
-            local dummy_spidertron = entity_to_drive.surface.create_entity{
+            local dummy_spidertron = surface.create_entity{
               name = "spidertron-enhancements-dummy-" .. spidertron.name,
               force = player.force,
               position = entity_to_drive.position,
@@ -113,7 +128,7 @@ local function enter_spidertron(player, serialised_data)
   }
   spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
   spidertron.set_driver(player)
-
+  play_smoke(surface, {position})
   surface.play_sound{path = "spidertron-enhancements-vehicle-disembark", position = position}
 
 end
@@ -183,6 +198,8 @@ script.on_event("spidertron-enhancements-enter-vehicles",
         serialised_data.follow_target = nil
         player.driving = false
         player.teleport(spidertron.position)
+        play_smoke(player.surface, {player.position})
+        player.surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = player.position}
         spidertron.destroy()
         global.stored_spidertrons_personal[player.index] = serialised_data
       end
