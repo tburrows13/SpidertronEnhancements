@@ -6,6 +6,7 @@ Date: ???
   Compatibility:
     - Added support for modded spidertrons to ride on vehicles
   Bugfixes:
+    - Fixed crash when moving remote connected to inactive spidertron
     - Fixed spidertron on vehicle falling behind when the vehicle is moving fast
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.2

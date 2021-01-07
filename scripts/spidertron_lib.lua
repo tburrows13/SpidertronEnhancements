@@ -271,6 +271,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
             placed_equipment.burner.remaining_burning_fuel = equipment.burner_remaining_burning_fuel
           end
         else  -- No space in the grid because we have moved to a smaller grid
+          -- TODO Fix crash here (plyaer not defined)
           player.surface.spill_item_stack(spidertron.position, {name=equipment.name})
         end
       else   -- No space in the grid because we have 'upgraded' to no grid
@@ -283,7 +284,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
   local connected_remotes = serialised_data.connected_remotes
   if connected_remotes then
     for _, remote in pairs(connected_remotes) do
-      if remote and remote.valid_for_read then
+      if remote and remote.valid_for_read and remote.prototype.type == "spidertron-remote" then
         remote.connected_entity = spidertron
       end
     end
