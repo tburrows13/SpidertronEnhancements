@@ -1,7 +1,4 @@
-Spidertron Enhancements
-==================
-
-## Features
+# Spidertron Enhancements
 
 Some simple features to make your life easier whilst using a spidertron. All features can be turned on or off individually.
 
@@ -9,12 +6,13 @@ Some simple features to make your life easier whilst using a spidertron. All fea
 
 Press `Enter` or `U` near a vehicle whilst riding a spidertron to enter the vehicle.
 
-![](resources/onto-train.gif)
+![onto-train.gif](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/onto-train.gif)
 
 ### Quick toggle spidertron
 
 Press `U` to exit or re-enter the spidertron.
-![](resources/quick-toggle.gif)
+
+![quick-toggle.gif](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/quick-toggle.gif)
 
 ### Spidertron remote pipette
 
@@ -31,12 +29,13 @@ Spidertron inventories are automatically sorted just like the player's.
 
 A spidertron's items are spilled on the ground instead of being lost when it dies.
 
+---
 ## Known Bugs / Limitations
 
 - Spidertron equipment grids and logistics cannot function whilst the spidertron is not active
 - Compatibility with [Spidertron Weapon Switcher](https://mods.factorio.com/mod/SpidertronWeaponSwitcher) is a little unstable. It will work for the vast majority of the time, but there is the possibility of a crash, so please ensure that you are saving regularly if using these mods together. Ammo placed in an inactive weapon's slots will be lost when you enter a vehicle or quick toggle with a spidertron from this mod.
 
------
+---
 
 Please let me know in the "Discussion" section of the mod portal if you have suggestions for this mod.
 
