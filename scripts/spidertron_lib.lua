@@ -80,19 +80,13 @@ function spidertron_lib.serialise_spidertron(spidertron)
   -- Eject players if any
   local player = spidertron.get_driver()
   if player then
-    spidertron.set_driver(nil)
-    player.teleport(spidertron.position)
     serialised_data.player_occupied = player
   end
 
   local passenger = spidertron.get_passenger()
   if passenger then
-    spidertron.set_passenger(nil)
-    -- passenger.teleport(spidertron.position)  -- Might collide with player?
     serialised_data.passenger = passenger
   end
-
-  -- TODO spidertron can now be invalid because `set_driver` raises an event
 
   serialised_data.force = spidertron.force
   serialised_data.torso_orientation = spidertron.torso_orientation
@@ -204,9 +198,18 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
   if player and player.valid then
     spidertron.set_driver(player)
   end
+  -- `spidertron` could be invalid here because `.set_driver` raises an event that other mods can react to
+  if not spidertron.valid then
+    return  -- Will probably still crash calling function...
+  end
+  
   local passenger = serialised_data.passenger
   if passenger and passenger.valid then
     spidertron.set_passenger(passenger)
+  end
+  -- Same check again here
+  if not spidertron.valid then
+    return
   end
 
   local driver_is_gunner = serialised_data.driver_is_gunner

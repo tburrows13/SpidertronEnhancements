@@ -1,6 +1,11 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.5
-Date: ???
+Date: 10 January 2020
+  Changes:
+    - Improved setting and control descriptions
+  Bugfixes:
+    - Fixed spidertron being created in the wrong place when exiting a vehicle by pressing 'Enter'
+    - Fixed smoke appearing in the wrong place when entering vehicle from spidertron by pressing 'Enter'
   Compatibility:
     - Fixed compatibility with Spidertron Weapon Switcher
 ---------------------------------------------------------------------------------------------------

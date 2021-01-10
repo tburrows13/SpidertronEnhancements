@@ -23,10 +23,10 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
           player.cursor_stack.transfer_stack(remote)
           player.hand_location = {inventory = 1, slot = index}
         else
-          player.create_local_flying_text{text = "Connected remote not found", create_at_cursor = true}
+          player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-remote-not-found"}, create_at_cursor = true}
         end
       else
-        player.create_local_flying_text{text = "Entity is not a spidertron", create_at_cursor = true}
+        player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-entity-not-spidertron"}, create_at_cursor = true}
       end
     end
   end

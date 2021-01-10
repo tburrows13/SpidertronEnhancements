@@ -1,27 +1,40 @@
 Spidertron Enhancements
 ==================
 
+## Features
+
 Some simple features to make your life easier whilst using a spidertron. All features can be turned on or off individually.
 
-![Demo](https://imgur.com/gMVfDv6.gif)
+### Enter vehicles from spidertron
 
-Features
------
+Press `Enter` or `U` near a vehicle whilst riding a spidertron to enter the vehicle.
 
-- Enter a train or other vehicle without leaving the spidertron
-    - Press *Enter* or *U* near a vehicle whilst riding a spidertron to enter the vehicle whilst the spidertron rides on top
-- Quick exiting of spidertrons
-    - Press *U* to exit or re-enter the spidertron
-- Press *Shift + Q* whilst hovering your cursor over a spidertron to select a remote from your inventory connected to that spidertron
-- Press *Shift + E* whilst in a vehicle (not just a spidertron!) to open its inventory
-- Spidertron inventories are automatically sorted the same as the player's
-- A spidertron's items are spilled on the ground when it dies instead of being deleted
+![](resources/onto-train.gif)
 
-Known Bugs / Limitations
------
+### Quick toggle spidertron
+
+Press `U` to exit or re-enter the spidertron.
+![](resources/quick-toggle.gif)
+
+### Spidertron remote pipette
+
+Press `Shift + Q` whilst hovering your cursor over a spidertron to select a remote from your inventory connected to that spidertron.
+
+### Open vehicle inventories directly
+Press `Shift + E` whilst in a vehicle (not just a spidertron!) to open its inventory.
+
+### Spidertron inventory sort
+
+Spidertron inventories are automatically sorted just like the player's.
+
+### No item loss
+
+A spidertron's items are spilled on the ground instead of being lost when it dies.
+
+## Known Bugs / Limitations
 
 - Spidertron equipment grids and logistics cannot function whilst the spidertron is not active
-- Compatibility with [Spidertron Weapon Switcher](https://mods.factorio.com/mod/SpidertronWeaponSwitcher) is a little unstable. It will work for the vast majority of the time, but there is the definite possibility of a crash, so please ensure that you are saving regularly if using these mods together.
+- Compatibility with [Spidertron Weapon Switcher](https://mods.factorio.com/mod/SpidertronWeaponSwitcher) is a little unstable. It will work for the vast majority of the time, but there is the possibility of a crash, so please ensure that you are saving regularly if using these mods together. Ammo placed in an inactive weapon's slots will be lost when you enter a vehicle or quick toggle with a spidertron from this mod.
 
 -----
 

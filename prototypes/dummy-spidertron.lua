@@ -1,5 +1,3 @@
-require "__base__/prototypes/entity/spidertron-animations"
-
 local sprite_fields = {
   "upper_part",
   "lower_part",

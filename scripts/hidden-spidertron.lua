@@ -64,7 +64,7 @@ local function enter_nearby_entity(player, spidertron)
           serialised_data.autopilot_destination = nil
           serialised_data.follow_target = nil
           local surface = entity_to_drive.surface
-          play_smoke(surface, {entity_to_drive.position, player.position})
+          play_smoke(surface, {entity_to_drive.position, spidertron.position})
 
           entity_to_drive.set_driver(player)
 
@@ -98,10 +98,11 @@ local function enter_nearby_entity(player, spidertron)
   return false
 end
 
-local function enter_spidertron(player, serialised_data)
+local function enter_spidertron(player, serialised_data, use_vehicle_position)
   -- The player just got out of a vehicle and needs to be put back into their spidertron
   -- serialised_data may contain all the data, or just name and dummy_spidertron
 
+  local old_serialised_data
   local dummy_spidertron = serialised_data.dummy_spidertron
   if dummy_spidertron then
     if dummy_spidertron.valid then
@@ -109,6 +110,7 @@ local function enter_spidertron(player, serialised_data)
       new_serialised_data.player_occupied = nil
       new_serialised_data.passenger = nil
       new_serialised_data.name = serialised_data.name
+      old_serialised_data = serialised_data
       serialised_data = new_serialised_data
       dummy_spidertron.destroy()
     else
@@ -119,7 +121,20 @@ local function enter_spidertron(player, serialised_data)
   end
 
   local surface = player.surface
-  local position = surface.find_non_colliding_position(serialised_data.name, player.position, 0, 0.5)
+  local ideal_position
+  if use_vehicle_position and old_serialised_data then
+    -- If the player pressed 'enter' then they will have been moved out of the way of the vehicle
+    -- but we still want the spidertron to appear on the vehicle
+    local previous_vehicle = old_serialised_data.on_vehicle
+    if previous_vehicle and previous_vehicle.valid then
+      ideal_position = previous_vehicle.position
+    else
+      ideal_position = player.position
+    end
+  else
+    ideal_position = player.position
+  end
+  local position = surface.find_non_colliding_position(serialised_data.name, ideal_position, 0, 0.5)
   local spidertron = surface.create_entity{
     name = serialised_data.name,
     position = position,
@@ -142,7 +157,7 @@ script.on_event(defines.events.on_player_driving_changed_state,
 
       local serialised_data = global.stored_spidertrons[player.index]
       if not player.driving and serialised_data then
-        enter_spidertron(player, serialised_data)
+        enter_spidertron(player, serialised_data, true)
         global.stored_spidertrons[player.index] = nil
         return
       end
