@@ -98,11 +98,11 @@ local function enter_nearby_entity(player, spidertron)
   return false
 end
 
-local function enter_spidertron(player, serialised_data, use_vehicle_position)
+local function enter_spidertron(player, serialised_data, vehicle_from)
   -- The player just got out of a vehicle and needs to be put back into their spidertron
   -- serialised_data may contain all the data, or just name and dummy_spidertron
+  -- vehicle_from is a LuaEntity from on_player_driving_changed_state
 
-  local old_serialised_data
   local dummy_spidertron = serialised_data.dummy_spidertron
   if dummy_spidertron then
     if dummy_spidertron.valid then
@@ -122,15 +122,10 @@ local function enter_spidertron(player, serialised_data, use_vehicle_position)
 
   local surface = player.surface
   local ideal_position
-  if use_vehicle_position and old_serialised_data then
+  if vehicle_from and vehicle_from.valid then
     -- If the player pressed 'enter' then they will have been moved out of the way of the vehicle
     -- but we still want the spidertron to appear on the vehicle
-    local previous_vehicle = old_serialised_data.on_vehicle
-    if previous_vehicle and previous_vehicle.valid then
-      ideal_position = previous_vehicle.position
-    else
-      ideal_position = player.position
-    end
+    ideal_position = vehicle_from.position
   else
     ideal_position = player.position
   end
@@ -156,15 +151,15 @@ script.on_event(defines.events.on_player_driving_changed_state,
       local player = game.get_player(event.player_index)
 
       local serialised_data = global.stored_spidertrons[player.index]
+      local vehicle_from = event.entity
       if not player.driving and serialised_data then
-        enter_spidertron(player, serialised_data, true)
+        enter_spidertron(player, serialised_data, vehicle_from)
         global.stored_spidertrons[player.index] = nil
         return
       end
 
-      local spidertron = event.entity
-      if (not player.driving) and spidertron and spidertron.type == "spider-vehicle" then
-        enter_nearby_entity(player, spidertron)
+      if (not player.driving) and vehicle_from and vehicle_from.type == "spider-vehicle" then
+        enter_nearby_entity(player, vehicle_from)
       end
     else
       log("Driving state already changed this tick")
