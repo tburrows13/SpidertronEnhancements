@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.6
+Date: 11 January 2020
+  Changes:
+    - Setting for using 'U' to enter/exit vehicles from spidertron now defaults to off
+---------------------------------------------------------------------------------------------------
 Version: 1.2.5
 Date: 10 January 2020
   Changes:

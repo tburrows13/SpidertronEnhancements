@@ -10,7 +10,7 @@ data:extend({
         type = "bool-setting",
         name = "spidertron-enhancements-enter-entity-custom",
         setting_type = "runtime-global",
-        default_value = true,
+        default_value = false,
         order = "ab"
     },
     {
