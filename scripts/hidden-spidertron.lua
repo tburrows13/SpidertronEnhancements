@@ -129,7 +129,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from)
   else
     ideal_position = player.position
   end
-  local position = surface.find_non_colliding_position(serialised_data.name, ideal_position, 0, 0.5)
+  local position = surface.find_non_colliding_position(serialised_data.name, ideal_position, 0, 0.1)
   local spidertron = surface.create_entity{
     name = serialised_data.name,
     position = position,
@@ -140,7 +140,6 @@ local function enter_spidertron(player, serialised_data, vehicle_from)
   spidertron.set_driver(player)
   play_smoke(surface, {position})
   surface.play_sound{path = "spidertron-enhancements-vehicle-disembark", position = position}
-
 end
 
 script.on_event(defines.events.on_player_driving_changed_state,
@@ -206,12 +205,16 @@ script.on_event("spidertron-enhancements-enter-vehicles",
         local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
         serialised_data.autopilot_destination = nil
         serialised_data.follow_target = nil
-        player.driving = false
-        player.teleport(spidertron.position)
-        play_smoke(player.surface, {player.position})
-        player.surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = player.position}
-        spidertron.destroy()
-        global.stored_spidertrons_personal[player.index] = serialised_data
+
+        local surface = player.surface
+        local teleport_position = surface.find_non_colliding_position(player.character.name, spidertron.position, 0, 0.1)
+        if teleport_position then
+          play_smoke(surface, {spidertron.position})
+          surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = spidertron.position}
+          spidertron.destroy()
+          local teleported = player.teleport(teleport_position)
+          global.stored_spidertrons_personal[player.index] = serialised_data
+        end
       end
     end
   end

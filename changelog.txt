@@ -2,8 +2,9 @@
 Version: 1.2.6
 Date: 14 January 2020
   Changes:
-    - Setting for using 'U' to enter/exit vehicles from spidertron now defaults to off
+    - Setting for using 'U' to enter/exit vehicles from spidertron now defaults to off because 1.1.9 makes exiting spidertrons with 'Enter' much more reliable
   Bugfixes:
+    - Fixed player getting stuck in an entity (eg rocket silo or train carriage) after using 'U' to toggle spidertron
     - Fixed spidertron on vehicle being rendered on the same layer as alt-mode icons causing inconsistent visibility and flickering
     - Fixed spidertron name being lost when entering vehicles
     - Fixed being able to leave spidertron in vehicle when "Enter/exit vehicles from spidertron with standard control 'Enter'" setting is off
