@@ -92,6 +92,7 @@ function spidertron_lib.serialise_spidertron(spidertron)
   serialised_data.torso_orientation = spidertron.torso_orientation
   serialised_data.last_user = spidertron.last_user
   serialised_data.color = spidertron.color
+  serialised_data.entity_label = spidertron.entity_label
 
   serialised_data.vehicle_logistic_requests_enabled = spidertron.vehicle_logistic_requests_enabled
   serialised_data.enable_logistics_while_moving = spidertron.enable_logistics_while_moving
@@ -173,6 +174,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
                             "torso_orientation",
                             "last_user",
                             "color",
+                            "entity_label",
                             "vehicle_logistic_requests_enabled",
                             "enable_logistics_while_moving",
                             "vehicle_automatic_targeting_parameters",
@@ -202,7 +204,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
   if not spidertron.valid then
     return  -- Will probably still crash calling function...
   end
-  
+
   local passenger = serialised_data.passenger
   if passenger and passenger.valid then
     spidertron.set_passenger(passenger)
