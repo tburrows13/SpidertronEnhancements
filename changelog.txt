@@ -1,8 +1,10 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.6
-Date: 11 January 2020
+Date: 14 January 2020
   Changes:
     - Setting for using 'U' to enter/exit vehicles from spidertron now defaults to off
+  Bugfixes:
+    - Fixed being able to leave spidertron in vehicle when "Enter/exit vehicles from spidertron with standard control 'Enter'" setting is off
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.5
 Date: 10 January 2020

@@ -146,7 +146,7 @@ end
 script.on_event(defines.events.on_player_driving_changed_state,
   function(event)
     -- Hack to stop recursive calling of event and to stop calling of event interrupting ensure_player_is_in_correct_spidertron
-    if settings.global["spidertron-enhancements-enter-entity-base-game"].value and global.player_last_driving_change_tick[event.player_index] ~= event.tick then
+    if not game.active_mods["SpidertronEngineer"] and global.player_last_driving_change_tick[event.player_index] ~= event.tick then
       global.player_last_driving_change_tick[event.player_index] = event.tick
       local player = game.get_player(event.player_index)
 
@@ -158,7 +158,7 @@ script.on_event(defines.events.on_player_driving_changed_state,
         return
       end
 
-      if (not player.driving) and vehicle_from and vehicle_from.type == "spider-vehicle" then
+      if not player.driving and vehicle_from and vehicle_from.type == "spider-vehicle" and settings.global["spidertron-enhancements-enter-entity-base-game"].value then
         enter_nearby_entity(player, vehicle_from)
       end
     else
