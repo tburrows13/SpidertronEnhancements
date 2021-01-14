@@ -21,8 +21,8 @@ local function remove_hitboxes(spidertron_leg)
 end
 
 local function adjust_render_layer(graphics_set)
-  graphics_set.base_render_layer = "entity-info-icon"
-  graphics_set.render_layer = "entity-info-icon"
+  graphics_set.base_render_layer = "entity-info-icon-above"
+  graphics_set.render_layer = "entity-info-icon-above"
   return graphics_set
 end
 

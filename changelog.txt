@@ -4,6 +4,7 @@ Date: 14 January 2020
   Changes:
     - Setting for using 'U' to enter/exit vehicles from spidertron now defaults to off
   Bugfixes:
+    - Fixed spidertron on vehicle being rendered on the same layer as alt-mode icons causing inconsistent visibility and flickering
     - Fixed spidertron name being lost when entering vehicles
     - Fixed being able to leave spidertron in vehicle when "Enter/exit vehicles from spidertron with standard control 'Enter'" setting is off
 ---------------------------------------------------------------------------------------------------
