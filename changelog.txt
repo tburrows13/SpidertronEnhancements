@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.7
+Date: 17 January 2020
+  Compatibility:
+    - Fixed spidertron getting stuck on top of a companion drone from Companion Drones
+  Bugfixes:
+    - Fixed other players being able to get in a travelling spidertron
+---------------------------------------------------------------------------------------------------
 Version: 1.2.6
 Date: 14 January 2020
   Changes:

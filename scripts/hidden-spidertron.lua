@@ -58,7 +58,7 @@ local function enter_nearby_entity(player, spidertron)
     nearby_entities = player.surface.find_entities_filtered{position = spidertron.position, radius = radius, type = drivable_types}
     if nearby_entities and #nearby_entities >= 1 then
       for i, entity_to_drive in pairs(nearby_entities) do
-        if entity_to_drive ~= spidertron then
+        if entity_to_drive ~= spidertron and entity_to_drive.prototype.allow_passengers then
           log("Found entity to drive: " .. entity_to_drive.name)
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
           serialised_data.autopilot_destination = nil

@@ -48,6 +48,7 @@ local function create_dummy_spidertron(arguments)
       close_sound = { filename = "__base__/sound/spidertron/spidertron-door-close.ogg", volume = 0.4 },
       sound_minimum_speed = 0.1,
       sound_scaling_ratio = 0.6,
+      allow_passengers = false,  -- Stops other players getting in the spidertron whilst it is on a vehicle
       working_sound =
       {
         sound =
@@ -172,12 +173,14 @@ end
 -- Create a dummy spidertron for each spidertron in the game (to allow for modded spidertrons)
 local spidertrons = table.deepcopy(data.raw["spider-vehicle"])
 for _, spidertron in pairs(spidertrons) do
-  create_dummy_spidertron{spidertron = spidertron,
-                          scale = 0.8,
-                          leg_scale = 0.5,
-                          leg_thickness = 1.5,
-                          leg_movement_speed = 1,
-  }
+  if spidertron.allow_passengers ~= false then
+    create_dummy_spidertron{spidertron = spidertron,
+                            scale = 0.8,
+                            leg_scale = 0.5,
+                            leg_thickness = 1.5,
+                            leg_movement_speed = 1,
+    }
+  end
 end
 -- leg_scale relative to scale
 -- leg_thickness relative to leg_scale
