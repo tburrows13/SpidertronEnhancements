@@ -205,6 +205,7 @@ script.on_event("spidertron-enhancements-enter-vehicles",
         local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
         serialised_data.autopilot_destination = nil
         serialised_data.follow_target = nil
+        serialised_data.passenger = nil
 
         local surface = player.surface
         local teleport_position = surface.find_non_colliding_position(player.character.name, spidertron.position, 0, 0.1)
