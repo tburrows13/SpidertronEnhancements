@@ -166,57 +166,67 @@ script.on_event(defines.events.on_player_driving_changed_state,
   end
 )
 
-script.on_event("spidertron-enhancements-enter-vehicles",
-  function(event)
-    local player = game.get_player(event.player_index)
-    global.player_last_driving_change_tick[event.player_index] = event.tick
+local function enter_vehicles_pressed(player, force_enter_entity)
+  -- Entering a nearby vehicle has priority
+  global.player_last_driving_change_tick[player.index] = game.tick
 
-    -- Entering a nearby vehicle has priority
-    if settings.global["spidertron-enhancements-enter-entity-custom"].value then
+  if settings.global["spidertron-enhancements-enter-entity-custom"].value or force_enter_entity then
 
-      local serialised_data = global.stored_spidertrons[player.index]
-      if player.driving and serialised_data then
-        enter_spidertron(player, serialised_data)
-        global.stored_spidertrons[player.index] = nil
-        return
-      end
-
-      local spidertron = player.vehicle
-      if spidertron and spidertron.type == "spider-vehicle" then
-        entered = enter_nearby_entity(player, spidertron)
-        if entered then
-          return
-        end
-      end
+    local serialised_data = global.stored_spidertrons[player.index]
+    if player.driving and serialised_data then
+      enter_spidertron(player, serialised_data)
+      global.stored_spidertrons[player.index] = nil
+      return
     end
 
-    if settings.global["spidertron-enhancements-enter-player"].value then
-      local serialised_data = global.stored_spidertrons_personal[player.index]
-      if not player.driving and serialised_data then
-        enter_spidertron(player, serialised_data)
-        global.stored_spidertrons_personal[player.index] = nil
-
+    local spidertron = player.vehicle
+    if spidertron and spidertron.type == "spider-vehicle" then
+      entered = enter_nearby_entity(player, spidertron)
+      if entered then
         return
-      end
-
-      local spidertron = player.vehicle
-
-      if player.driving and spidertron.type == "spider-vehicle" and not global.stored_spidertrons_personal[player.index] then
-        local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
-        serialised_data.autopilot_destination = nil
-        serialised_data.follow_target = nil
-        serialised_data.passenger = nil
-
-        local surface = player.surface
-        local teleport_position = surface.find_non_colliding_position(player.character.name, spidertron.position, 0, 0.1)
-        if teleport_position then
-          play_smoke(surface, {spidertron.position})
-          surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = spidertron.position}
-          spidertron.destroy()
-          local teleported = player.teleport(teleport_position)
-          global.stored_spidertrons_personal[player.index] = serialised_data
-        end
       end
     end
   end
+
+  if settings.global["spidertron-enhancements-enter-player"].value then
+
+    local serialised_data = global.stored_spidertrons_personal[player.index]
+    if not player.driving and serialised_data then
+      enter_spidertron(player, serialised_data)
+      global.stored_spidertrons_personal[player.index] = nil
+
+      return
+    end
+
+    local spidertron = player.vehicle
+
+    if player.driving and spidertron.type == "spider-vehicle" and not global.stored_spidertrons_personal[player.index] then
+      local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
+      serialised_data.autopilot_destination = nil
+      serialised_data.follow_target = nil
+      serialised_data.passenger = nil
+
+      local surface = player.surface
+      local teleport_position = surface.find_non_colliding_position(player.name, spidertron.position, 0, 0.1)
+      if teleport_position then
+        play_smoke(surface, {spidertron.position})
+        surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = spidertron.position}
+        spidertron.destroy()
+        local teleported = player.teleport(teleport_position)
+        global.stored_spidertrons_personal[player.index] = serialised_data
+      end
+    end
+  end
+end
+
+script.on_event("spidertron-enhancements-enter-vehicles",
+  function(event)
+    local player = game.get_player(event.player_index).character
+    enter_vehicles_pressed(player)
+  end
 )
+
+remote.add_interface("SpidertronEnhancementsInternal",
+  {["enter-vehicles"] = function(player) enter_vehicles_pressed(player, true) return player.vehicle end}
+)
+

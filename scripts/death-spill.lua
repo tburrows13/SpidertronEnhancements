@@ -33,7 +33,10 @@ function on_spidertron_died(spidertron)
 
   script.on_event(defines.events.on_entity_died,
     function(event)
-      on_spidertron_died(event.entity)
+      if event.entity.type == "spider-vehicle" then
+        -- Need check because filter is ignored by simulation
+        on_spidertron_died(event.entity)
+      end
     end,
     {{filter = "type", type = "spider-vehicle"}}
   )

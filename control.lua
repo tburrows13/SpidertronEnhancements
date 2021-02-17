@@ -1,3 +1,11 @@
+do
+  -- Don't load if sim scenario has already loaded this (in another lua state)
+  local modloader = remote.interfaces["modloader"]
+  if modloader and modloader[script.mod_name] then
+    return
+  end
+end
+
 spidertron_lib = require 'scripts.spidertron_lib'
 require 'scripts.hidden-spidertron'
 require 'scripts.auto-sort'
