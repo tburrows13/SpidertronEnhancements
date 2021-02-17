@@ -1,13 +1,21 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.8
+Date: 17 January 2021
+  Features:
+    - New 'Tips & Tricks' simulation
+    - French localisation (thanks sephrat!)
+  Bugfixes:
+    - Fixed passenger (player 2) being teleported back into spidertron after reactivation
+---------------------------------------------------------------------------------------------------
 Version: 1.2.7
-Date: 17 January 2020
+Date: 17 January 2021
   Compatibility:
     - Fixed spidertron getting stuck on top of a companion drone from Companion Drones
   Bugfixes:
     - Fixed other players being able to get in a travelling spidertron
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.6
-Date: 14 January 2020
+Date: 14 January 2021
   Changes:
     - Setting for using 'U' to enter/exit vehicles from spidertron now defaults to off because 1.1.9 makes exiting spidertrons with 'Enter' much more reliable
   Bugfixes:
@@ -17,7 +25,7 @@ Date: 14 January 2020
     - Fixed being able to leave spidertron in vehicle when "Enter/exit vehicles from spidertron with standard control 'Enter'" setting is off
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.5
-Date: 10 January 2020
+Date: 10 January 2021
   Changes:
     - Improved setting and control descriptions
   Bugfixes:
@@ -27,12 +35,12 @@ Date: 10 January 2020
     - Fixed compatibility with Spidertron Weapon Switcher
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.4
-Date: 7 January 2020
+Date: 7 January 2021
   Bugfixes:
     - Fixed crash when a player dies whilst their spidertron is inactive
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.3
-Date: 7 January 2020
+Date: 7 January 2021
   Features:
     - Spidertron plays sounds and emits smoke when entering and exiting a vehicle
     - Spidertron now rotates with vehicle whilst on top of it
@@ -46,20 +54,20 @@ Date: 7 January 2020
     - Fixed spidertron on vehicle falling behind when the vehicle is moving fast
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.2
-Date: 5 January 2020
+Date: 5 January 2021
   Features:
     - Spidertron now rides on top of vehicles instead of inside. Experimental so off by default
     - Completed changes required for Spidertron Engineer to depend on this mod
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.1
-Date: 4 January 2020
+Date: 4 January 2021
   Features:
     - Added is_spidertron_in_vehicle remote interface for future Spidertron Engineer compatibility
   Bugfixes:
     - Fixed crash when using non-entity GUIs with auto-sort enabled
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.0
-Date: 3 January 2020
+Date: 3 January 2021
   Features:
     - Automatically sorts spidertron inventory
     - Shift + E to open the GUI of the vehicle that you are currently driving
