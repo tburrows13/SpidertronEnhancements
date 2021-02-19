@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.8
-Date: 17 January 2021
+Date: 19 February 2021
   Features:
     - New 'Tips & Tricks' simulation
     - French localisation (thanks sephrat!)

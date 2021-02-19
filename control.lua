@@ -30,7 +30,7 @@ script.on_init(
 
 script.on_configuration_changed(
   function()
-    if game.active_mods["SpidertronEngineer"] then
+    if game.active_mods["SpidertronEngineer"] and not script.level.is_simulation then
       settings.global["spidertron-enhancements-enter-entity-base-game"] = {value = false}
       settings.global["spidertron-enhancements-enter-entity-custom"] = {value = false}
       settings.global["spidertron-enhancements-show-spider-on-vehicle"] = {value = false}
