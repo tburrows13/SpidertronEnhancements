@@ -58,7 +58,7 @@ local function enter_nearby_entity(player, spidertron)
     nearby_entities = player.surface.find_entities_filtered{position = spidertron.position, radius = radius, type = drivable_types}
     if nearby_entities and #nearby_entities >= 1 then
       for i, entity_to_drive in pairs(nearby_entities) do
-        if entity_to_drive ~= spidertron and entity_to_drive.prototype.allow_passengers then
+        if entity_to_drive ~= spidertron and entity_to_drive.prototype.allow_passengers and spidertron.minable and spidertron.prototype.mineable_properties.minable then
           log("Found entity to drive: " .. entity_to_drive.name)
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
           serialised_data.autopilot_destination = nil
@@ -180,7 +180,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     end
 
     local spidertron = player.vehicle
-    if spidertron and spidertron.type == "spider-vehicle" then
+    if spidertron and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
       entered = enter_nearby_entity(player, spidertron)
       if entered then
         return
@@ -198,16 +198,17 @@ local function enter_vehicles_pressed(player, force_enter_entity)
       return
     end
 
+    -- Enter player
     local spidertron = player.vehicle
 
-    if player.driving and spidertron.type == "spider-vehicle" and not global.stored_spidertrons_personal[player.index] then
+    if player.driving and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable and not global.stored_spidertrons_personal[player.index] then
       local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
       serialised_data.autopilot_destination = nil
       serialised_data.follow_target = nil
       serialised_data.passenger = nil
 
       local surface = player.surface
-      local teleport_position = surface.find_non_colliding_position(player.name, spidertron.position, 0, 0.1)
+      local teleport_position = surface.find_non_colliding_position(player.character.name, spidertron.position, 0, 0.1)
       if teleport_position then
         play_smoke(surface, {spidertron.position})
         surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = spidertron.position}
@@ -221,7 +222,7 @@ end
 
 script.on_event("spidertron-enhancements-enter-vehicles",
   function(event)
-    local player = game.get_player(event.player_index).character
+    local player = game.get_player(event.player_index)
     enter_vehicles_pressed(player)
   end
 )

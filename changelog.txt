@@ -6,6 +6,7 @@ Date: 17 January 2021
     - French localisation (thanks sephrat!)
   Bugfixes:
     - Fixed passenger (player 2) being teleported back into spidertron after reactivation
+    - Fixed interference with Warptorio2 Expansion's Marvin (and other non-minable spidertrons)
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.7
 Date: 17 January 2021
