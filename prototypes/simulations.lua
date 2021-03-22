@@ -1,4 +1,4 @@
-if not mods["SpidertronEngineer"] then
+if mods["simhelper"] and not mods["SpidertronEngineer"] then
   data:extend{
     {
       type = "tips-and-tricks-item",

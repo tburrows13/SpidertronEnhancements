@@ -3,6 +3,8 @@ Version: 1.3.0
 Date: 22 March 2021
   Features:
     - Alt + Click with spidertron remote to activate pathfinder which automatically navigates around lakes
+  Changes:
+    - Simhelper is now optional
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.8
 Date: 19 February 2021
