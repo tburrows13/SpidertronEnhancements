@@ -14,6 +14,12 @@ Press `U` to exit or re-enter the spidertron.
 
 ![quick-toggle.gif](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/quick-toggle.gif)
 
+### Spidertron remote pathfinder
+
+`Alt + Click` with the spidertron remote to use the spidertron pathfinder which automatically navigates a path around water.
+
+![pathfinder.png](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/pathfinder.png)
+
 ### Spidertron remote pipette
 
 Press `Shift + Q` whilst hovering your cursor over a spidertron to select a remote from your inventory connected to that spidertron.

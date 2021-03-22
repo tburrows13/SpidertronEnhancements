@@ -19,4 +19,13 @@ local open_inventory = {
   key_sequence = "SHIFT + E",
 }
 
-data:extend{direct_control, spidertron_pipette, open_inventory}
+local use_remote = {
+  type = "custom-input",
+  name = "spidertron-enhancements-use-alt-spidertron-remote",
+  key_sequence = "ALT + mouse-button-1",
+}
+
+local prototype = data.raw["spidertron-remote"]["spidertron-remote"]
+prototype.localised_description = {"item-description.spidertron-enhancements-spidertron-remote-append", {"item-description.spidertron-remote"}}
+
+data:extend{direct_control, spidertron_pipette, open_inventory, use_remote}
