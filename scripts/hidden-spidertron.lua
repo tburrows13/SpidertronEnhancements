@@ -157,7 +157,7 @@ script.on_event(defines.events.on_player_driving_changed_state,
         return
       end
 
-      if not player.driving and vehicle_from and vehicle_from.type == "spider-vehicle" and settings.global["spidertron-enhancements-enter-entity-base-game"].value then
+      if not player.driving and vehicle_from and vehicle_from.type == "spider-vehicle" and settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-base-game"].value then
         enter_nearby_entity(player, vehicle_from)
       end
     else
@@ -170,7 +170,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
   -- Entering a nearby vehicle has priority
   global.player_last_driving_change_tick[player.index] = game.tick
 
-  if settings.global["spidertron-enhancements-enter-entity-custom"].value or force_enter_entity then
+  if settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-custom"].value or force_enter_entity then
 
     local serialised_data = global.stored_spidertrons[player.index]
     if player.driving and serialised_data then

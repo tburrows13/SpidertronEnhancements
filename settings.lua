@@ -2,23 +2,30 @@ data:extend({
     {
         type = "bool-setting",
         name = "spidertron-enhancements-enter-entity-base-game",
-        setting_type = "runtime-global",
+        setting_type = "runtime-per-user",
         default_value = true,
         order = "aa"
     },
     {
         type = "bool-setting",
         name = "spidertron-enhancements-enter-entity-custom",
-        setting_type = "runtime-global",
+        setting_type = "runtime-per-user",
         default_value = false,
         order = "ab"
+    },
+    {
+        type = "bool-setting",
+        name = "spidertron-enhancements-enter-entity",
+        setting_type = "runtime-global",
+        default_value = true,
+        order = "aa"
     },
     {
         type = "bool-setting",
         name = "spidertron-enhancements-show-spider-on-vehicle",
         setting_type = "runtime-global",
         default_value = true,
-        order = "ac"
+        order = "ab"
     },
     {
         type = "bool-setting",

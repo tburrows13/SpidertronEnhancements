@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.3.1
+Date: ???
+  Features:
+    - Moved "Enter/exit vehicles from spidertron" configuration into Per player settings
+---------------------------------------------------------------------------------------------------
 Version: 1.3.0
 Date: 22 March 2021
   Features:
