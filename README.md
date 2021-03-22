@@ -6,19 +6,19 @@ Some simple features to make your life easier whilst using a spidertron. All fea
 
 Press `Enter` or `U` near a vehicle whilst riding a spidertron to enter the vehicle.
 
-![onto-train.gif](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/onto-train.gif)
+![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/onto-train.gif)
 
 ### Quick toggle spidertron
 
 Press `U` to exit or re-enter the spidertron.
 
-![quick-toggle.gif](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/quick-toggle.gif)
+![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/quick-toggle.gif)
 
 ### Spidertron remote pathfinder
 
-`Alt + Click` with the spidertron remote to use the spidertron pathfinder which automatically navigates a path around water.
+`Alt + Click` with the spidertron remote to use the pathfinder to automatically navigate around water.
 
-![pathfinder.png](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/pathfinder.png)
+![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/pathfinder.gif)
 
 ### Spidertron remote pipette
 
