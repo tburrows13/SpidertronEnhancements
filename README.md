@@ -20,6 +20,10 @@ Press `U` to exit or re-enter the spidertron.
 
 ![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/pathfinder.gif)
 
+### Recall last used spidertron
+
+Press `Alt + F` or click on the shortcut to call your most recently driven spidertron to you.
+
 ### Spidertron remote pipette
 
 Press `Shift + Q` whilst hovering your cursor over a spidertron to select a remote from your inventory connected to that spidertron.
@@ -38,7 +42,7 @@ A spidertron's items are spilled on the ground instead of being lost when it die
 ---
 ## Known Bugs / Limitations
 
-- Spidertron equipment grids and logistics cannot function whilst the spidertron is not active
+- Spidertron equipment grids and logistics cannot function whilst the spidertron is 'inside' the player
 - Compatibility with [Spidertron Weapon Switcher](https://mods.factorio.com/mod/SpidertronWeaponSwitcher) is a little unstable. It will work for the vast majority of the time, but there is the possibility of a crash, so please ensure that you are saving regularly if using these mods together. Ammo placed in an inactive weapon's slots will be lost when you enter a vehicle or quick toggle with a spidertron from this mod.
 
 ---

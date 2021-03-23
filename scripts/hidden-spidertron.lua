@@ -144,6 +144,8 @@ end
 
 script.on_event(defines.events.on_player_driving_changed_state,
   function(event)
+    on_player_driving_changed_state(event)  -- In recall-last-spidertron.lua
+
     -- Hack to stop recursive calling of event and to stop calling of event interrupting ensure_player_is_in_correct_spidertron
     if not game.active_mods["SpidertronEngineer"] and global.player_last_driving_change_tick[event.player_index] ~= event.tick then
       global.player_last_driving_change_tick[event.player_index] = event.tick

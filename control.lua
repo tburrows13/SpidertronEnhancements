@@ -13,6 +13,7 @@ require 'scripts.death-spill'
 require 'scripts.remote-pipette'
 require 'scripts.open-inventory'
 require 'scripts.pathfinder'
+require 'scripts.recall-last-spidertron'
 
 script.on_init(
   function()
@@ -23,6 +24,10 @@ script.on_init(
     global.pathfinder_requests = {}  -- Indexed by request_id
     global.pathfinder_statuses = {}  -- Indexed by spidertron.unit_number, then by start_tick
     global.paths_assigned_on_tick = {}  -- Indexed by game.tick, then by spidertron.unit_number
+
+    global.last_spidertron = {}  -- Indexed by player.index
+    global.destroy_registrations = {}  -- Indexed by registration number
+
 
     -- TODO Move to Spidertron Engineer
     if game.active_mods["SpidertronEngineer"] then
@@ -41,6 +46,8 @@ script.on_configuration_changed(
     global.pathfinder_statuses = global.pathfinder_statuses or {}
     global.paths_assigned_on_tick = global.paths_assigned_on_tick or {}
 
+    global.last_spidertron = global.last_spidertron or {}
+    global.destroy_registrations = global.destroy_registrations or {}
 
     if game.active_mods["SpidertronEngineer"] and not script.level.is_simulation then
       settings.global["spidertron-enhancements-enter-entity-base-game"] = {value = false}
