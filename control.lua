@@ -27,15 +27,6 @@ script.on_init(
 
     global.last_spidertron = {}  -- Indexed by player.index
     global.destroy_registrations = {}  -- Indexed by registration number
-
-
-    -- TODO Move to Spidertron Engineer
-    if game.active_mods["SpidertronEngineer"] then
-      settings.global["spidertron-enhancements-enter-entity-base-game"] = {value = false}
-      settings.global["spidertron-enhancements-enter-entity-custom"] = {value = false}
-      settings.global["spidertron-enhancements-show-spider-on-vehicle"] = {value = false}
-      settings.global["spidertron-enhancements-enter-player"] = {value = false}
-    end
   end
 )
 
@@ -48,12 +39,5 @@ script.on_configuration_changed(
 
     global.last_spidertron = global.last_spidertron or {}
     global.destroy_registrations = global.destroy_registrations or {}
-
-    if game.active_mods["SpidertronEngineer"] and not script.level.is_simulation then
-      settings.global["spidertron-enhancements-enter-entity-base-game"] = {value = false}
-      settings.global["spidertron-enhancements-enter-entity-custom"] = {value = false}
-      settings.global["spidertron-enhancements-show-spider-on-vehicle"] = {value = false}
-      settings.global["spidertron-enhancements-enter-player"] = {value = false}
-    end
   end
 )
