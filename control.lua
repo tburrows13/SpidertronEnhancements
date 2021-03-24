@@ -9,7 +9,7 @@ end
 spidertron_lib = require 'scripts.spidertron_lib'
 require 'scripts.hidden-spidertron'
 require 'scripts.auto-sort'
-require 'scripts.death-spill'
+require 'scripts.create-corpse'
 require 'scripts.remote-pipette'
 require 'scripts.open-inventory'
 require 'scripts.pathfinder'
