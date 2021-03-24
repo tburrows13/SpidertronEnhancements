@@ -3,6 +3,13 @@ require "prototypes.simulations"
 require "prototypes.shortcuts"
 require "prototypes.corpse"
 
+local toggle_driving = {
+  type = "custom-input",
+  name = "spidertron-enhancements-toggle-driving",
+  key_sequence = "",
+  linked_game_control = "toggle-driving",
+}
+
 local direct_control = {
   type = "custom-input",
   name = "spidertron-enhancements-enter-vehicles",
@@ -30,4 +37,4 @@ local use_remote = {
 local prototype = data.raw["spidertron-remote"]["spidertron-remote"]
 prototype.localised_description = {"item-description.spidertron-enhancements-spidertron-remote-append", {"item-description.spidertron-remote"}}
 
-data:extend{direct_control, spidertron_pipette, open_inventory, use_remote}
+data:extend{toggle_driving, direct_control, spidertron_pipette, open_inventory, use_remote}

@@ -49,7 +49,7 @@ script.on_event(defines.events.on_tick,
 )
 
 
-local function enter_nearby_entity(player, spidertron)
+local function enter_nearby_entity(player, spidertron, override_vehicle_change)
   --local allowed_into_entities = global.allowed_into_entities
   log("Searching for nearby entities to enter")
 
@@ -58,39 +58,47 @@ local function enter_nearby_entity(player, spidertron)
     nearby_entities = player.surface.find_entities_filtered{position = spidertron.position, radius = radius, type = drivable_types}
     if nearby_entities and #nearby_entities >= 1 then
       for i, entity_to_drive in pairs(nearby_entities) do
-        if entity_to_drive ~= spidertron and entity_to_drive.prototype.allow_passengers and spidertron.minable and spidertron.prototype.mineable_properties.minable then
+        if entity_to_drive ~= spidertron and not entity_to_drive.get_driver() and entity_to_drive.prototype.allow_passengers and spidertron.minable and spidertron.prototype.mineable_properties.minable then
           log("Found entity to drive: " .. entity_to_drive.name)
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
           serialised_data.autopilot_destination = nil
           serialised_data.follow_target = nil
           local surface = entity_to_drive.surface
-          play_smoke(surface, {entity_to_drive.position, spidertron.position})
 
           entity_to_drive.set_driver(player)
 
-          if settings.global["spidertron-enhancements-show-spider-on-vehicle"].value then
-            serialised_data.vehicle_in = entity_to_drive
-            local dummy_spidertron = surface.create_entity{
-              name = "spidertron-enhancements-dummy-" .. spidertron.name,
-              force = player.force,
-              position = entity_to_drive.position,
-              create_build_effect_smoke = true,
-            }
-            dummy_spidertron.active = false
-            serialised_data.player_occupied = nil
-            serialised_data.passenger = nil
-            spidertron_lib.deserialise_spidertron(dummy_spidertron, serialised_data)
+          if entity_to_drive.valid and entity_to_drive.get_driver().player == player then
+            play_smoke(surface, {entity_to_drive.position, spidertron.position})
 
-            -- Only store the information that is lost because we are going via the dummy
-            serialised_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive}
+            if settings.global["spidertron-enhancements-show-spider-on-vehicle"].value then
+              serialised_data.vehicle_in = entity_to_drive
+              local dummy_spidertron = surface.create_entity{
+                name = "spidertron-enhancements-dummy-" .. spidertron.name,
+                force = player.force,
+                position = entity_to_drive.position,
+                create_build_effect_smoke = true,
+              }
+              dummy_spidertron.active = false
+              serialised_data.player_occupied = nil
+              serialised_data.passenger = nil
+              spidertron_lib.deserialise_spidertron(dummy_spidertron, serialised_data)
+
+              -- Only store the information that is lost because we are going via the dummy
+              serialised_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive}
+            end
+
+            if override_vehicle_change then
+              global.vehicle_to_enter_this_tick[game.tick] = global.vehicle_to_enter_this_tick[game.tick] or {}
+              global.vehicle_to_enter_this_tick[game.tick][player.index] = entity_to_drive
+            end
+
+            spidertron.destroy()
+            global.stored_spidertrons[player.index] = serialised_data
+
+            entity_to_drive.surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = entity_to_drive.position}
+
+            return true
           end
-
-          spidertron.destroy()
-          global.stored_spidertrons[player.index] = serialised_data
-
-          entity_to_drive.surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = entity_to_drive.position}
-
-          return true
         end
       end
     end
@@ -98,7 +106,7 @@ local function enter_nearby_entity(player, spidertron)
   return false
 end
 
-local function enter_spidertron(player, serialised_data, vehicle_from)
+local function enter_spidertron(player, serialised_data, vehicle_from, override_vehicle_change)
   -- The player just got out of a vehicle and needs to be put back into their spidertron
   -- serialised_data may contain all the data, or just name and dummy_spidertron
   -- vehicle_from is a LuaEntity from on_player_driving_changed_state
@@ -140,32 +148,52 @@ local function enter_spidertron(player, serialised_data, vehicle_from)
   spidertron.set_driver(player)
   play_smoke(surface, {position})
   surface.play_sound{path = "spidertron-enhancements-vehicle-disembark", position = position}
+
+  if override_vehicle_change then
+    global.vehicle_to_enter_this_tick[game.tick] = global.vehicle_to_enter_this_tick[game.tick] or {}
+    global.vehicle_to_enter_this_tick[game.tick][player.index] = spidertron
+  end
+
 end
 
 script.on_event(defines.events.on_player_driving_changed_state,
   function(event)
     on_player_driving_changed_state(event)  -- In recall-last-spidertron.lua
 
-    -- Hack to stop recursive calling of event and to stop calling of event interrupting ensure_player_is_in_correct_spidertron
-    if not game.active_mods["SpidertronEngineer"] and global.player_last_driving_change_tick[event.player_index] ~= event.tick then
-      global.player_last_driving_change_tick[event.player_index] = event.tick
+    local overrides = global.vehicle_to_enter_this_tick[game.tick]
+    if overrides then
       local player = game.get_player(event.player_index)
-
-      local serialised_data = global.stored_spidertrons[player.index]
-      local vehicle_from = event.entity
-      if not player.driving and serialised_data then
-        enter_spidertron(player, serialised_data, vehicle_from)
-        global.stored_spidertrons[player.index] = nil
-        return
+      local override_entity = overrides[player.index]
+      if override_entity and override_entity.valid then
+        overrides[player.index] = nil
+        override_entity.set_driver(player)
       end
-
-      if not player.driving and vehicle_from and vehicle_from.type == "spider-vehicle" and settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-base-game"].value then
-        enter_nearby_entity(player, vehicle_from)
-      end
-    else
-      log("Driving state already changed this tick")
+    end
+    if overrides == {} then
+      global.vehicle_to_enter_this_tick[game.tick] = nil
     end
   end
+)
+
+script.on_event("spidertron-enhancements-toggle-driving",
+  function(event)
+    game.print("Custom control")
+    local player = game.get_player(event.player_index)
+
+    local serialised_data = global.stored_spidertrons[player.index]
+    local vehicle_from = player.vehicle
+
+    if vehicle_from and serialised_data then
+      enter_spidertron(player, serialised_data, vehicle_from, true)
+      global.stored_spidertrons[player.index] = nil
+      return
+    end
+
+    if vehicle_from and vehicle_from.type == "spider-vehicle" and vehicle_from.get_driver().player == player and settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-base-game"].value then
+      -- If vehicle_from has a driver then we were the passenger so we don't want to enter_nearby_entity
+      enter_nearby_entity(player, vehicle_from, true)
+    end
+end
 )
 
 local function enter_vehicles_pressed(player, force_enter_entity)
@@ -173,7 +201,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
   global.player_last_driving_change_tick[player.index] = game.tick
 
   if settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-custom"].value or force_enter_entity then
-
+    -- Off by default
     local serialised_data = global.stored_spidertrons[player.index]
     if player.driving and serialised_data then
       enter_spidertron(player, serialised_data)
@@ -182,7 +210,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     end
 
     local spidertron = player.vehicle
-    if spidertron and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
+    if spidertron and spidertron.get_driver().player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
       entered = enter_nearby_entity(player, spidertron)
       if entered then
         return
@@ -191,7 +219,6 @@ local function enter_vehicles_pressed(player, force_enter_entity)
   end
 
   if settings.global["spidertron-enhancements-enter-player"].value then
-
     local serialised_data = global.stored_spidertrons_personal[player.index]
     if not player.driving and serialised_data then
       enter_spidertron(player, serialised_data)
@@ -202,8 +229,8 @@ local function enter_vehicles_pressed(player, force_enter_entity)
 
     -- Enter player
     local spidertron = player.vehicle
-
-    if player.driving and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable and not global.stored_spidertrons_personal[player.index] then
+    if spidertron and spidertron.get_driver().player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable and not global.stored_spidertrons_personal[player.index] then
+      -- Only allowed if the player is the driver, not the passenger
       local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
       serialised_data.autopilot_destination = nil
       serialised_data.follow_target = nil

@@ -17,7 +17,6 @@ require 'scripts.recall-last-spidertron'
 
 script.on_init(
   function()
-    global.player_last_driving_change_tick = {}  -- Indexed by player.index
     global.stored_spidertrons = {}  -- Indexed by player.index
     global.stored_spidertrons_personal = {}  -- Indexed by player.index
 
@@ -27,6 +26,8 @@ script.on_init(
 
     global.last_spidertron = {}  -- Indexed by player.index
     global.destroy_registrations = {}  -- Indexed by registration number
+
+    global.vehicle_to_enter_this_tick = {}  -- Indexed by game.tick
   end
 )
 
@@ -37,7 +38,12 @@ script.on_configuration_changed(
     global.pathfinder_statuses = global.pathfinder_statuses or {}
     global.paths_assigned_on_tick = global.paths_assigned_on_tick or {}
 
+    -- Added in 1.4.0
     global.last_spidertron = global.last_spidertron or {}
     global.destroy_registrations = global.destroy_registrations or {}
+
+    global.vehicle_to_enter_this_tick = global.vehicle_to_enter_this_tick or {}
+    global.player_last_driving_change_tick = nil
+
   end
 )

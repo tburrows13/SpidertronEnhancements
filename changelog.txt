@@ -3,10 +3,12 @@ Version: 1.4.0
 Date: ???
   Features:
     - Press `Alt + F` or click on the shortcut to call your most recently driven spidertron to you
-    - Moved "Enter/exit vehicles from spidertron" configuration into Per player settings
   Changes:
     - Spidertron inventories are now saved into a corpse instead of being spilled upon death
+    - Moved "Enter/exit vehicles from spidertron" configuration into Per player settings
     - Renamed and moved associated setting to "Startup"
+  Bugfixes:
+    - Fixed some crashes and inconsistencies when entering other players' spidertrons from your own in multiplayer
 ---------------------------------------------------------------------------------------------------
 Version: 1.3.0
 Date: 22 March 2021

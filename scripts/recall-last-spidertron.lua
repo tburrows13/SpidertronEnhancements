@@ -29,7 +29,7 @@ script.on_event(defines.events.on_entity_destroyed,
       local player = game.get_player(player_index)
       if player then
         local spidertron = global.last_spidertron[player.index]
-        if not spidertron.valid then
+        if not (spidertron and spidertron.valid) then
           player.set_shortcut_toggled(SHORTCUT_NAME, false)
         end
       end
