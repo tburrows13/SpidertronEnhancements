@@ -43,8 +43,8 @@ data:extend({
     },
     {
         type = "bool-setting",
-        name = "spidertron-enhancements-spill-on-death",
-        setting_type = "runtime-global",
+        name = "spidertron-enhancements-enable-corpse",
+        setting_type = "startup",
         default_value = true,
         order = "d"
     },

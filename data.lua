@@ -1,6 +1,7 @@
 require "prototypes.spidertron-transitions"
 require "prototypes.simulations"
 require "prototypes.shortcuts"
+require "prototypes.corpse"
 
 local direct_control = {
   type = "custom-input",
