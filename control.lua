@@ -43,7 +43,7 @@ script.on_configuration_changed(
     global.destroy_registrations = global.destroy_registrations or {}
 
     global.vehicle_to_enter_this_tick = global.vehicle_to_enter_this_tick or {}
-    global.player_last_driving_change_tick = nil
+    global.player_last_driving_change_tick = nil  -- Only used pre-1.4.0
 
   end
 )

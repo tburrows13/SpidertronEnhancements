@@ -1,8 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.1
+Date: 24 March 2021
+  Bugfixes:
+    - Fixed crash after pressing 'U'
+---------------------------------------------------------------------------------------------------
 Version: 1.4.0
 Date: 24 March 2021
   Features:
-    - Press `Alt + F` or click on the shortcut to call your most recently driven spidertron to you
+    - Press 'Alt + F' or click on the shortcut to call your most recently driven spidertron to you
   Changes:
     - Spidertron inventories are now saved into a corpse instead of being spilled upon death
     - Moved "Enter/exit vehicles from spidertron" configuration into Per player settings

@@ -197,7 +197,6 @@ end
 
 local function enter_vehicles_pressed(player, force_enter_entity)
   -- Entering a nearby vehicle has priority
-  global.player_last_driving_change_tick[player.index] = game.tick
 
   if settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-custom"].value or force_enter_entity then
     -- Off by default
