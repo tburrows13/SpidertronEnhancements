@@ -35,9 +35,11 @@ Press `Shift + E` whilst in a vehicle (not just a spidertron!) to open its inven
 
 Spidertron inventories are automatically sorted just like the player's.
 
-### No item loss
+### Spidertron corpse with inventory
 
-A spidertron's items are spilled on the ground instead of being lost when it dies.
+Spidertron inventories are saved into a corpse instead of being lost when it dies.
+
+![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/corpse.png)
 
 ---
 ## Known Bugs / Limitations

@@ -177,7 +177,6 @@ script.on_event(defines.events.on_player_driving_changed_state,
 
 script.on_event("spidertron-enhancements-toggle-driving",
   function(event)
-    game.print("Custom control")
     local player = game.get_player(event.player_index)
 
     local serialised_data = global.stored_spidertrons[player.index]
