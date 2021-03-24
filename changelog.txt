@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.0
-Date: ???
+Date: 24 March 2021
   Features:
     - Press `Alt + F` or click on the shortcut to call your most recently driven spidertron to you
   Changes:
