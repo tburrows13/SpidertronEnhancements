@@ -22,7 +22,7 @@ Press `U` to exit or re-enter the spidertron.
 
 ### Recall last used spidertron
 
-Press `Alt + F` or click on the shortcut to call your most recently driven spidertron to you.
+Press `Alt + C` or click on the shortcut to call your most recently driven spidertron to you.
 
 ### Spidertron remote pipette
 
