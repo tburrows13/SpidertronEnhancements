@@ -22,6 +22,27 @@ function on_player_driving_changed_state(event)
   end
 end
 
+function on_spidertron_given_new_destination(spidertron)
+  -- Turn off the toggle for all players currently calling the spidertron
+  for player_index, last_spidertron in pairs(global.last_spidertron) do
+    if last_spidertron.valid and spidertron == last_spidertron then
+      local player = game.get_player(player_index)
+      if player and player.valid then
+        player.set_shortcut_toggled(SHORTCUT_NAME, false)
+      end
+    end
+  end
+end
+
+script.on_event(defines.events.on_player_used_spider_remote,
+  function(event)
+    if event.success then
+      local spidertron = event.vehicle
+      on_spidertron_given_new_destination(spidertron)
+    end
+  end
+)
+
 script.on_event(defines.events.on_entity_destroyed,
   function(event)
     local player_index = global.destroy_registrations[event.registration_number]
@@ -31,6 +52,7 @@ script.on_event(defines.events.on_entity_destroyed,
         local spidertron = global.last_spidertron[player.index]
         if not (spidertron and spidertron.valid) then
           player.set_shortcut_toggled(SHORTCUT_NAME, false)
+          global.last_spidertron[player.index] = nil
         end
       end
     end

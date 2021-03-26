@@ -57,25 +57,6 @@ local function request_multiple_paths(spidertron, target_position, resolution, p
   global.pathfinder_statuses[spidertron.unit_number][game.tick] = {finished = 0, success = false}
 end
 
-script.on_event(defines.events.on_player_used_spider_remote,
-  function(event)
-    -- Is this needed? Maybe?
-    local paths = global.paths_assigned_on_tick[event.tick]
-    if paths then
-      local spidertron = event.vehicle
-      local path = paths[spidertron.unit_number]
-      if path then
-        spidertron.autopilot_destination = nil
-        -- game.print(event.tick .. " - Re-adding destinations")
-        for _, position in pairs(path) do
-          spidertron.add_autopilot_destination(position)
-        end
-      end
-      global.paths_assigned_on_tick[event.tick] = nil
-    end
-  end
-)
-
 script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
     function(event)
       local player = game.get_player(event.player_index)
@@ -151,8 +132,8 @@ script.on_event(defines.events.on_script_path_request_finished,
           end
           spidertron.add_autopilot_destination(target_position)
 
-          global.paths_assigned_on_tick[game.tick+1] = global.paths_assigned_on_tick[game.tick+1] or {}
-          table.insert(global.paths_assigned_on_tick[game.tick+1], spidertron.autopilot_destinations)
+          -- Toggles shortcut off in recall-last-spidertron
+          on_spidertron_given_new_destination(spidertron)
 
           status_table.finished = status_table.finished + 1
           status_table.success = true

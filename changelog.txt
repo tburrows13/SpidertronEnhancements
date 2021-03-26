@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.3
+Date: 26 March 2021
+  Bugfixes:
+    - Fixed 'Follow last used spidertron' shortcut not being toggled off when a remote is used to order the spidertron
+---------------------------------------------------------------------------------------------------
 Version: 1.4.2
 Date: 25 March 2021
   Changes:

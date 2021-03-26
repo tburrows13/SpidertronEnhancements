@@ -22,7 +22,6 @@ script.on_init(
 
     global.pathfinder_requests = {}  -- Indexed by request_id
     global.pathfinder_statuses = {}  -- Indexed by spidertron.unit_number, then by start_tick
-    global.paths_assigned_on_tick = {}  -- Indexed by game.tick, then by spidertron.unit_number
 
     global.last_spidertron = {}  -- Indexed by player.index
     global.destroy_registrations = {}  -- Indexed by registration number
@@ -36,14 +35,15 @@ script.on_configuration_changed(
     -- Added in 1.3.0
     global.pathfinder_requests = global.pathfinder_requests or {}
     global.pathfinder_statuses = global.pathfinder_statuses or {}
-    global.paths_assigned_on_tick = global.paths_assigned_on_tick or {}
 
     -- Added in 1.4.0
     global.last_spidertron = global.last_spidertron or {}
     global.destroy_registrations = global.destroy_registrations or {}
 
     global.vehicle_to_enter_this_tick = global.vehicle_to_enter_this_tick or {}
-    global.player_last_driving_change_tick = nil  -- Only used pre-1.4.0
+    global.player_last_driving_change_tick = nil  -- Removed in v1.4.0
+
+    global.paths_assigned_on_tick = nil  -- Removed in v1.4.3
 
   end
 )
