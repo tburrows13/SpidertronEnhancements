@@ -12,6 +12,7 @@ if settings.startup["spidertron-enhancements-enable-corpse"].value then
       flags = {"placeable-off-grid", "not-rotatable", "not-on-map"},
       open_sound = { filename = "__base__/sound/character-corpse-open.ogg", volume = 0.5 },
       close_sound = { filename = "__base__/sound/character-corpse-close.ogg", volume = 0.5 },
+      render_layer = "corpse",
       pictures =
       {
         {
