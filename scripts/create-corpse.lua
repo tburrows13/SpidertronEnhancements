@@ -3,7 +3,6 @@ function on_spidertron_died(spidertron)
   if spidertron and spidertron.valid then
     -- Spill all spidertron items onto the ground
     local spidertron_items = spidertron_lib.serialise_spidertron(spidertron)
-    log("Spilling spidertron items onto the ground")
     local inventory_stacks = {}
     for i = 1, #spidertron_items.ammo.inventory do
       local item_stack = spidertron_items.ammo.inventory[i]
@@ -29,8 +28,7 @@ function on_spidertron_died(spidertron)
         table.insert(inventory_stacks, {name=item_stack.name, count=item_stack.count})
       end
     end
-    log("Spidertron died with items ", serpent.block(inventory_stacks))
-    
+
     local corpse = spidertron.surface.create_entity{
       name = "spidertron-enhancements-corpse",
       position = spidertron.position,
@@ -42,7 +40,6 @@ function on_spidertron_died(spidertron)
     local corpse_inventory = corpse.get_inventory(defines.inventory.character_corpse)
     for i = 1, #inventory_stacks do
       local transferred = corpse_inventory[i].set_stack(inventory_stacks[i])
-      log(transferred)
     end
 
     if string.sub(spidertron.name, 1, 20) == "spidertron-engineer-" and spidertron.last_user then
