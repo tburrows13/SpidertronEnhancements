@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.5
+Date: 29 March 2021
+  Compatibility:
+    - Companion drones no longer generate corpses upon death
+  Bugfixes:
+    - Fixed items with data (such as equipment grids) losing their data when stored in spidertron corpses
+    - Fixed modded spidertron fuel (e.g. Krastorio2 or Tarantulator) not being stored in spidertron corpses
+---------------------------------------------------------------------------------------------------
 Version: 1.4.4
 Date: 29 March 2021
   Bugfixes:
