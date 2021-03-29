@@ -3,22 +3,23 @@ SHORTCUT_NAME = "spidertron-enhancements-recall-shortcut"
 function on_player_driving_changed_state(event)
   -- Called from hidden-spidertron because we can only subscribe to each event once
   local spidertron = event.entity
-  if spidertron.type == "spider-vehicle" then
+  -- spidertron doesn't exist if it has just died
+  if spidertron and spidertron.type == "spider-vehicle" then
     local player = game.get_player(event.player_index)
-      if player.driving then
-        -- Player has entered a spidertron
-        local following_spidertron = global.last_spidertron[player.index]
-        if following_spidertron and following_spidertron.valid and player.character and following_spidertron.follow_target == player.character then
-          following_spidertron.follow_target = nil
-        end
-        player.set_shortcut_toggled(SHORTCUT_NAME, false)
-        global.last_spidertron[player.index] = nil
-      else
-        -- Player has exited a spidertron
-        global.last_spidertron[player.index] = spidertron
-        local reg_id = script.register_on_entity_destroyed(spidertron)
-        global.destroy_registrations[reg_id] = player.index
+    if player.driving then
+      -- Player has entered a spidertron
+      local following_spidertron = global.last_spidertron[player.index]
+      if following_spidertron and following_spidertron.valid and player.character and following_spidertron.follow_target == player.character then
+        following_spidertron.follow_target = nil
       end
+      player.set_shortcut_toggled(SHORTCUT_NAME, false)
+      global.last_spidertron[player.index] = nil
+    else
+      -- Player has exited a spidertron
+      global.last_spidertron[player.index] = spidertron
+      local reg_id = script.register_on_entity_destroyed(spidertron)
+      global.destroy_registrations[reg_id] = player.index
+    end
   end
 end
 

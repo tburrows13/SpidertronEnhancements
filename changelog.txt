@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.4
+Date: 29 March 2021
+  Bugfixes:
+    - Fixed crash when spidertron dies with player inside
+    - Fixed modded spidertron fuel (e.g. Krastorio2 or Tarantulator) being lost when the spidertron enters a vehicle or the player
+---------------------------------------------------------------------------------------------------
 Version: 1.4.3
 Date: 26 March 2021
   Bugfixes:
