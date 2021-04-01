@@ -59,7 +59,7 @@ function on_spidertron_died(spidertron)
       position = spidertron.position,
       inventory_size = inventory_size,
     }
-    corpse.color = spidertron.color  -- Doesn't work in 1.1.27 (https://forums.factorio.com/viewtopic.php?f=28&t=97238)
+    corpse.color = spidertron.color  -- Doesn't work as of at least 1.1.30 (https://forums.factorio.com/viewtopic.php?f=28&t=97238)
     if string.sub(spidertron.name, 1, 20) == "spidertron-engineer-" and spidertron.last_user then
       corpse.character_corpse_player_index = spidertron.last_user.index
     end

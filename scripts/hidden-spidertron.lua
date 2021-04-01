@@ -53,11 +53,11 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
   --local allowed_into_entities = global.allowed_into_entities
   log("Searching for nearby entities to enter")
 
-  for radius=1,6 do
+  for radius=1, 5 do
     local nearby_entities
     nearby_entities = player.surface.find_entities_filtered{position = spidertron.position, radius = radius, type = drivable_types}
     if nearby_entities and #nearby_entities >= 1 then
-      for i, entity_to_drive in pairs(nearby_entities) do
+      for _, entity_to_drive in pairs(nearby_entities) do
         if entity_to_drive ~= spidertron and not entity_to_drive.get_driver() and entity_to_drive.prototype.allow_passengers and spidertron.minable and spidertron.prototype.mineable_properties.minable then
           log("Found entity to drive: " .. entity_to_drive.name)
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
@@ -79,8 +79,6 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                 create_build_effect_smoke = true,
               }
               dummy_spidertron.active = false
-              serialised_data.player_occupied = nil
-              serialised_data.passenger = nil
               spidertron_lib.deserialise_spidertron(dummy_spidertron, serialised_data)
 
               -- Only store the information that is lost because we are going via the dummy
@@ -115,7 +113,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
   if dummy_spidertron then
     if dummy_spidertron.valid then
       new_serialised_data = spidertron_lib.serialise_spidertron(dummy_spidertron)
-      new_serialised_data.player_occupied = nil
+      new_serialised_data.driver = nil
       new_serialised_data.passenger = nil
       new_serialised_data.name = serialised_data.name
       old_serialised_data = serialised_data
