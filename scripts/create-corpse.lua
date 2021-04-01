@@ -64,7 +64,7 @@ function on_spidertron_died(spidertron)
       corpse.character_corpse_player_index = spidertron.last_user.index
     end
 
-    -- Copy across contents of the temporary inventroy into the corpse inventory
+    -- Copy across contents of the temporary inventory into the corpse inventory
     local corpse_inventory = corpse.get_inventory(defines.inventory.character_corpse)
     for i = 1, inventory_size do
       local transferred = corpse_inventory[i].transfer_stack(temp_inventory[i])
