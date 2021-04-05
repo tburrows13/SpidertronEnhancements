@@ -26,7 +26,7 @@ Press `Alt + C` or click on the shortcut to call your most recently driven spide
 
 ### Spidertron remote pipette
 
-Press `Shift + Q` whilst hovering your cursor over a spidertron to select a remote from your inventory connected to that spidertron.
+Press `Shift + Q` whilst hovering your cursor over a spidertron to select a remote from your inventory connected to that spidertron. If no connected remotes are found then an unconnected remote will be selected and connected (you can turn this off in **Per player** settings).
 
 ### Open vehicle inventories directly
 Press `Shift + E` whilst in a vehicle (not just a spidertron!) to open its inventory.
@@ -45,6 +45,7 @@ Spidertron inventories are saved into a corpse instead of being lost when it die
 ## Known Bugs / Limitations
 
 - Spidertron equipment grids and logistics cannot function whilst the spidertron is 'inside' the player
+- When a spidertron enters a vehicle or is quick-toggled, any remotes connected to it that are stored in an inventory more than 30 tiles from a player will become disconnected
 - Compatibility with [Spidertron Weapon Switcher](https://mods.factorio.com/mod/SpidertronWeaponSwitcher) is a little unstable. It will work for the vast majority of the time, but there is the possibility of a crash, so please ensure that you are saving regularly if using these mods together. Ammo placed in an inactive weapon's slots will be lost when you enter a vehicle or quick toggle with a spidertron from this mod.
 
 ---

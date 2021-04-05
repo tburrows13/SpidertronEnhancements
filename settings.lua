@@ -15,6 +15,13 @@ data:extend({
     },
     {
         type = "bool-setting",
+        name = "spidertron-enhancements-pipette-unconnected-remote",
+        setting_type = "runtime-per-user",
+        default_value = true,
+        order = "b"
+    },
+    {
+        type = "bool-setting",
         name = "spidertron-enhancements-enter-entity",
         setting_type = "runtime-global",
         default_value = true,

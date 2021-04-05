@@ -7,14 +7,30 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
       if spidertron and spidertron.type == "spider-vehicle" then
         local remote
         local index
+        local at_least_one_remote_found = false
         local inventory = player.get_main_inventory()
         for i = 1, #inventory do
           local item = inventory[i]
-          if item.valid_for_read then  -- Check if it isn't an empty inventory slot
+          if item.valid_for_read and item.type == "spidertron-remote" then  -- Check if it isn't an empty inventory slot
+            at_least_one_remote_found = true
             if item.connected_entity == spidertron then
               remote = item
               index = i
               break
+            end
+          end
+        end
+        if not remote and at_least_one_remote_found and player.mod_settings["spidertron-enhancements-pipette-unconnected-remote"].value then
+          -- Search didn't find connected remote, so look for new one
+          for i = 1, #inventory do
+            local item = inventory[i]
+            if item.valid_for_read then  -- Check if it isn't an empty inventory slot
+              if item.type == "spidertron-remote" and not item.connected_entity then
+                item.connected_entity = spidertron
+                remote = item
+                index = i
+                break
+              end
             end
           end
         end
@@ -23,7 +39,11 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
           player.cursor_stack.transfer_stack(remote)
           player.hand_location = {inventory = 1, slot = index}
         else
-          player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-remote-not-found"}, create_at_cursor = true}
+          if at_least_one_remote_found then
+            player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-connected-remote-not-found"}, create_at_cursor = true}
+          else
+            player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-remote-not-found"}, create_at_cursor = true}
+          end
         end
       else
         player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-entity-not-spidertron"}, create_at_cursor = true}

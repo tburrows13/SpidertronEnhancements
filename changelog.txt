@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.6
 Date: 5 April 2021
+  Features:
+    - 'Spidertron remote pipette' will now optionally select an unconnected remote if no connected remotes are found
   Changes:
     - 'Call last used spidertron' shortcut now becomes unavailable when there is no last used spidertron to call
   Bugfixes:
