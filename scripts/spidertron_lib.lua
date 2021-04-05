@@ -8,20 +8,44 @@ MAP_ENTITY_INVENTORY = {["cargo-wagon"] = defines.inventory.cargo_wagon,
 
 local spidertron_lib = {}
 
-local function get_remotes(inventory, spidertron, found_remotes, not_connected)
-  if spidertron and inventory then
+local function get_remotes_in_inventory(inventory, spidertron, found_remotes)
+  -- If spidertron is nil then it will return all unconnected remotes
+  if inventory then
     for i = 1, #inventory do
       local item = inventory[i]
       if item.valid_for_read then  -- Check if it isn't an empty inventory slot
-        if item.connected_entity == spidertron then
-          table.insert(found_remotes, item)
-        end
-        if not_connected and item.prototype.type == "spidertron-remote" and not item.connected_entity then
-          return item
+        if (spidertron and item.connected_entity == spidertron) or (not spidertron and item.prototype.type == "spidertron-remote" and not item.connected_entity) then
+          found_remotes[item.item_number] = item
         end
       end
     end
   end
+end
+
+local function find_remotes(spidertron, connected_remotes)
+  -- Returns all remotes connected to `spidertron` (or unconnected if `spidertron == nil`) inside of inventories
+  -- that are within 30 tiles of a player
+  for _, found_player in pairs(game.players) do
+    get_remotes_in_inventory(found_player.get_inventory(defines.inventory.character_main), spidertron, connected_remotes)  -- Adds all remotes connected to spidertron to connected_remotes
+    get_remotes_in_inventory(found_player.get_inventory(defines.inventory.character_trash), spidertron, connected_remotes)
+    get_remotes_in_inventory(found_player.get_inventory(defines.inventory.god_main), spidertron, connected_remotes)
+    get_remotes_in_inventory(found_player.get_inventory(defines.inventory.editor_main), spidertron, connected_remotes)
+    get_remotes_in_inventory({found_player.cursor_stack}, spidertron, connected_remotes)
+
+    -- Also check in a radius around the player
+    if found_player.character then
+      local character = found_player.character
+      -- Check train wagons, cars, and (logistics) chests.
+      local types = {"cargo-wagon", "container", "car", "logistic-container", "spider-vehicle"}
+      for _, entity in pairs(character.surface.find_entities_filtered{position=character.position, radius=30, type=types}) do
+        if entity.get_item_count("spidertron-remote") > 0 then
+          log("Found remotes in entity " .. entity.name .. ". Checking inventory " .. MAP_ENTITY_INVENTORY[entity.type])
+          get_remotes_in_inventory(entity.get_inventory(MAP_ENTITY_INVENTORY[entity.type]), spidertron, connected_remotes)  -- Adds all remotes connected to spidertron to connected_remotes
+        end
+      end
+    end
+  end
+
 end
 
 local function copy_inventory(old_inventory, inventory, filter_table)
@@ -91,7 +115,9 @@ end
 
 
 function spidertron_lib.serialise_spidertron(spidertron)
-  local serialised_data = {unit_number = spidertron.unit_number}
+  local serialised_data = {}
+  serialised_data.version = 2  -- Allows the deserialiser to know exactly what format the data is in
+  serialised_data.unit_number = spidertron.unit_number
   serialised_data.name = spidertron.name
 
   serialised_data.driver_is_gunner = spidertron.driver_is_gunner
@@ -156,27 +182,7 @@ function spidertron_lib.serialise_spidertron(spidertron)
 
   -- Find all connected remotes in player inventories or in radius 30 around all players
   local connected_remotes = {}
-  --for _, entity in pairs(surface.find_entities_filtered{type=types}) do
-  for _, found_player in pairs(game.players) do
-    get_remotes(found_player.get_inventory(defines.inventory.character_main), spidertron, connected_remotes)  -- Adds all remotes connected to spidertron to connected_remotes
-    get_remotes(found_player.get_inventory(defines.inventory.character_trash), spidertron, connected_remotes)
-    get_remotes(found_player.get_inventory(defines.inventory.god_main), spidertron, connected_remotes)
-    get_remotes(found_player.get_inventory(defines.inventory.editor_main), spidertron, connected_remotes)
-    get_remotes({found_player.cursor_stack}, spidertron, connected_remotes)
-
-    -- Also check in a radius around the player
-    if found_player.character then
-      local character = found_player.character
-      -- Check train cars, chests, cars, player inventories, and logistics chests.
-      local types = {"cargo-wagon", "container", "car", "logistic-container", "spider-vehicle"}
-      for _, entity in pairs(character.surface.find_entities_filtered{position=character.position, radius=30, type=types}) do
-        if entity.get_item_count("spidertron-remote") > 0 then
-          log("Found remotes in entity " .. entity.name .. ". Checking inventory " .. MAP_ENTITY_INVENTORY[entity.type])
-          get_remotes(entity.get_inventory(MAP_ENTITY_INVENTORY[entity.type]), spidertron, connected_remotes)  -- Adds all remotes connected to spidertron to connected_remotes
-        end
-      end
-    end
-  end
+  find_remotes(spidertron, connected_remotes)
   serialised_data.connected_remotes = connected_remotes
 
   -- Store which players had this spidertron's GUI open
@@ -198,6 +204,8 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
 
   -- transfer_player_state keeps driver/passenger in spidertron, player.opened and player.walking_state intact
   -- and should be used when the mod is serialising and deserialising the spidertron on the same tick
+
+  local data_version = serialised_data.version or 1
 
   -- Copy across generic attributes
   for _, attribute in pairs{"force",
@@ -307,9 +315,35 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
   -- Reconnect remotes
   local connected_remotes = serialised_data.connected_remotes
   if connected_remotes then
-    for _, remote in pairs(connected_remotes) do
-      if remote and remote.valid_for_read and remote.prototype.type == "spidertron-remote" then
-        remote.connected_entity = spidertron
+    if data_version >= 2 then
+      local moved_remotes = {}
+      for item_number, remote_stack in pairs(connected_remotes) do
+        if remote_stack and remote_stack.valid_for_read and remote_stack.item_number == item_number and not remote_stack.connected_entity then
+          remote_stack.connected_entity = spidertron
+        else
+          table.insert(moved_remotes, item_number)
+        end
+      end
+
+      if moved_remotes then
+        -- moved_remotes contains all remotes that have moved since serialisation so we need to find them in their new position
+        local unconnected_remotes = {}
+        find_remotes(nil, unconnected_remotes)
+        for _, moved_remote_item_number in pairs(moved_remotes) do
+          local remote = unconnected_remotes[moved_remote_item_number]
+          if remote and remote.valid_for_read and not remote.connected_entity then
+            -- Remote has been found
+            remote.connected_entity = spidertron
+          end
+        end
+      end
+
+    else
+      -- Legacy
+      for _, remote in pairs(connected_remotes) do
+        if remote and remote.valid_for_read and remote.prototype.type == "spidertron-remote" and not remote.connected_entity then
+          remote.connected_entity = spidertron
+        end
       end
     end
   end

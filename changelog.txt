@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.6
+Date: 5 April 2021
+  Bugfixes:
+    - Fixed spidertron remotes not being reconnected after toggling a spidertron if their inventory position had changed
+---------------------------------------------------------------------------------------------------
 Version: 1.4.5
 Date: 29 March 2021
   Compatibility:
