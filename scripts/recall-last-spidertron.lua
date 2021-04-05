@@ -63,26 +63,23 @@ script.on_event(defines.events.on_entity_destroyed,
 )
 
 local function on_shortcut_pressed(event)
-    local player = game.get_player(event.player_index)
-    local spidertron = global.last_spidertron[player.index]
+  local player = game.get_player(event.player_index)
+  local spidertron = global.last_spidertron[player.index]
 
-    local toggle_on = not player.is_shortcut_toggled(SHORTCUT_NAME)
-    if toggle_on then
-      if player and player.character and spidertron and spidertron.valid then
-        spidertron.follow_target = player.character
-        player.set_shortcut_toggled(SHORTCUT_NAME, true)
-      elseif player then
-        player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-no-last-spidertron"}, create_at_cursor = true}
-      end
-    else
-      if player and player.character and spidertron and spidertron.valid and spidertron.follow_target == player.character then
-        spidertron.follow_target = nil
-      end
-      player.set_shortcut_toggled(SHORTCUT_NAME, false)
-
+  local toggle_on = not player.is_shortcut_toggled(SHORTCUT_NAME)
+  if toggle_on then
+    if player and player.character and spidertron and spidertron.valid then
+      spidertron.follow_target = player.character
+      player.set_shortcut_toggled(SHORTCUT_NAME, true)
+    elseif player then
+      player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-no-last-spidertron"}, create_at_cursor = true}
     end
-
-
+  else
+    if player and player.character and spidertron and spidertron.valid and spidertron.follow_target == player.character then
+      spidertron.follow_target = nil
+    end
+    player.set_shortcut_toggled(SHORTCUT_NAME, false)
+  end
 end
 
 script.on_event(SHORTCUT_NAME, on_shortcut_pressed)
