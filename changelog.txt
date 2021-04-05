@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.6
 Date: 5 April 2021
+  Changes:
+    - 'Call last used spidertron' shortcut now becomes unavailable when there is no last used spidertron to call
   Bugfixes:
     - Fixed spidertron remotes not being reconnected after toggling a spidertron if their inventory position had changed
 ---------------------------------------------------------------------------------------------------
@@ -21,13 +23,13 @@ Date: 29 March 2021
 Version: 1.4.3
 Date: 26 March 2021
   Bugfixes:
-    - Fixed 'Follow last used spidertron' shortcut not being toggled off when a remote is used to order the spidertron
+    - Fixed 'Call last used spidertron' shortcut not being toggled off when a remote is used to order the spidertron
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.2
 Date: 25 March 2021
   Changes:
-    - Changed 'Follow last used spidertron' shortcut icon from crosshair to whistle
-    - Changed 'Follow last used spidertron' default keybind from 'Alt + F' to 'Alt + C'
+    - Changed 'Call last used spidertron' shortcut icon from crosshair to whistle
+    - Changed 'Call last used spidertron' default keybind from 'Alt + F' to 'Alt + C'
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.1
 Date: 24 March 2021

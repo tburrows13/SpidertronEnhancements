@@ -13,9 +13,11 @@ function on_player_driving_changed_state(event)
         following_spidertron.follow_target = nil
       end
       player.set_shortcut_toggled(SHORTCUT_NAME, false)
+      player.set_shortcut_available(SHORTCUT_NAME, false)
       global.last_spidertron[player.index] = nil
     else
       -- Player has exited a spidertron
+      player.set_shortcut_available(SHORTCUT_NAME, true)
       global.last_spidertron[player.index] = spidertron
       local reg_id = script.register_on_entity_destroyed(spidertron)
       global.destroy_registrations[reg_id] = player.index
@@ -53,6 +55,7 @@ script.on_event(defines.events.on_entity_destroyed,
         local spidertron = global.last_spidertron[player.index]
         if not (spidertron and spidertron.valid) then
           player.set_shortcut_toggled(SHORTCUT_NAME, false)
+          player.set_shortcut_available(SHORTCUT_NAME, false)
           global.last_spidertron[player.index] = nil
         end
       end
