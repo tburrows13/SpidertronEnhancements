@@ -14,7 +14,7 @@ local function get_remotes_in_inventory(inventory, spidertron, found_remotes)
     for i = 1, #inventory do
       local item = inventory[i]
       if item.valid_for_read then  -- Check if it isn't an empty inventory slot
-        if (spidertron and item.connected_entity == spidertron) or (not spidertron and item.prototype.type == "spidertron-remote" and not item.connected_entity) then
+        if (spidertron and item.connected_entity == spidertron) or (not spidertron and item.type == "spidertron-remote" and not item.connected_entity) then
           found_remotes[item.item_number] = item
         end
       end
@@ -341,7 +341,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
     else
       -- Legacy
       for _, remote in pairs(connected_remotes) do
-        if remote and remote.valid_for_read and remote.prototype.type == "spidertron-remote" and not remote.connected_entity then
+        if remote and remote.valid_for_read and remote.type == "spidertron-remote" and not remote.connected_entity then
           remote.connected_entity = spidertron
         end
       end
