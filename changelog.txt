@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.7
+Date: ???
+  Bugfixes:
+    - Fixed being able to quick toggle a spidertron whilst another spidertron is riding on top of it
+---------------------------------------------------------------------------------------------------
 Version: 1.4.6
 Date: 5 April 2021
   Features:

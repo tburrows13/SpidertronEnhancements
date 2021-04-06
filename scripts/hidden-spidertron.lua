@@ -214,7 +214,9 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     end
   end
 
-  if settings.global["spidertron-enhancements-enter-player"].value then
+  if settings.global["spidertron-enhancements-enter-player"].value and not (player.driving and global.stored_spidertrons[player.index]) then
+    -- Can't quick toggle if there is a spidertron riding on top of this spidertron
+
     local serialised_data = global.stored_spidertrons_personal[player.index]
     if not player.driving and serialised_data then
       enter_spidertron(player, serialised_data)
