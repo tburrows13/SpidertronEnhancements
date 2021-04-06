@@ -132,6 +132,10 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     -- If the player pressed 'enter' then they will have been moved out of the way of the vehicle
     -- but we still want the spidertron to appear on the vehicle
     ideal_position = vehicle_from.position
+    if vehicle_from.type == "spider-vehicle" then
+      -- Prevents strange z-fighting
+      ideal_position = {x = ideal_position.x - 2, y = ideal_position.y}
+    end
   else
     ideal_position = player.position
   end
