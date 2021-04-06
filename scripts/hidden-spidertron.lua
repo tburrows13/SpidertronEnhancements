@@ -146,8 +146,13 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     force = serialised_data.force,
     create_build_effect_smoke=true
   }
-  spidertron_lib.deserialise_spidertron(spidertron, serialised_data)
-  spidertron.set_driver(player)
+
+  serialised_data.driver = player.character
+  serialised_data.passenger = nil
+  serialised_data.walking_state = player.walking_state
+  serialised_data.players_with_gui_open = nil
+  spidertron_lib.deserialise_spidertron(spidertron, serialised_data, true)
+
   play_smoke(surface, {position})
   surface.play_sound{path = "spidertron-enhancements-vehicle-disembark", position = position}
 
