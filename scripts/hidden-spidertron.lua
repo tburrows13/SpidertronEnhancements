@@ -70,10 +70,17 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
           if entity_to_drive.valid and entity_to_drive.get_driver().player == player then
             play_smoke(surface, {entity_to_drive.position, spidertron.position})
 
+            if override_vehicle_change then
+              global.vehicle_to_enter_this_tick[game.tick] = global.vehicle_to_enter_this_tick[game.tick] or {}
+              global.vehicle_to_enter_this_tick[game.tick][player.index] = entity_to_drive
+            end
+
+            spidertron.destroy()
+
             if settings.global["spidertron-enhancements-show-spider-on-vehicle"].value then
               serialised_data.vehicle_in = entity_to_drive
               local dummy_spidertron = surface.create_entity{
-                name = "spidertron-enhancements-dummy-" .. spidertron.name,
+                name = "spidertron-enhancements-dummy-" .. serialised_data.name,
                 force = player.force,
                 position = entity_to_drive.position,
                 create_build_effect_smoke = true,
@@ -85,12 +92,6 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
               serialised_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive}
             end
 
-            if override_vehicle_change then
-              global.vehicle_to_enter_this_tick[game.tick] = global.vehicle_to_enter_this_tick[game.tick] or {}
-              global.vehicle_to_enter_this_tick[game.tick][player.index] = entity_to_drive
-            end
-
-            spidertron.destroy()
             global.stored_spidertrons[player.index] = serialised_data
 
             entity_to_drive.surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = entity_to_drive.position}

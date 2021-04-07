@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.8
+Date: 7 April 2021
+  Bugfixes:
+    - Fixed spidertron remotes becoming disconnected when that spidertron mounts another vehicle
+---------------------------------------------------------------------------------------------------
 Version: 1.4.7
 Date: 7 April 2021
   Changes:
