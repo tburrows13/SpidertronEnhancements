@@ -3,7 +3,7 @@ script.on_event("spidertron-enhancements-open-vehicle-inventory",
     local player = game.get_player(event.player_index)
     local vehicle = player.vehicle
     if vehicle and vehicle.valid then
-      if player.opened == vehicle then
+      if player.opened then
         -- Close the GUI
         player.opened = nil
       else
