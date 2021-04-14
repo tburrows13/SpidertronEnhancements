@@ -73,6 +73,7 @@ local function on_shortcut_pressed(event)
   if toggle_on then
     if player and player.character and spidertron and spidertron.valid then
       spidertron.follow_target = player.character
+      spidertron.follow_offset = {0, 0}
       player.set_shortcut_toggled(SHORTCUT_NAME, true)
     elseif player then
       player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-no-last-spidertron"}, create_at_cursor = true}
