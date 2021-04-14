@@ -1,9 +1,9 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.10
-Date: 13 April 2021
+Date: 14 April 2021
   Features:
-    - 'Call last used spidertron' now sets the same follow offset every time it is pressed
-    - 'Spidertron remote pipette' now plays both success and failure sounds
+    - 'Call last used spidertron' now sets the same follow offset every time it is used
+    - 'Spidertron remote pipette' plays success and failure sounds
   Changes:
     - 'Shift + E' now closes the current GUI instead of immediately opening the vehicle GUI (it now behaves more like 'E')
 ---------------------------------------------------------------------------------------------------
