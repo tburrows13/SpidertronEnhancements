@@ -38,15 +38,18 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
           player.clear_cursor()
           player.cursor_stack.transfer_stack(remote)
           player.hand_location = {inventory = 1, slot = index}
+          player.play_sound{path = "utility/smart_pipette"}
         else
           if at_least_one_remote_found then
             player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-connected-remote-not-found"}, create_at_cursor = true}
           else
             player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-remote-not-found"}, create_at_cursor = true}
           end
+          player.play_sound{path = "utility/cannot_build"}
         end
       else
         player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-entity-not-spidertron"}, create_at_cursor = true}
+        player.play_sound{path = "utility/cannot_build"}
       end
     end
   end
