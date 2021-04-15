@@ -23,10 +23,14 @@ function on_spidertron_died(spidertron)
     store_inventory(spidertron.get_inventory(defines.inventory.burnt_result), inventory_stacks)
 
     -- Save all equipment into a table
-    local equipment_stacks = spidertron.grid.take_all()
     local equipment_count = 0
-    for _, count in pairs(equipment_stacks) do
-      equipment_count = equipment_count + count
+    local equipment_stacks
+    local spidertron_grid = spidertron.grid
+    if spidertron_grid then
+      equipment_stacks = spidertron_grid.take_all()
+      for _, count in pairs(equipment_stacks) do
+        equipment_count = equipment_count + count
+      end
     end
 
     -- Put all LuaItemStacks and equipment into a script inventory
@@ -36,9 +40,11 @@ function on_spidertron_died(spidertron)
       temp_inventory.insert(item_stack)
     end
 
-    for name, count in pairs(equipment_stacks) do
-      if name ~= "tarantulator-reactor" then
-        temp_inventory.insert({name = name, count = count})
+    if equipment_stacks then
+      for name, count in pairs(equipment_stacks) do
+        if name ~= "tarantulator-reactor" then
+          temp_inventory.insert({name = name, count = count})
+        end
       end
     end
 
