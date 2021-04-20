@@ -1,8 +1,9 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.11
-Date: ???
+Date: 20 April 2021
   Bugfixes:
     - Fixed crash when spidertron with no equipment grid dies
+    - Fixed 'Travelling Spidertron' causing item loss if another mod increases spidertron inventory size
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.10
 Date: 14 April 2021

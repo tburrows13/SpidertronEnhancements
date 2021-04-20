@@ -26,7 +26,7 @@ local function adjust_render_layer(graphics_set)
   return graphics_set
 end
 
-local function create_dummy_spidertron(arguments)
+function create_dummy_spidertron(arguments)
   local spidertron = arguments.spidertron
   local scale = arguments.scale
   local leg_scale = scale * arguments.leg_scale
@@ -172,7 +172,7 @@ end
 
 
 -- Create a dummy spidertron for each spidertron in the game (to allow for modded spidertrons)
-local spidertrons = table.deepcopy(data.raw["spider-vehicle"])
+local spidertrons = data.raw["spider-vehicle"]
 for _, spidertron in pairs(spidertrons) do
   if spidertron.allow_passengers ~= false then
     create_dummy_spidertron{spidertron = spidertron,
