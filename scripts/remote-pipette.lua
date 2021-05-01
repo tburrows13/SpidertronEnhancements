@@ -3,6 +3,11 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
     local player = game.get_player(event.player_index)
     if player then
       local spidertron = player.selected
+      if not (spidertron and spidertron.type == "spider-vehicle") then
+        -- Try the player's current vehicle
+        spidertron = player.vehicle
+      end
+
       -- Adapted from spidertron_lib.lua get_remotes()
       if spidertron and spidertron.type == "spider-vehicle" then
         local remote

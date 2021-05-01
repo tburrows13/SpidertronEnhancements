@@ -3,6 +3,7 @@ Version: 1.4.12
 Date: ???
   Features:
     - When holding a spidertron remote, 'Shift + E' now opens the GUI of the connected spidertron (when not holding a connected remote, it still opens the current vehicle GUI)
+    - 'Shift + Q' (Spidertron remote pipette) will now pick remote connected to the spidertron the player is currently driving if no spidertron is selected
   Bugfixes:
     - Fixed 'Shift + E' opening the vehicle GUI instead of closing the current GUI for some GUIs
     - Fixed 'Shift + E' not closing the current GUI when not in a vehicle
