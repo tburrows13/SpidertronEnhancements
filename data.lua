@@ -34,7 +34,4 @@ local use_remote = {
   key_sequence = "ALT + mouse-button-1",
 }
 
-local prototype = data.raw["spidertron-remote"]["spidertron-remote"]
-prototype.localised_description = {"item-description.spidertron-enhancements-spidertron-remote-append", {"item-description.spidertron-remote"}}
-
 data:extend{toggle_driving, direct_control, spidertron_pipette, open_inventory, use_remote}
