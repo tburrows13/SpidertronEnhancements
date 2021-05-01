@@ -72,9 +72,23 @@ local function on_shortcut_pressed(event)
   local toggle_on = not player.is_shortcut_toggled(SHORTCUT_NAME)
   if toggle_on then
     if player and player.character and spidertron and spidertron.valid then
+      -- Toggle off other player's shortcuts if they were calling this spidertron
+      for player_index, last_spidertron in pairs(global.last_spidertron) do
+        if last_spidertron == spidertron then
+          -- That player may be calling the current spidertron
+          local other_player = game.get_player(player_index)
+          if other_player and other_player.character then
+            if spidertron.follow_target == other_player.character then
+              other_player.set_shortcut_toggled(SHORTCUT_NAME, false)
+            end
+          end
+        end
+      end
+
       spidertron.follow_target = player.character
       spidertron.follow_offset = {0, 0}
       player.set_shortcut_toggled(SHORTCUT_NAME, true)
+
     elseif player then
       player.create_local_flying_text{text = {"cursor-message.spidertron-enhancements-no-last-spidertron"}, create_at_cursor = true}
     end

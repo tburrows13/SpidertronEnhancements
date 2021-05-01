@@ -8,6 +8,7 @@ Date: ???
     - Fixed 'Shift + E' opening the vehicle GUI instead of closing the current GUI for some GUIs
     - Fixed 'Shift + E' not closing the current GUI when not in a vehicle
     - Fixed crash in multiplayer when a passenger exits a spidertron that has no driver
+    - FIxed 'Call last used spidertron' shortcut not toggling off when another player calls your spidertron
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.11
 Date: 20 April 2021
