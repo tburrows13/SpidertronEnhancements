@@ -15,6 +15,9 @@ require 'scripts.open-inventory'
 require 'scripts.pathfinder'
 require 'scripts.recall-last-spidertron'
 
+on_spidertron_replaced = script.generate_event_name()
+remote.add_interface("SpidertronEnhancements", {get_events = function() return {on_spidertron_replaced = on_spidertron_replaced} end})
+
 script.on_init(
   function()
     global.stored_spidertrons = {}  -- Indexed by player.index

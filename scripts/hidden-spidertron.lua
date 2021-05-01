@@ -2,10 +2,12 @@ local util = require("__core__/lualib/util")
 drivable_types = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon", "car", "spider-vehicle"}
 
 -- Intended for SpidertronEngineer compatibility but not used because
--- SpidertronEngineer turns of all of the following features instead
-remote.add_interface("SpidertronEnhancements",
+-- SpidertronEngineer turns off all of the following features instead
+--[[
+  remote.add_interface("SpidertronEnhancements",
   {is_spidertron_in_vehicle = function(player_index) return global.stored_spidertrons[player_index] ~= nil end}
 )
+]]
 
 local function play_smoke(surface, positions)
   for _ = 1, 6 do
@@ -77,8 +79,6 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                 global.vehicle_to_enter_this_tick[game.tick][player.index] = entity_to_drive
               end
 
-              spidertron.destroy()
-
               if settings.global["spidertron-enhancements-show-spider-on-vehicle"].value then
                 serialised_data.vehicle_in = entity_to_drive
                 local dummy_spidertron = surface.create_entity{
@@ -92,7 +92,11 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
 
                 -- Only store the information that is lost because we are going via the dummy
                 serialised_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive}
+                script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron, new_spidertron = dummy_spidertron})
+
               end
+
+              spidertron.destroy()
 
               global.stored_spidertrons[player.index] = serialised_data
 
@@ -122,7 +126,6 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
       new_serialised_data.name = serialised_data.name
       old_serialised_data = serialised_data
       serialised_data = new_serialised_data
-      dummy_spidertron.destroy()
     else
       -- Dummy has been mined so we can exit here
       log("Dummy Spidertron not found")
@@ -150,6 +153,11 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     force = serialised_data.force,
     create_build_effect_smoke=true
   }
+
+  if dummy_spidertron then
+    script.raise_event(on_spidertron_replaced, {old_spidertron = dummy_spidertron, new_spidertron = spidertron})
+    dummy_spidertron.destroy()
+  end
 
   serialised_data.driver = player.character
   serialised_data.passenger = nil
@@ -258,6 +266,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
         local surface = player.surface
         local teleport_position = surface.find_non_colliding_position(player.character.name, spidertron.position, 0, 0.1)
         if teleport_position then
+          script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron})
           play_smoke(surface, {spidertron.position})
           surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = spidertron.position}
           spidertron.destroy()
