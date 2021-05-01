@@ -209,7 +209,7 @@ script.on_event("spidertron-enhancements-toggle-driving",
 
     if vehicle_from and vehicle_from.type == "spider-vehicle" then
       local driver = vehicle_from.get_driver()
-      if driver.object_name == "LuaEntity" and driver.player == player and settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-base-game"].value then
+      if driver and driver.object_name == "LuaEntity" and driver.player == player and settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-base-game"].value then
         -- render_mode is proxy for LuaPlayer (vs character). If vehicle_from has a driver then we were the passenger so we don't want to enter_nearby_entity
         enter_nearby_entity(player, vehicle_from, true)
       end
