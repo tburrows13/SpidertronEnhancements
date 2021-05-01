@@ -6,11 +6,10 @@ local function sort_inventory(entity)
   end
 end
 
-script.on_event(defines.events.on_gui_opened,
-  function(event)
-    sort_inventory(event.entity)
-  end
-)
+auto_sort = {}
+function auto_sort.on_gui_opened(event)
+  sort_inventory(event.entity)
+end
 
 script.on_event({defines.events.on_player_main_inventory_changed, defines.events.on_player_cursor_stack_changed},
   function(event)

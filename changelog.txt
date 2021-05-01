@@ -2,6 +2,7 @@
 Version: 1.5.0
 Date: ???
   Features:
+    - Spidertron inventories now stay open when the spidertron becomes too far away from the player for normal interaction
     - When holding a spidertron remote, 'Shift + E' now opens the GUI of the connected spidertron (when not holding a connected remote, it still opens the current vehicle GUI)
     - 'Shift + Q' (Spidertron remote pipette) will now pick remote connected to the spidertron the player is currently driving if no spidertron is selected
   Bugfixes:

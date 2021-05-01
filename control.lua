@@ -6,17 +6,24 @@ do
   end
 end
 
-spidertron_lib = require 'scripts.spidertron_lib'
-require 'scripts.hidden-spidertron'
-require 'scripts.auto-sort'
-require 'scripts.create-corpse'
-require 'scripts.remote-pipette'
-require 'scripts.open-inventory'
-require 'scripts.pathfinder'
-require 'scripts.recall-last-spidertron'
+spidertron_lib = require "scripts.spidertron_lib"
+require "scripts.hidden-spidertron"
+require "scripts.auto-sort"
+require "scripts.create-corpse"
+require "scripts.remote-pipette"
+require "scripts.open-inventory"
+require "scripts.pathfinder"
+require "scripts.recall-last-spidertron"
 
 on_spidertron_replaced = script.generate_event_name()
 remote.add_interface("SpidertronEnhancements", {get_events = function() return {on_spidertron_replaced = on_spidertron_replaced} end})
+
+script.on_event(defines.events.on_gui_opened,
+  function(event)
+    auto_sort.on_gui_opened(event)
+    open_inventory.on_gui_opened(event)
+  end
+)
 
 script.on_init(
   function()
