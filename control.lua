@@ -48,5 +48,6 @@ script.on_configuration_changed(
 
     global.paths_assigned_on_tick = nil  -- Removed in v1.4.3
 
+    global.reach_distance_bonuses = global.reach_distance_bonuses or {}  -- Added in 1.5.0
   end
 )
