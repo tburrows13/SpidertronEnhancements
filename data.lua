@@ -34,4 +34,13 @@ local use_remote = {
   key_sequence = "ALT + mouse-button-1",
 }
 
-data:extend{toggle_driving, direct_control, spidertron_pipette, open_inventory, use_remote}
+local disconnect_remote = {
+  type = "custom-input",
+  name = "spidertron-enhancements-disconnect-remote",
+  key_sequence = "",
+  linked_game_control = "stack-split",  -- SHIFT + mouse-button-2 by default
+  consuming = "none",
+  order = "ab"
+}
+
+data:extend{toggle_driving, direct_control, spidertron_pipette, open_inventory, use_remote, disconnect_remote}

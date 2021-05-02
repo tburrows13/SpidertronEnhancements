@@ -2,14 +2,17 @@
 Version: 1.5.0
 Date: ???
   Features:
-    - Spidertron inventories now stay open when the spidertron becomes too far away from the player for normal interaction
+    - Added 'Shift + Right-click' to disconnect currently held remote
+    - Spidertron inventories will never be forcibly closed, no matter how far away the spidertron becomes from the player
     - When holding a spidertron remote, 'Shift + E' now opens the GUI of the connected spidertron (when not holding a connected remote, it still opens the current vehicle GUI)
     - 'Shift + Q' (Spidertron remote pipette) will now pick remote connected to the spidertron the player is currently driving if no spidertron is selected
   Bugfixes:
     - Fixed 'Shift + E' opening the vehicle GUI instead of closing the current GUI for some GUIs
     - Fixed 'Shift + E' not closing the current GUI when not in a vehicle
     - Fixed crash in multiplayer when a passenger exits a spidertron that has no driver
-    - FIxed 'Call last used spidertron' shortcut not toggling off when another player calls your spidertron
+    - Fixed 'Call last used spidertron' shortcut not toggling off when another player calls your spidertron
+  Compatibility:
+    - Compatibility added for Spidertron Patrols
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.11
 Date: 20 April 2021

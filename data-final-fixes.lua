@@ -31,6 +31,6 @@ if patrol_remote then
   patrol_remote.localised_description = {
     "item-description.spidertron-enhancements-spidertron-remote-append",
     {"item-description.sp-spidertron-patrol-remote"},
-    ""
+    {"item-description.sp-spidertron-patrol-remote-append"}
   }
 end
