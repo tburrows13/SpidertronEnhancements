@@ -38,6 +38,8 @@ script.on_init(
     global.destroy_registrations = {}  -- Indexed by registration number
 
     global.vehicle_to_enter_this_tick = {}  -- Indexed by game.tick
+
+    global.reach_distance_bonuses = {}  -- Indexed by player.index
   end
 )
 

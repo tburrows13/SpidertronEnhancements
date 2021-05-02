@@ -4,7 +4,7 @@ Some simple features to make your life easier whilst using a spidertron. All fea
 
 ### Enter vehicles from spidertron
 
-Press `Enter` or `U` near a vehicle whilst riding a spidertron to enter the vehicle.
+Press `Enter` near a vehicle whilst riding a spidertron to enter the vehicle.
 
 ![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/onto-train.gif)
 
@@ -30,6 +30,7 @@ Press `Shift + Q` whilst hovering your cursor over a spidertron to select a remo
 If you aren't hovering your cursor over a spidertron, it will pick a remote connected to the spidertron you are driving.
 
 ### Open vehicle inventories directly
+
 Press `Shift + E` whilst holding a spidertron remote to open the inventory of the connected spidertron. If not holding a remote, it will open the inventory of the vehicle (not just a spidertron!) you are driving.
 Spidertron inventories will never be forcibly closed, no matter how far away the spidertron becomes from the player.
 
@@ -60,4 +61,4 @@ You can help by translating this mod into your language using [CrowdIn](https://
 
 Please let me know in the "Discussion" section of the mod portal if you have suggestions for this mod.
 
-Check out my other mods: [Spidertron Waypoints](https://mods.factorio.com/mod/SpidertronWaypoints) and [Spidertron Engineer](https://mods.factorio.com/mod/SpidertronEngineer)
+Check out my other mods: [Spidertron Patrols](https://mods.factorio.com/mod/SpidertronPatrols) and [Spidertron Engineer](https://mods.factorio.com/mod/SpidertronEngineer)
