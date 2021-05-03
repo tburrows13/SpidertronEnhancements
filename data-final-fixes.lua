@@ -23,7 +23,8 @@ local remote = data.raw["spidertron-remote"]["spidertron-remote"]
 remote.localised_description = {
   "item-description.spidertron-enhancements-spidertron-remote-append",
   {"item-description.spidertron-remote"},
-  {"item-description.spidertron-enhancements-spidertron-remote-append-pathfinder"}
+  {"item-description.spidertron-enhancements-spidertron-remote-append-pathfinder"},
+  {"item-description.spidertron-enhancements-spidertron-remote-alt-control"}    -- Workaround base game bug (https://forums.factorio.com/viewtopic.php?f=7&t=98175)
 }
 
 local patrol_remote = data.raw["spidertron-remote"]["sp-spidertron-patrol-remote"]
@@ -31,6 +32,7 @@ if patrol_remote then
   patrol_remote.localised_description = {
     "item-description.spidertron-enhancements-spidertron-remote-append",
     {"item-description.sp-spidertron-patrol-remote"},
-    {"item-description.sp-spidertron-patrol-remote-append"}
+    {"item-description.sp-spidertron-patrol-remote-append"},
+    {"item-description.spidertron-enhancements-spidertron-remote-alt-control"}  -- Workaround base game bug (https://forums.factorio.com/viewtopic.php?f=7&t=98175)
   }
 end
