@@ -266,7 +266,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
         local surface = player.surface
         local teleport_position = surface.find_non_colliding_position(player.character.name, spidertron.position, 0, 0.1)
         if teleport_position then
-          script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron})
+          --script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron})
           play_smoke(surface, {spidertron.position})
           surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = spidertron.position}
           spidertron.destroy()
