@@ -88,15 +88,20 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                   create_build_effect_smoke = true,
                 }
                 dummy_spidertron.active = false
+
+                -- Has to be a specific order:
+                -- Raise event when both spidertrons are valid
+                -- Destroy spidertron before deserialising into new one because deserialise_spidertron does checks on remote connected_entity validity
+                script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron, new_spidertron = dummy_spidertron})
+                spidertron.destroy()
                 spidertron_lib.deserialise_spidertron(dummy_spidertron, serialised_data)
 
                 -- Only store the information that is lost because we are going via the dummy
                 serialised_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive}
-                script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron, new_spidertron = dummy_spidertron})
-
+              else
+                spidertron.destroy()
               end
 
-              spidertron.destroy()
 
               global.stored_spidertrons[player.index] = serialised_data
 

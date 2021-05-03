@@ -1,8 +1,9 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.5.2
-Date: ???
+Date: 4 May 2021
   Bugfixes:
     - Fixed crash when quick-toggling spidertron whilst Spidertron Patrols is installed
+    - Fixed spidertron remotes not keeping their connections when the spidertron mounts another vehicle
 ---------------------------------------------------------------------------------------------------
 Version: 1.5.1
 Date: 2 May 2021
