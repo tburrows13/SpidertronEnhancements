@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.5.3
 Date: ???
+  Changes:
+    - 'Shift + Q' (Spidertron remote pipette) will now clear cursor instead of picking a remote if the player is already holding an item
   Compatibility:
     - Added on_player_disconnected_spider_remote event to remote interface
 ---------------------------------------------------------------------------------------------------

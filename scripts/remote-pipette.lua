@@ -2,6 +2,12 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
   function(event)
     local player = game.get_player(event.player_index)
     if player then
+      local cursor_stack = player.cursor_stack
+      if cursor_stack and cursor_stack.valid_for_read then
+        player.clear_cursor()
+        return
+      end
+
       local spidertron = player.selected
       if not (spidertron and spidertron.type == "spider-vehicle") then
         -- Try the player's current vehicle
