@@ -86,6 +86,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                   force = player.force,
                   position = entity_to_drive.position,
                   create_build_effect_smoke = true,
+                  raise_built = true,
                 }
                 dummy_spidertron.active = false
 
@@ -156,7 +157,8 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     name = serialised_data.name,
     position = position,
     force = serialised_data.force,
-    create_build_effect_smoke=true
+    create_build_effect_smoke = true,
+    raise_built = true,
   }
 
   if dummy_spidertron then
