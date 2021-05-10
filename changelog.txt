@@ -1,8 +1,8 @@
 ---------------------------------------------------------------------------------------------------
-Version: 1.5.5
-Date: ???
+Version: 1.6.0
+Date: 10 May 2021
   Features:
-    - Added settings to configure the spidertron sound volume and play frequency
+    - Added settings to configure the spidertron volume and sound play frequency
   Changes:
     - New thumbnail
   Compatibility:
