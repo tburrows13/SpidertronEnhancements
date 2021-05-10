@@ -48,7 +48,7 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
         if remote then
           player.clear_cursor()
           player.cursor_stack.transfer_stack(remote)
-          player.hand_location = {inventory = 1, slot = index}
+          player.hand_location = {inventory = inventory.index, slot = index}  -- TODO Fix https://mods.factorio.com/mod/SpidertronEnhancements/discussion/609702055c9d7683ad736dd5
           player.play_sound{path = "utility/smart_pipette"}
         else
           if at_least_one_remote_found then

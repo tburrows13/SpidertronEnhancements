@@ -3,6 +3,8 @@ Version: 1.5.5
 Date: ???
   Changes:
     - New thumbnail
+  Bugfixes:
+    - Fixed 'Shift + Q' (Spidertron remote pipette) causing crash when in god mode
 ---------------------------------------------------------------------------------------------------
 Version: 1.5.4
 Date: 7 May 2021
