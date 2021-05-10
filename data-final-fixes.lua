@@ -1,3 +1,5 @@
+require "prototypes.sound-edits"
+
 -- In case mods like spidertron-grid mess with the spidertron inventory_size after our data-updates is run
 local spidertrons = data.raw["spider-vehicle"]
 for _, spidertron in pairs(spidertrons) do

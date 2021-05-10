@@ -53,8 +53,24 @@ data:extend({
         name = "spidertron-enhancements-enable-corpse",
         setting_type = "startup",
         default_value = true,
-        order = "d"
+        order = "a"
     },
+    {
+        type = "double-setting",
+        name = "spidertron-enhancements-sound-pause",
+        setting_type = "startup",
+        default_value = 0,
+        minimum_value = 0,
+        order = "b",
+    },
+    {
+        type = "double-setting",
+        name = "spidertron-enhancements-volume-scale",
+        setting_type = "startup",
+        default_value = 1,
+        minimum_value = 0,
+        order = "c",
+    }
 })
 
 if mods["SpidertronEngineer"] then
