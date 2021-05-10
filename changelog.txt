@@ -3,6 +3,8 @@ Version: 1.5.5
 Date: ???
   Changes:
     - New thumbnail
+  Compatibility:
+    - Players can no longer quick-toggle to enter a spidertron whilst jetpack is active
   Bugfixes:
     - Fixed 'Shift + Q' (Spidertron remote pipette) causing crash when in god mode
 ---------------------------------------------------------------------------------------------------
