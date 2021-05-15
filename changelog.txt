@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.6.1
+Date: 15 May 2021
+  Compatibility:
+    - Fixed crash when a Krastorio2 spidertron enters a vehicle if another mod (such as RSO) changed the mod load order
+---------------------------------------------------------------------------------------------------
 Version: 1.6.0
 Date: 10 May 2021
   Features:
@@ -13,7 +18,7 @@ Date: 10 May 2021
 Version: 1.5.4
 Date: 7 May 2021
   Compatibility:
-    - Fix crash in Spidertron Patrols v2.1.0
+    - Fixed crash in Spidertron Patrols v2.1.0
 ---------------------------------------------------------------------------------------------------
 Version: 1.5.3
 Date: 7 May 2021

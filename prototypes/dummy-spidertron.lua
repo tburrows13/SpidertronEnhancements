@@ -1,3 +1,5 @@
+-- Gets run from data, data-updates, and data-final-fixes to ensure that the dummy spidertrons are always copied from the correct spidertron prototype
+
 local sprite_fields = {
   "upper_part",
   "lower_part",
