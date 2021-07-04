@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.6.2
+Date: 4 July 2021
+  Compatibility:
+    - Allow Alt + Click pathfinder mode to work with spidertron remotes from other mods (e.g. Spidertron control center)
+---------------------------------------------------------------------------------------------------
 Version: 1.6.1
 Date: 15 May 2021
   Compatibility:
