@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.7.0
+Date: ???
+  Features:
+    - 'Shift + Q' (Spidertron remote pipette) can optionally create a temporary remote instead of picking one from the player's inventory (disabled by default)
+---------------------------------------------------------------------------------------------------
 Version: 1.6.2
 Date: 4 July 2021
   Compatibility:

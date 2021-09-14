@@ -50,6 +50,13 @@ data:extend({
     },
     {
         type = "bool-setting",
+        name = "spidertron-enhancements-pipette-temporary-remote",
+        setting_type = "runtime-global",
+        default_value = false,
+        order = "d"
+    },
+    {
+        type = "bool-setting",
         name = "spidertron-enhancements-enable-corpse",
         setting_type = "startup",
         default_value = true,
