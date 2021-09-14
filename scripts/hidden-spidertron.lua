@@ -255,7 +255,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     if not player.driving and serialised_data then
 
       -- If player is in a Jetpack then don't do anything
-      if remote.interfaces["jetpack"] then
+      if remote.interfaces["jetpack"] and player.character then
         if remote.call("jetpack", "get_jetpacks", {surface_index = player.surface.index})[player.character.unit_number] then
           return
         end
