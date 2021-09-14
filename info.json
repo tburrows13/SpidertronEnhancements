@@ -1,6 +1,6 @@
 {
     "name": "SpidertronEnhancements",
-    "version": "1.6.2",
+    "version": "1.7.0",
     "title": "Spidertron Enhancements",
     "author": "Xorimuth",
     "description": "Some simple features to make your life easier whilst using a spidertron:\n - Enter a vehicle without leaving your spidertron\n - Quickly toggle between engineer and spidertron\n - Use spidertron remote pathfinder to navigate around lakes\n - Automatically sort spidertron inventories\n - Pipette remotes from inventory by hovering over spidertrons\n - Directly open the inventory of a vehicle that you are currently driving",

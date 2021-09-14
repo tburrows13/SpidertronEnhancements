@@ -1,9 +1,11 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.7.0
-Date: ???
+Date: 14 September 2021
   Features:
     - 'Shift + Q' (Spidertron remote pipette) can optionally create a temporary remote instead of picking one from the player's inventory (disabled by default)
-    - Added setting that configures which vehicles a spidertron can enter (None, Trains only, All except spidertrons (default), All)
+    - Added setting that configures which vehicles a spidertron can enter: None, Trains only, All except spidertrons (default), All
+  Locale:
+    - Added some Brazilian Portuguese translations (thanks Bruno Melo!)
   Bugfixes:
     - Fixed possible crash when playing with Space Exploration and pressing 'U' whilst Navigation Satellite Uplink is open
 ---------------------------------------------------------------------------------------------------
