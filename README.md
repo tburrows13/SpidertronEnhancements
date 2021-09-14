@@ -4,7 +4,7 @@ Some simple features to make your life easier whilst using a spidertron. All fea
 
 ### Enter vehicles from spidertron
 
-Press `Enter` near a vehicle whilst riding a spidertron to enter the vehicle.
+Press `Enter` near a vehicle whilst riding a spidertron to enter the vehicle. Configure which vehicles can be entered in settings.
 
 ![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/onto-train.gif)
 

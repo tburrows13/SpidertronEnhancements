@@ -1,5 +1,4 @@
 local util = require("__core__/lualib/util")
-drivable_types = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon", "car", "spider-vehicle"}
 
 -- Intended for SpidertronEngineer compatibility but not used because
 -- SpidertronEngineer turns off all of the following features instead
@@ -8,6 +7,19 @@ drivable_types = {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon",
   {is_spidertron_in_vehicle = function(player_index) return global.stored_spidertrons[player_index] ~= nil end}
 )
 ]]
+
+local function filtered_drivable_types()
+  allowed_entities_setting = settings.global["spidertron-enhancements-enter-entity"].value
+  if allowed_entities_setting == "all-except-spidertrons" then  -- Default path
+    return {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon", "car"}
+  elseif allowed_entities_setting == "trains" then
+    return {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon"}
+  elseif allowed_entities_setting == "all" then
+    return {"locomotive", "cargo-wagon", "fluid-wagon", "artillery-wagon", "car", "spider-vehicle"}
+  else
+    return {}
+  end
+end
 
 local function play_smoke(surface, positions)
   for _ = 1, 6 do
@@ -57,7 +69,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
 
   for radius=1, 5 do
     local nearby_entities
-    nearby_entities = player.surface.find_entities_filtered{position = spidertron.position, radius = radius, type = drivable_types}
+    nearby_entities = player.surface.find_entities_filtered{position = spidertron.position, radius = radius, type = filtered_drivable_types()}
     if nearby_entities and #nearby_entities >= 1 then
       for _, entity_to_drive in pairs(nearby_entities) do
         if entity_to_drive ~= spidertron and not entity_to_drive.get_driver() and entity_to_drive.prototype.allow_passengers and spidertron.minable and spidertron.prototype.mineable_properties.minable then
@@ -216,7 +228,7 @@ script.on_event("spidertron-enhancements-toggle-driving",
 
     if vehicle_from and vehicle_from.type == "spider-vehicle" then
       local driver = vehicle_from.get_driver()
-      if driver and driver.object_name == "LuaEntity" and driver.player == player and settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-base-game"].value then
+      if driver and driver.object_name == "LuaEntity" and driver.player == player and settings.global["spidertron-enhancements-enter-entity"].value ~= "none" and player.mod_settings["spidertron-enhancements-enter-entity-base-game"].value then
         -- render_mode is proxy for LuaPlayer (vs character). If vehicle_from has a driver then we were the passenger so we don't want to enter_nearby_entity
         enter_nearby_entity(player, vehicle_from, true)
       end
@@ -227,7 +239,7 @@ end
 local function enter_vehicles_pressed(player, force_enter_entity)
   -- Entering a nearby vehicle has priority
 
-  if settings.global["spidertron-enhancements-enter-entity"].value and player.mod_settings["spidertron-enhancements-enter-entity-custom"].value or force_enter_entity then
+  if settings.global["spidertron-enhancements-enter-entity"].value ~= "none" and player.mod_settings["spidertron-enhancements-enter-entity-custom"].value or force_enter_entity then
     -- Off by default
     local serialised_data = global.stored_spidertrons[player.index]
     if player.driving and serialised_data then
