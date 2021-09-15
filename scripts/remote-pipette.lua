@@ -2,8 +2,7 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
   function(event)
     local player = game.get_player(event.player_index)
     if player then
-      local cursor_stack = player.cursor_stack
-      if cursor_stack and cursor_stack.valid_for_read then
+      if not player.is_cursor_empty() then
         player.clear_cursor()
         return
       end
