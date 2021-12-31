@@ -1,7 +1,10 @@
 ---------------------------------------------------------------------------------------------------
-Version: 1.7.1
-Date: ???
+Version: 1.8.0
+Date: 31 December 2021
+  Features:
+    - Added option to increase spidertron's size (disabled by default)
   Bugfixes:
+    - Fixed incorrect lighting in Spidertron Patrol's spiderling
     - Fixed cursor not being cleared when using the remote pipette whilst holding a library blueprint
 ---------------------------------------------------------------------------------------------------
 Version: 1.7.0

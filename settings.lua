@@ -64,12 +64,19 @@ data:extend({
         order = "a"
     },
     {
+        type = "bool-setting",
+        name = "spidertron-enhancements-increase-size",
+        setting_type = "startup",
+        default_value = false,
+        order = "b",
+    },
+    {
         type = "double-setting",
         name = "spidertron-enhancements-sound-pause",
         setting_type = "startup",
         default_value = 0,
         minimum_value = 0,
-        order = "b",
+        order = "c",
     },
     {
         type = "double-setting",
@@ -77,7 +84,7 @@ data:extend({
         setting_type = "startup",
         default_value = 1,
         minimum_value = 0,
-        order = "c",
+        order = "d",
     }
 })
 

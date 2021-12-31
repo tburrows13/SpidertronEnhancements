@@ -1,3 +1,4 @@
+require "prototypes.spidertron-scale"
 require "prototypes.spidertron-remote"
 require "prototypes.spidertron-transitions"
 require "prototypes.simulations"
