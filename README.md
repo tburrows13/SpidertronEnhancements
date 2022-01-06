@@ -46,9 +46,12 @@ Spidertron inventories are saved into a corpse instead of being lost when it die
 
 ![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/corpse.png)
 
+### Increase spidertron size
+Spidertron size can be increased in settings. Default size is unchanged from vanilla.
+
 ### Configure spidertron sounds
 
-Spidertron volume and sound play frequency can be changed in settings. Default values are the same as when playing without this mod. Affects modded spidertrons as well.
+Spidertron volume and sound play frequency can be changed in settings. Default values are unchanged from vanilla. Affects modded spidertrons as well.
 
 ---
 ## Known Bugs / Limitations
