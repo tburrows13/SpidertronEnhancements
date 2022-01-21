@@ -9,6 +9,16 @@ local function request_path(spidertron, start_position, target_position, resolut
     table.insert(path_collision_mask, collision_mask_util_extended.get_named_collision_mask("empty-space-tile"))
   end
 
+  --[[
+  -- Useful if we want them to pathfind around buildings, but too slow, unreliable, and travels around walls!
+  local leg = spidertron.get_spider_legs()[index]
+  local path_collision_mask = leg.prototype.collision_mask
+  -- We never want them to avoid rails
+  path_collision_mask["rail-layer"] = nil
+  path_collision_mask["colliding-with-tiles-only"] = true
+  path_collision_mask["consider-tile-transitions"] = true
+  ]]
+
   local request_id = spidertron.surface.request_path{
     bounding_box = {{-0.01, -0.01}, {0.01, 0.01}},
     collision_mask = path_collision_mask,
@@ -18,7 +28,8 @@ local function request_path(spidertron, start_position, target_position, resolut
     path_resolution_modifier = resolution,
     pathfind_flags = {prefer_straight_paths = false,
                       cache = false,
-                      low_priority = false}
+                      low_priority = false},
+    --entity_to_ignore = leg, -- not needed when only considering tiles
   }
   global.pathfinder_requests[request_id] = {
     spidertron = spidertron,
@@ -32,12 +43,10 @@ local function request_path(spidertron, start_position, target_position, resolut
 end
 
 local function request_multiple_paths(spidertron, target_position, resolution, player)
-  if util.distance(spidertron.position, target_position) < 15 then
+  if util.distance(spidertron.position, target_position) < 10 then
     spidertron.autopilot_destination = target_position
     return
   end
-
-  local start_positions = {}
 
   -- Start paths from legs, at least some of which will be on valid ground
   for i, spidertron_leg in pairs(spidertron.get_spider_legs()) do
@@ -59,19 +68,20 @@ local function request_multiple_paths(spidertron, target_position, resolution, p
 end
 
 script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
-    function(event)
-      local player = game.get_player(event.player_index)
-      if player then
-        local cursor_item = player.cursor_stack
-        if cursor_item and cursor_item.valid_for_read and (cursor_item.type == "spidertron-remote" and cursor_item.name ~= "sp-spidertron-patrol-remote") then
-          local spidertron = cursor_item.connected_entity
-          if spidertron then
-            spidertron.autopilot_destination = nil
-            request_multiple_paths(spidertron, event.cursor_position or event.position, -3, player)
-          end
+  function(event)
+    local player = game.get_player(event.player_index)
+    if player then
+      local cursor_item = player.cursor_stack
+      if cursor_item and cursor_item.valid_for_read and (cursor_item.type == "spidertron-remote" and cursor_item.name ~= "sp-spidertron-patrol-remote") then
+        local spidertron = cursor_item.connected_entity
+        if spidertron then
+          local target_position = event.cursor_position
+          spidertron.autopilot_destination = target_position
+          request_multiple_paths(spidertron, target_position, -3, player)
         end
       end
     end
+  end
 )
 
 script.on_event(defines.events.on_script_path_request_finished,
@@ -107,7 +117,6 @@ script.on_event(defines.events.on_script_path_request_finished,
         elseif not event.path then
           -- No path found. Try again at a larger resolution
           --game.print(event.id .. " - No path found at resolution " .. resolution)
-          spidertron.autopilot_destination = target_position
           if resolution < 3 then
             -- Retry with larger resolution
             request_path(spidertron, start_position, target_position, resolution + 2, player, start_tick, index)
@@ -116,20 +125,38 @@ script.on_event(defines.events.on_script_path_request_finished,
           end
           if status_table.finished == number_of_legs then
             -- All pathfinders have failed
+            spidertron.autopilot_destination = target_position
+
             player.create_local_flying_text{text = {"no-path"}, create_at_cursor = true}
           end
         else
           -- game.print(event.id .. " - Path found at resolution " .. resolution)
           spidertron.autopilot_destination = nil
+          local last_position = spidertron.position
+
+          --local distance_to_previous_waypoint = util.distance(last_position, event.path[1])
           event.path[1] = nil
           event.path[#event.path] = nil
-          local last_position = spidertron.position
-          for _, waypoint in pairs(event.path) do
+
+          -- Start at nearest waypoint, as path could be out of date
+          local min_distance = 1000000
+          local min_i = nil
+          for i, waypoint in pairs(event.path) do
             local position = waypoint.position
-            if util.distance(last_position, position) > 15 then
-              -- Each waypoint will be at least x apart from each other
-              spidertron.add_autopilot_destination(position)
-              last_position = position
+            local distance = util.distance(last_position, position)
+            if distance < min_distance then
+              min_distance = distance
+              min_i = i
+            end
+          end
+          for i, waypoint in pairs(event.path) do
+            if i >= min_i then
+              local position = waypoint.position
+              if util.distance(last_position, position) > 15 then
+                -- Each waypoint will be at least x apart from each other
+                spidertron.add_autopilot_destination(position)
+                last_position = position
+              end
             end
           end
           spidertron.add_autopilot_destination(target_position)
