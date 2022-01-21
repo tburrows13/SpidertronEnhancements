@@ -39,16 +39,8 @@ local function request_multiple_paths(spidertron, target_position, resolution, p
 
   local start_positions = {}
 
-  -- Try multiple positions because the spidertron might be above water when we start
-  local spidertron_position = spidertron.position
-  local x, y = spidertron_position.x, spidertron_position.y
-  for i = -1, 1 do
-    for j = -1, 1 do
-      table.insert(start_positions, {x = x + i * 10, y = y + j * 10})
-    end
-  end
-
-  for i, start_position in pairs(start_positions) do
+  -- Start paths from legs, at least some of which will be on valid ground
+  for i, spidertron_leg in pairs(spidertron.get_spider_legs()) do
     --[[
     rendering.draw_circle{color = {r = 0.5, g = 0, b = 0, a = 0.9},
       radius = 0.4,
@@ -59,7 +51,7 @@ local function request_multiple_paths(spidertron, target_position, resolution, p
     }
     ]]
 
-    request_path(spidertron, start_position, target_position, resolution, player, game.tick, i)
+    request_path(spidertron, spidertron_leg.position, target_position, resolution, player, game.tick, i)
   end
 
   global.pathfinder_statuses[spidertron.unit_number] = global.pathfinder_statuses[spidertron.unit_number] or {}
@@ -87,6 +79,7 @@ script.on_event(defines.events.on_script_path_request_finished,
     local request_info = global.pathfinder_requests[event.id]
     if request_info then
       local spidertron = request_info.spidertron
+      local number_of_legs = #spidertron.get_spider_legs()
       local player = request_info.player
       if spidertron.valid and player.valid then
         local start_position = request_info.start_position
@@ -121,8 +114,8 @@ script.on_event(defines.events.on_script_path_request_finished,
           else
             status_table.finished = status_table.finished + 1
           end
-          if status_table.finished == 9 then
-            -- All 9 pathfinders have failed
+          if status_table.finished == number_of_legs then
+            -- All pathfinders have failed
             player.create_local_flying_text{text = {"no-path"}, create_at_cursor = true}
           end
         else
@@ -134,7 +127,7 @@ script.on_event(defines.events.on_script_path_request_finished,
           for _, waypoint in pairs(event.path) do
             local position = waypoint.position
             if util.distance(last_position, position) > 15 then
-              -- Each waypoint will be at least 25 apart from each other
+              -- Each waypoint will be at least x apart from each other
               spidertron.add_autopilot_destination(position)
               last_position = position
             end
@@ -148,7 +141,7 @@ script.on_event(defines.events.on_script_path_request_finished,
           status_table.success = true
         end
 
-        if status_table.finished == 9 then
+        if status_table.finished == number_of_legs then
           global.pathfinder_statuses[spidertron.unit_number][start_tick] = nil
         end
 

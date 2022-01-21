@@ -2,7 +2,8 @@
 Version: 1.8.1
 Date: ???
   Features:
-    - Spidertron pathfinder now navigates around empty space
+    - Spidertron pathfinder now navigates around Space Exploration's empty space
+    - Made pathfinder more reliable
 ---------------------------------------------------------------------------------------------------
 Version: 1.8.0
 Date: 31 December 2021
