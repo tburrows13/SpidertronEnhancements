@@ -48,19 +48,11 @@ local function request_multiple_paths(spidertron, target_position, resolution, p
     return
   end
 
-  -- Start paths from legs, at least some of which will be on valid ground
+  -- Start paths from odd-numbered legs, at least some of which will be on valid ground
   for i, spidertron_leg in pairs(spidertron.get_spider_legs()) do
-    --[[
-    rendering.draw_circle{color = {r = 0.5, g = 0, b = 0, a = 0.9},
-      radius = 0.4,
-      filled = true,
-      surface = spidertron.surface,
-      target = start_position,
-      time_to_live = 300
-    }
-    ]]
-
-    request_path(spidertron, spidertron_leg.position, target_position, resolution, player, game.tick, i)
+    if (i % 2 == 1) then
+      request_path(spidertron, spidertron_leg.position, target_position, resolution, player, game.tick, i)
+    end
   end
 
   global.pathfinder_statuses[spidertron.unit_number] = global.pathfinder_statuses[spidertron.unit_number] or {}
@@ -89,7 +81,8 @@ script.on_event(defines.events.on_script_path_request_finished,
     local request_info = global.pathfinder_requests[event.id]
     if request_info then
       local spidertron = request_info.spidertron
-      local number_of_legs = #spidertron.get_spider_legs()
+      local total_legs = #spidertron.get_spider_legs()
+      local total_path_requests = math.floor(total_legs / 2) + (total_legs % 2)
       local player = request_info.player
       if spidertron.valid and player.valid then
         local start_position = request_info.start_position
@@ -123,7 +116,7 @@ script.on_event(defines.events.on_script_path_request_finished,
           else
             status_table.finished = status_table.finished + 1
           end
-          if status_table.finished == number_of_legs then
+          if status_table.finished == total_path_requests then
             -- All pathfinders have failed
             spidertron.autopilot_destination = target_position
 
@@ -150,7 +143,7 @@ script.on_event(defines.events.on_script_path_request_finished,
             end
           end
           for i, waypoint in pairs(event.path) do
-            if i >= min_i then
+            if i >= min_i + 1 then
               local position = waypoint.position
               if util.distance(last_position, position) > 15 then
                 -- Each waypoint will be at least x apart from each other
@@ -168,7 +161,7 @@ script.on_event(defines.events.on_script_path_request_finished,
           status_table.success = true
         end
 
-        if status_table.finished == number_of_legs then
+        if status_table.finished == total_path_requests then
           global.pathfinder_statuses[spidertron.unit_number][start_tick] = nil
         end
 
