@@ -9,6 +9,8 @@ Version: 1.8.0
 Date: 31 December 2021
   Features:
     - Added option to increase spidertron's size (disabled by default)
+  Locale:
+    - Added some German translations (thanks Linebeck on Crowdin!)
   Bugfixes:
     - Fixed incorrect lighting in Spidertron Patrol's spiderling
     - Fixed cursor not being cleared when using the remote pipette whilst holding a library blueprint
@@ -19,7 +21,7 @@ Date: 14 September 2021
     - 'Shift + Q' (Spidertron remote pipette) can optionally create a temporary remote instead of picking one from the player's inventory (disabled by default)
     - Added setting that configures which vehicles a spidertron can enter: None, Trains only, All except spidertrons (default), All
   Locale:
-    - Added some Brazilian Portuguese translations (thanks Bruno Melo!)
+    - Added some Brazilian Portuguese translations (thanks Bruno Melo on Crowdin!)
   Bugfixes:
     - Fixed possible crash when playing with Space Exploration and pressing 'U' whilst Navigation Satellite Uplink is open
 ---------------------------------------------------------------------------------------------------
