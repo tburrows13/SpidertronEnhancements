@@ -1,8 +1,17 @@
+if script.active_mods["space-exploration"] then
+  collision_mask_util_extended = require("__space-exploration__/collision-mask-util-extended/control/collision-mask-util-control")
+end
+
 local function request_path(spidertron, start_position, target_position, resolution, player, start_tick, index)
+  local path_collision_mask = {"water-tile", "colliding-with-tiles-only", "consider-tile-transitions"}
+  if collision_mask_util_extended then
+    log(collision_mask_util_extended.get_named_collision_mask("empty-space-tile"))
+    table.insert(path_collision_mask, collision_mask_util_extended.get_named_collision_mask("empty-space-tile"))
+  end
 
   local request_id = spidertron.surface.request_path{
     bounding_box = {{-0.01, -0.01}, {0.01, 0.01}},
-    collision_mask = {"water-tile", "colliding-with-tiles-only", "consider-tile-transitions"},
+    collision_mask = path_collision_mask,
     start = {x = start_position.x, y = start_position.y},
     goal = target_position,
     force = spidertron.force,
@@ -124,7 +133,7 @@ script.on_event(defines.events.on_script_path_request_finished,
           local last_position = spidertron.position
           for _, waypoint in pairs(event.path) do
             local position = waypoint.position
-            if util.distance(last_position, position) > 25 then
+            if util.distance(last_position, position) > 15 then
               -- Each waypoint will be at least 25 apart from each other
               spidertron.add_autopilot_destination(position)
               last_position = position
