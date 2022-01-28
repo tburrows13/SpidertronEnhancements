@@ -69,5 +69,17 @@ script.on_configuration_changed(
     global.paths_assigned_on_tick = nil  -- Removed in v1.4.3
 
     global.reach_distance_bonuses = global.reach_distance_bonuses or {}  -- Added in 1.5.0
+
+    -- Remove now-invalid spidertron prototypes
+    for i, serialised_data in pairs(global.stored_spidertrons_personal) do
+      if not game.entity_prototypes[serialised_data.name] then
+        global.stored_spidertrons_personal[i] = nil
+      end
+    end
+    for i, serialised_data in pairs(global.stored_spidertrons) do
+      if not (serialised_data.name and game.entity_prototypes[serialised_data.name]) then
+        global.stored_spidertrons[i] = nil
+      end
+    end
   end
 )
