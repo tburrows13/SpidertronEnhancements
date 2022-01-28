@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.8.2
 Date: 28 January 2022
+  Minor Features:
+    - Added "Player already contains a spidertron" warning when trying to quick-toggle a second spidertron
   Bugfixes:
     - Fixed crash when quick-toggling into a spidertron type that no longer exists (due to mods being changed or unloaded)
 ---------------------------------------------------------------------------------------------------
