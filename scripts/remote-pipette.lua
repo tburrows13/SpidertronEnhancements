@@ -4,6 +4,7 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
     if player then
       if not player.is_cursor_empty() then
         player.clear_cursor()
+        player.play_sound{path = "utility/clear_cursor"}
         return
       end
 
@@ -15,7 +16,6 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
 
       if spidertron and spidertron.type == "spider-vehicle" then
         if settings.global["spidertron-enhancements-pipette-temporary-remote"].value then
-          player.clear_cursor()
           local cursor = player.cursor_stack
           cursor.set_stack("spidertron-enhancements-temporary-spidertron-remote")
           cursor.connected_entity = spidertron
@@ -52,7 +52,6 @@ script.on_event("spidertron-enhancements-spidertron-pipette",
             end
           end
           if remote then
-            player.clear_cursor()
             player.cursor_stack.transfer_stack(remote)
             player.hand_location = {inventory = inventory.index, slot = index}
             player.play_sound{path = "utility/smart_pipette"}
