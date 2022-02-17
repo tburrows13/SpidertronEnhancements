@@ -178,7 +178,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     dummy_spidertron.destroy()
   end
 
-  serialised_data.driver = player.character
+  serialised_data.driver = player.character or player  -- player does not contain a character when in a simulation
   serialised_data.passenger = nil
   serialised_data.walking_state = player.walking_state
   serialised_data.players_with_gui_open = nil

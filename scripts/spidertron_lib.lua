@@ -370,7 +370,8 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
     end
 
     local walking_state = serialised_data.walking_state
-    if driver and driver.valid and walking_state then
+    if driver and driver.valid and driver.object_name == "LuaEntity" and walking_state then
+      -- driver is a LuaPlayer in simulations
       driver.player.walking_state = walking_state
     end
 

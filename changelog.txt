@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.3
+Date: 17 February 2022
+  Bugfixes:
+    - Fixed 'Tips & Tricks' simulation (requires 'Simulation Helper' mod to view)
+  Locale:
+    - Added complete Russian translations (thanks SeptiSe7en on Crowdin!)
+---------------------------------------------------------------------------------------------------
 Version: 1.8.2
 Date: 28 January 2022
   Minor Features:
