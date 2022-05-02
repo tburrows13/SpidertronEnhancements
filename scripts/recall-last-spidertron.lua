@@ -108,3 +108,18 @@ script.on_event(defines.events.on_lua_shortcut,
     end
   end
 )
+
+local function on_init()
+  for _, player in pairs(game.players) do
+    player.set_shortcut_available(SHORTCUT_NAME, false)
+  end
+end
+
+script.on_event(defines.events.on_player_created,
+  function(event)
+    local player = game.get_player(event.player_index)
+    player.set_shortcut_available(SHORTCUT_NAME, false)
+  end
+)
+
+return {on_init = on_init}

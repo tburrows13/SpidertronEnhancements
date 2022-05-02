@@ -14,7 +14,7 @@ require "scripts.disconnect-remote"
 require "scripts.remote-pipette"
 require "scripts.open-inventory"
 require "scripts.pathfinder"
-require "scripts.recall-last-spidertron"
+local recall_spidertron = require "scripts.recall-last-spidertron"
 
 on_spidertron_replaced = script.generate_event_name()
 on_player_disconnected_spider_remote = script.generate_event_name()
@@ -50,6 +50,8 @@ script.on_init(
     global.vehicle_to_enter_this_tick = {}  -- Indexed by game.tick
 
     global.reach_distance_bonuses = {}  -- Indexed by player.index
+
+    recall_spidertron.on_init()
   end
 )
 
