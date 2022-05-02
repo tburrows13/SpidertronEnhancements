@@ -265,16 +265,14 @@ local function enter_vehicles_pressed(player, force_enter_entity)
 
     local serialised_data = global.stored_spidertrons_personal[player.index]
     if not player.driving and serialised_data then
-
-      -- If player is in a Jetpack then don't do anything
-      if remote.interfaces["jetpack"] and player.character then
-        if remote.call("jetpack", "get_jetpacks", {surface_index = player.surface.index})[player.character.unit_number] then
-          return
+      if player.character then
+        -- Ensures player is not in editor mode or Space Exploration star map
+        if not (remote.interfaces["jetpack"] and remote.call("jetpack", "get_jetpacks", {surface_index = player.surface.index})[player.character.unit_number]) then
+          -- Ensures player isn't in Jetpack
+          enter_spidertron(player, serialised_data)
+          global.stored_spidertrons_personal[player.index] = nil
         end
       end
-      enter_spidertron(player, serialised_data)
-      global.stored_spidertrons_personal[player.index] = nil
-
       return
     end
 
@@ -296,7 +294,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
           serialised_data.passenger = nil
 
           local surface = player.surface
-          local teleport_position = surface.find_non_colliding_position(player.character.name, spidertron.position, 0, 0.1)
+          local teleport_position = surface.find_non_colliding_position(player.character.name, spidertron.position, 0, 0.1, true)
           if teleport_position then
             --script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron})
             play_smoke(surface, {spidertron.position})
