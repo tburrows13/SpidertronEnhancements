@@ -1,5 +1,4 @@
 require "prototypes.spidertron-scale"
-require "prototypes.spidertron-remote"
 require "prototypes.spidertron-transitions"
 require "prototypes.simulations"
 require "prototypes.shortcuts"
@@ -22,6 +21,14 @@ local spidertron_pipette = {
   type = "custom-input",
   name = "spidertron-enhancements-spidertron-pipette",
   key_sequence = "SHIFT + Q",
+  order = "a-a",
+}
+
+local spidertron_patrol_pipette = {
+  type = "custom-input",
+  name = "spidertron-enhancements-spidertron-patrol-pipette",
+  key_sequence = "CONTROL + SHIFT + Q",
+  order = "a-b",
 }
 
 local open_inventory = {
@@ -45,4 +52,4 @@ local disconnect_remote = {
   order = "ab"
 }
 
-data:extend{toggle_driving, direct_control, spidertron_pipette, open_inventory, use_remote, disconnect_remote}
+data:extend{toggle_driving, direct_control, spidertron_pipette, spidertron_patrol_pipette, open_inventory, use_remote, disconnect_remote}
