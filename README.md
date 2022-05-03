@@ -31,6 +31,8 @@ If you aren't hovering your cursor over a spidertron, it will pick a remote conn
 
 Alternatively, there is a **Map** setting that enables picking a temporary remote without requiring you to have any remotes in your inventory.
 
+When [Spidertron Patrols](https://mods.factorio.com/mod/SpidertronPatrols) is installed, press `Control + Shift + Q` to pipette a patrol remote.
+
 ### Open vehicle inventories directly
 
 Press `Shift + E` whilst holding a spidertron remote to open the inventory of the connected spidertron. If not holding a remote, it will open the inventory of the vehicle (not just a spidertron!) you are driving.

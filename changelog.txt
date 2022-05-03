@@ -1,8 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.8.4
-Date: ???
+Date: 3 May 2022
   Features:
-    - Added Spidertron patrol remote pipette to get a spidertron's patrol remote when Spidertron Patrols is installed ('Control + Shift + Q' by default)
+    - Added patrol remote pipette when Spidertron Patrols is installed ('Control + Shift + Q' by default)
   Bugfixes:
     - Fixed being able to toggle into a spidertron in editor mode or Space Exploration's star map
     - Fixed 'Call last used spidertron' shortcut being enabled before any interactions with spidertrons
