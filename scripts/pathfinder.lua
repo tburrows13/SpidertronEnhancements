@@ -93,10 +93,11 @@ script.on_event(defines.events.on_script_path_request_finished,
     local request_info = global.pathfinder_requests[event.id]
     if request_info then
       local spidertron = request_info.spidertron
-      local total_legs = #spidertron.get_spider_legs()
-      local total_path_requests = math.floor(total_legs / 2) + (total_legs % 2)
       local player = request_info.player
       if spidertron.valid and player.valid then
+        local total_legs = #spidertron.get_spider_legs()
+        local total_path_requests = math.floor(total_legs / 2) + (total_legs % 2)
+
         local start_position = request_info.start_position
         local target_position = request_info.target_position
         local clicked_position = request_info.clicked_position
