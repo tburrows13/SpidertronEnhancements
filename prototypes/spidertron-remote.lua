@@ -5,6 +5,7 @@ local function generate_temporary_remote(remote_name)
 
     temporary_remote.name = "spidertron-enhancements-temporary-" .. remote_name
     temporary_remote.localised_name = remote.localised_name or {"item-name." .. remote_name}
+    temporary_remote.order = remote.order .. "z"
 
     local flags = temporary_remote.flags
     if flags then
