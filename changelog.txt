@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.8.6
-Date: ???
+Date: 15 July 2022
   Bugfixes:
     - Spidertron corpses now keep the spidertron's color (thanks to PrestonLeeC for providing the solution!)
     - Fixed robots from Combat Robots Overhaul generating spidertron corpses on death
