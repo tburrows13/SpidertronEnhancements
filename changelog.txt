@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.6
+Date: ???
+  Bugfixes:
+    - Spidertron corpses now keep the spidertron's color (thanks to PrestonLeeC for providing the solution!)
+---------------------------------------------------------------------------------------------------
 Version: 1.8.5
 Date: 17 May 2022
   Bugfixes:

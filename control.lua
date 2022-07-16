@@ -9,7 +9,7 @@ end
 spidertron_lib = require "scripts.spidertron_lib"
 require "scripts.hidden-spidertron"
 require "scripts.auto-sort"
-require "scripts.create-corpse"
+local create_corpse = require "scripts.create-corpse"
 require "scripts.disconnect-remote"
 require "scripts.remote-pipette"
 require "scripts.open-inventory"
@@ -36,6 +36,13 @@ script.on_event(defines.events.on_gui_opened,
   end
 )
 
+script.on_event(defines.events.on_entity_destroyed,
+  function(event)
+    recall_spidertron.on_entity_destroyed(event)
+    create_corpse.on_entity_destroyed(event)
+  end
+)
+
 script.on_init(
   function()
     global.stored_spidertrons = {}  -- Indexed by player.index
@@ -46,6 +53,7 @@ script.on_init(
 
     global.last_spidertron = {}  -- Indexed by player.index
     global.destroy_registrations = {}  -- Indexed by registration number
+    global.corpse_destroy_registrations = {}  -- Indexed by registration number
 
     global.vehicle_to_enter_this_tick = {}  -- Indexed by game.tick
 
@@ -64,6 +72,7 @@ script.on_configuration_changed(
     -- Added in 1.4.0
     global.last_spidertron = global.last_spidertron or {}
     global.destroy_registrations = global.destroy_registrations or {}
+    global.corpse_destroy_registrations = global.corpse_destroy_registrations or {}
 
     global.vehicle_to_enter_this_tick = global.vehicle_to_enter_this_tick or {}
     global.player_last_driving_change_tick = nil  -- Removed in v1.4.0

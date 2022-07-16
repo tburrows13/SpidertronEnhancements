@@ -46,24 +46,21 @@ script.on_event(defines.events.on_player_used_spider_remote,
   end
 )
 
-script.on_event(defines.events.on_entity_destroyed,
-  function(event)
-    local player_index = global.destroy_registrations[event.registration_number]
-    if player_index then
-      local player = game.get_player(player_index)
-      if player then
-        local spidertron = global.last_spidertron[player.index]
-        if not (spidertron and spidertron.valid) then
-          player.set_shortcut_toggled(SHORTCUT_NAME, false)
-          player.set_shortcut_available(SHORTCUT_NAME, false)
-          global.last_spidertron[player.index] = nil
-        end
+local function on_entity_destroyed(event)
+  local player_index = global.destroy_registrations[event.registration_number]
+  if player_index then
+    local player = game.get_player(player_index)
+    if player then
+      local spidertron = global.last_spidertron[player.index]
+      if not (spidertron and spidertron.valid) then
+        player.set_shortcut_toggled(SHORTCUT_NAME, false)
+        player.set_shortcut_available(SHORTCUT_NAME, false)
+        global.last_spidertron[player.index] = nil
       end
     end
-
     global.destroy_registrations[event.registration_number] = nil
   end
-)
+end
 
 local function on_shortcut_pressed(event)
   local player = game.get_player(event.player_index)
@@ -122,4 +119,4 @@ script.on_event(defines.events.on_player_created,
   end
 )
 
-return {on_init = on_init}
+return {on_init = on_init, on_entity_destroyed = on_entity_destroyed}
