@@ -1,3 +1,9 @@
+local corpse_blacklist = {
+  ["companion"] = true,
+  ["defender-unit"] = true,
+  ["destroyer-unit"] = true,
+}
+
 local function store_inventory(inventory, inventory_stacks)
   if inventory then
     for i = 1, #inventory do
@@ -11,7 +17,7 @@ end
 
 -- Kill player upon spidertron death
 function on_spidertron_died(spidertron)
-  if spidertron and spidertron.valid and spidertron.name ~= "companion" then
+  if spidertron and spidertron.valid and not corpse_blacklist[spidertron.name] then
     -- Spill all spidertron items onto the ground
     local inventory_stacks = {}
 
