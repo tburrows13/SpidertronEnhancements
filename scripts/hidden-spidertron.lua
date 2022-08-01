@@ -294,7 +294,8 @@ local function enter_vehicles_pressed(player, force_enter_entity)
           serialised_data.passenger = nil
 
           local surface = player.surface
-          local teleport_position = surface.find_non_colliding_position(player.character.name, spidertron.position, 0, 0.1, true)
+          driver = player.character or player  -- Simulation shenanigans
+          local teleport_position = surface.find_non_colliding_position(driver.name, spidertron.position, 0, 0.1, true)
           if teleport_position then
             --script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron})
             play_smoke(surface, {spidertron.position})
