@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.7
+Date: 2 August 2022
+  Features:
+    - Added three more Tips & Tricks simulations
+    - Simulation Helper is now a required dependency
+---------------------------------------------------------------------------------------------------
 Version: 1.8.6
 Date: 15 July 2022
   Bugfixes:
