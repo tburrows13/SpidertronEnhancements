@@ -317,7 +317,7 @@ script.on_event("spidertron-enhancements-enter-vehicles",
   end
 )
 
-remote.add_interface("SpidertronEnhancementsInternal",
+remote.add_interface("SpidertronEnhancementsInternal-hs",
   {["enter-vehicles"] = function(player) enter_vehicles_pressed(player, true) return player.vehicle end}
 )
 

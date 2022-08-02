@@ -88,6 +88,10 @@ script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
   end
 )
 
+remote.add_interface("SpidertronEnhancementsInternal-pf",
+  {["use-remote"] = function(spidertron, position) request_multiple_paths(spidertron, position, -1, {valid = true}) end}
+)
+
 script.on_event(defines.events.on_script_path_request_finished,
   function(event)
     local request_info = global.pathfinder_requests[event.id]

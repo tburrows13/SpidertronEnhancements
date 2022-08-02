@@ -1,6 +1,17 @@
 if mods["simhelper"] and not mods["SpidertronEngineer"] then
   local func_capture = require("__simhelper__.funccapture")
 
+  local function fill_tiles(left_top, right_bottom, tile)
+    local tiles = {}
+    for i = left_top[1], right_bottom[1] do
+      for j = left_top[2], right_bottom[2] do
+        table.insert(tiles, {position = {i, j}, name = tile})
+      end
+    end
+    game.surfaces[1].set_tiles(tiles)
+
+  end
+
   data:extend{
     {
       type = "tips-and-tricks-item",
@@ -14,7 +25,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
     {
       type = "tips-and-tricks-item",
       name = "spidertron-enhancements-enter-train",
-      tag = "[entity=spidertron]",
+      tag = "[entity=spidertron][entity=locomotive][entity=car]",
       category = "spidertron-enhancements",
       indent = 1,
       order = "zza",
@@ -47,7 +58,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
             function(event)
               script.on_nth_tick(120,
                 function()
-                  remote.call("SpidertronEnhancementsInternal", "enter-vehicles", player)
+                  remote.call("SpidertronEnhancementsInternal-hs", "enter-vehicles", player)
                   train.manual_mode = false
                   script.on_nth_tick(120, nil)
                 end
@@ -65,7 +76,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
                   locomotive.insert{name = "solid-fuel", count = 150}
                   script.on_nth_tick(120,
                     function()
-                      remote.call("SpidertronEnhancementsInternal", "enter-vehicles", player)
+                      remote.call("SpidertronEnhancementsInternal-hs", "enter-vehicles", player)
                       train.manual_mode = false
                       script.on_nth_tick(120, nil)
                     end
@@ -74,7 +85,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
                 elseif train.station.backer_name == "Destination" then
                   script.on_nth_tick(60,
                   function()
-                    spidertron = remote.call("SpidertronEnhancementsInternal", "enter-vehicles", player)
+                    spidertron = remote.call("SpidertronEnhancementsInternal-hs", "enter-vehicles", player)
                     spidertron.autopilot_destination = train_location
                     script.on_nth_tick(60, nil)
                   end
@@ -90,7 +101,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
     {
       type = "tips-and-tricks-item",
       name = "spidertron-enhancements-quick-toggle",
-      tag = "[entity=spidertron]",
+      tag = "[entity=spidertron][entity=character]",
       category = "spidertron-enhancements",
       indent = 1,
       order = "zzb",
@@ -98,7 +109,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
       simulation = {
         save = "__SpidertronEnhancements__/simulations/SpidertronEnhancementsSim.zip",
         init = func_capture.capture(function()
-          local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-0.5, 1}, force = "player"}
+          local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-0.5, 1.5}, force = "player"}
           spidertron.color = {0, 0.4, 1, 0.5}
           --spidertron.torso_orientation = 0.4
           local player = game.create_test_player{name = "character"}
@@ -111,9 +122,86 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
 
           script.on_nth_tick(120, function(event)
             if event.tick ~= 0 then
-              spidertron = remote.call("SpidertronEnhancementsInternal", "enter-vehicles", player)
+              remote.call("SpidertronEnhancementsInternal-hs", "enter-vehicles", player)
             end
           end)
+        end)
+      }
+    },
+    {
+      type = "tips-and-tricks-item",
+      name = "spidertron-enhancements-pathfinder",
+      tag = "[item=spidertron-remote]",
+      category = "spidertron-enhancements",
+      indent = 1,
+      order = "zzc",
+      trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
+      simulation = {
+        save = "__SpidertronEnhancements__/simulations/SpidertronEnhancementsSim.zip",
+        init = func_capture.capture(function()
+          local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-26, 0}, force = "player"}
+          spidertron.color = {0, 0.4, 1, 0.5}
+          --spidertron.torso_orientation = 0.4
+
+          local player = game.create_test_player{name = "character"}
+          player.teleport{-26, 10}
+          game.camera_player = player
+          game.camera_player_cursor_position = {0, 0}
+
+          player.cursor_stack.set_stack({name = "spidertron-remote", count = 1})
+          player.cursor_stack.connected_entity = spidertron
+
+          --game.camera_player = player
+          game.camera_zoom = 0.5
+          game.tick_paused = false
+          game.camera_alt_info = false
+          --spidertron.set_driver(player)
+
+          -- Generate water tiles
+          fill_tiles({-19, -70}, {-5, 10}, "water")
+          fill_tiles({5, -10}, {19, 70}, "water")
+
+
+          destinations = {{26, 0}, {-26, 0}}
+          step_1 = function()
+            script.on_nth_tick(1, function()
+              local finished = game.move_cursor({position = destinations[1]})
+              if finished then
+                step_2()
+              end
+            end)
+          end
+
+          step_2 = function()
+            remote.call("SpidertronEnhancementsInternal-pf", "use-remote", spidertron, destinations[1])
+            script.on_event(defines.events.on_spider_command_completed, function(event)
+              if not spidertron.autopilot_destination then
+                script.on_event(defines.events.on_spider_command_completed, nil)
+                step_3()
+              end
+            end)
+          end
+
+          step_3 = function()
+            script.on_nth_tick(1, function()
+              local finished = game.move_cursor({position = destinations[2]})
+              if finished then
+                step_4()
+              end
+            end)
+          end
+
+          step_4 = function()
+            remote.call("SpidertronEnhancementsInternal-pf", "use-remote", spidertron, destinations[2])
+            script.on_event(defines.events.on_spider_command_completed, function(event)
+              if not spidertron.autopilot_destination then
+                script.on_event(defines.events.on_spider_command_completed, nil)
+                step_1()
+              end
+            end)
+          end
+
+          step_1()
         end)
       }
     },
