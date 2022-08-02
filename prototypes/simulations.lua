@@ -1,5 +1,6 @@
 if mods["simhelper"] and not mods["SpidertronEngineer"] then
   local func_capture = require("__simhelper__.funccapture")
+  local math2d = require("__core__.lualib.math2d")
 
   local function fill_tiles(left_top, right_bottom, tile)
     local tiles = {}
@@ -110,7 +111,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
         save = "__SpidertronEnhancements__/simulations/SpidertronEnhancementsSim.zip",
         init = func_capture.capture(function()
           local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-0.5, 1.5}, force = "player"}
-          spidertron.color = {0, 0.4, 1, 0.5}
+          spidertron.color = {0, 1, 1, 0.5}
           --spidertron.torso_orientation = 0.4
           local player = game.create_test_player{name = "character"}
 
@@ -140,7 +141,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
         save = "__SpidertronEnhancements__/simulations/SpidertronEnhancementsSim.zip",
         init = func_capture.capture(function()
           local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-26, 0}, force = "player"}
-          spidertron.color = {0, 0.4, 1, 0.5}
+          spidertron.color = {1, 0, 0, 0.5}
           --spidertron.torso_orientation = 0.4
 
           local player = game.create_test_player{name = "character"}
@@ -151,11 +152,9 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
           player.cursor_stack.set_stack({name = "spidertron-remote", count = 1})
           player.cursor_stack.connected_entity = spidertron
 
-          --game.camera_player = player
           game.camera_zoom = 0.5
           game.tick_paused = false
           game.camera_alt_info = false
-          --spidertron.set_driver(player)
 
           -- Generate water tiles
           fill_tiles({-19, -70}, {-5, 10}, "water")
@@ -167,6 +166,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
             script.on_nth_tick(1, function()
               local finished = game.move_cursor({position = destinations[1]})
               if finished then
+                script.on_nth_tick(1, nil)
                 step_2()
               end
             end)
@@ -174,7 +174,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
 
           step_2 = function()
             remote.call("SpidertronEnhancementsInternal-pf", "use-remote", spidertron, destinations[1])
-            script.on_event(defines.events.on_spider_command_completed, function(event)
+            script.on_event(defines.events.on_spider_command_completed, function()
               if not spidertron.autopilot_destination then
                 script.on_event(defines.events.on_spider_command_completed, nil)
                 step_3()
@@ -186,6 +186,7 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
             script.on_nth_tick(1, function()
               local finished = game.move_cursor({position = destinations[2]})
               if finished then
+                script.on_nth_tick(1, nil)
                 step_4()
               end
             end)
@@ -193,9 +194,99 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
 
           step_4 = function()
             remote.call("SpidertronEnhancementsInternal-pf", "use-remote", spidertron, destinations[2])
-            script.on_event(defines.events.on_spider_command_completed, function(event)
+            script.on_event(defines.events.on_spider_command_completed, function()
               if not spidertron.autopilot_destination then
                 script.on_event(defines.events.on_spider_command_completed, nil)
+                step_1()
+              end
+            end)
+          end
+
+          step_1()
+        end)
+      }
+    },
+    {
+      type = "tips-and-tricks-item",
+      name = "spidertron-enhancements-remote-pipette",
+      tag = "[item=spidertron-remote]",
+      category = "spidertron-enhancements",
+      indent = 1,
+      order = "zzd",
+      trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
+      simulation = {
+        save = "__SpidertronEnhancements__/simulations/SpidertronEnhancementsSim.zip",
+        init = func_capture.capture(function()
+          local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {3, 1.5}, force = "player"}
+          spidertron.color = {0, 0.4, 1, 0.5}
+          local pipette_position = math2d.bounding_box.get_centre(spidertron.selection_box)
+          --spidertron.torso_orientation = 0.4
+
+          local player = game.create_test_player{name = "character"}
+          player.teleport{-4, 1.5}
+          game.camera_player = player
+          game.camera_player_cursor_position = player.position
+
+          --player.cursor_stack.connected_entity = spidertron
+
+          game.camera_zoom = 2
+          game.tick_paused = false
+          game.camera_alt_info = false
+
+          step_1 = function()
+            local time = 0
+            script.on_nth_tick(1, function()
+              time = time + 1
+              if time == 60 then
+                script.on_nth_tick(1, nil)
+                step_2()
+              end
+            end)
+          end
+
+          step_2 = function()
+            script.on_nth_tick(1, function()
+              local finished = game.move_cursor({position = pipette_position})
+              if finished then
+                script.on_nth_tick(1, nil)
+                step_3()
+              end
+            end)
+          end
+
+          step_3 = function()
+            local time = 0
+            script.on_nth_tick(1, function()
+              time = time + 1
+              if time == 60 then
+                script.on_nth_tick(1, nil)
+                step_4()
+              end
+            end)
+          end
+
+
+          step_4 = function()
+            player.cursor_stack.set_stack({name = "spidertron-remote", count = 1})
+            player.cursor_stack.connected_entity = spidertron
+            local time = 0
+            script.on_nth_tick(1, function()
+              time = time + 1
+              if time == 60 then
+                script.on_nth_tick(1, nil)
+                step_5()
+              end
+            end)
+          end
+
+          step_5 = function()
+            script.on_nth_tick(1, function()
+              local finished = game.move_cursor({position = player.position})
+              if game.camera_player_cursor_position.x < -3 then
+                player.cursor_stack.clear()
+              end
+              if finished then
+                script.on_nth_tick(1, nil)
                 step_1()
               end
             end)
