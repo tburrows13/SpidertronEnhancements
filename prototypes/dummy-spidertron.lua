@@ -39,7 +39,7 @@ function create_dummy_spidertron(arguments)
       type = "spider-vehicle",
       name = name,
       -- localised_name transforms e.g. "Spidertron MK2" into "Travelling Spidretron MK2"
-      localised_name = {"entity-name.spidertron-enhancements-dummy-spidertron", {"entity-name." .. spidertron.name}},
+      localised_name = {"entity-name.spidertron-enhancements-dummy-spidertron", spidertron.localised_name or {"entity-name." .. spidertron.name}},
       collision_box = nil, --{{-1 * scale, -1 * scale}, {1 * scale, 1 * scale}},
       sticker_box = nil, --{{-1.5 * scale, -1.5 * scale}, {1.5 * scale, 1.5 * scale}},
       selection_box = {{-1 * scale, -1 * scale}, {1 * scale, 1 * scale}},

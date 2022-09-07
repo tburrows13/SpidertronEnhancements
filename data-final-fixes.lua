@@ -22,12 +22,17 @@ for _, spidertron in pairs(spidertrons) do
 end
 
 -- Only set this here so that modded spidertron remotes are not affected
-local remote = data.raw["spidertron-remote"]["spidertron-remote"]
-remote.localised_description = {
-  "item-description.spidertron-enhancements-spidertron-remote-append",
-  {"item-description.spidertron-remote"},
-  {"item-description.spidertron-enhancements-spidertron-remote-append-pathfinder"},
-}
+local remote_name = "spidertron-remote"
+if mods["nullius"] then remote_name = "nullius-mecha-remote" end
+
+local remote = data.raw["spidertron-remote"][remote_name]
+if remote then
+  remote.localised_description = {
+    "item-description.spidertron-enhancements-spidertron-remote-append",
+    {"item-description." .. remote_name},
+    {"item-description.spidertron-enhancements-spidertron-remote-append-pathfinder"},
+  }
+end
 
 local patrol_remote = data.raw["spidertron-remote"]["sp-spidertron-patrol-remote"]
 if patrol_remote then

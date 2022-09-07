@@ -71,5 +71,13 @@ local function pipette_remote(event, remote_name)
   end
 end
 
-script.on_event("spidertron-enhancements-spidertron-pipette", function(event) pipette_remote(event, "spidertron-remote") end)
-script.on_event("spidertron-enhancements-spidertron-patrol-pipette", function(event) pipette_remote(event, "sp-spidertron-patrol-remote") end)
+script.on_event("spidertron-enhancements-spidertron-pipette",
+  function(event)
+    pipette_remote(event, script.active_mods["nullius"] and "nullius-mecha-remote" or "spidertron-remote")
+  end
+)
+script.on_event("spidertron-enhancements-spidertron-patrol-pipette",
+  function(event)
+    pipette_remote(event, "sp-spidertron-patrol-remote")
+  end
+)
