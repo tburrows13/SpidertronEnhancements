@@ -1,7 +1,9 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.8.8
-Date: ???
+Date: 17 September 2022
   Bugfixes:
+    - Fixed remote pipette not working with Nullius' mecha remote
+    - Fixed spidertrons being able to enter hidden Space Exploration vehicles (e.g. cargo rocket silo)
     - Fixed crash when a spidertron has a passenger but no driver
 ---------------------------------------------------------------------------------------------------
 Version: 1.8.7
