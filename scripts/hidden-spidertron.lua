@@ -83,7 +83,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
           -- After setting driver we need to revalidate everything
           if entity_to_drive.valid then
             local driver = entity_to_drive.get_driver()
-            if driver.object_name == "LuaEntity" and driver.player == player then
+            if driver and driver.object_name == "LuaEntity" and driver.player == player then
               play_smoke(surface, {entity_to_drive.position, spidertron.position})
 
               if override_vehicle_change then
@@ -251,7 +251,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     local spidertron = player.vehicle
     if spidertron then
       local driver = spidertron.get_driver()
-      if driver.object_name == "LuaEntity"and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
+      if driver and driver.object_name == "LuaEntity" and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
         entered = enter_nearby_entity(player, spidertron)
         if entered then
           return
@@ -280,7 +280,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     local spidertron = player.vehicle
     if spidertron then
       local driver = spidertron.get_driver()
-      if driver.object_name == "LuaEntity" and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
+      if driver and driver.object_name == "LuaEntity" and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
         if global.stored_spidertrons_personal[player.index] then
           player.create_local_flying_text{
             text = {"cursor-message.spidertron-enhancements-player-contains-spidertron"},
