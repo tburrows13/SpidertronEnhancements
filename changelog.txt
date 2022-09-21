@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.9
+Date: 21 September 2022
+  Bugfixes:
+    - Fixed "Request from buffer chests" value being lost when the spidertron enters a vehicle or the player 
+    - Fixed crash when quick toggling a spidertron after changing mods to remove spidertron's fuel requirement 
+---------------------------------------------------------------------------------------------------
 Version: 1.8.8
 Date: 17 September 2022
   Bugfixes:
