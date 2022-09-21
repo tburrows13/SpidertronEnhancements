@@ -78,7 +78,8 @@ script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
       local cursor_item = player.cursor_stack
       if cursor_item and cursor_item.valid_for_read and (cursor_item.type == "spidertron-remote" and cursor_item.name ~= "sp-spidertron-patrol-remote") then
         local spidertron = cursor_item.connected_entity
-        if spidertron then
+        if spidertron and spidertron.name:sub(1, 10) ~= "ss-docked-" then
+          -- Prevent remote working on docked spidertrons from Space Spidertron
           local clicked_position = event.cursor_position
           spidertron.autopilot_destination = clicked_position
           request_multiple_paths(spidertron, clicked_position, -3, player)
