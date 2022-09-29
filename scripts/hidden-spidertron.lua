@@ -147,24 +147,38 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     else
       -- Dummy has been mined so we can exit here
       log("Dummy Spidertron not found")
-      return
+      return true
     end
   end
 
   local surface = player.surface
-  local ideal_position
+  local position
   if vehicle_from and vehicle_from.valid then
     -- If the player pressed 'enter' then they will have been moved out of the way of the vehicle
     -- but we still want the spidertron to appear on the vehicle
-    ideal_position = vehicle_from.position
+    position = vehicle_from.position
     if vehicle_from.type == "spider-vehicle" then
       -- Prevents strange z-fighting
-      ideal_position = {x = ideal_position.x - 2, y = ideal_position.y}
+      position = {x = position.x - 2, y = position.y}
     end
   else
-    ideal_position = player.position
+    position = player.position
   end
-  local position = surface.find_non_colliding_position(serialised_data.name, ideal_position, 0, 0.1)
+
+  local can_place_entity = surface.can_place_entity{
+    name = serialised_data.name,
+    position = position,
+    force = serialised_data.force,
+    build_check_type = defines.build_check_type.manual,
+  }
+
+  if not can_place_entity then
+    player.create_local_flying_text{
+      text = {"cursor-message.spidertron-enhancements-cannot-create-spidertron", serialised_data.localised_name or game.entity_prototypes[serialised_data.name].localised_name},
+      position = position
+    }
+    return false
+  end
   local spidertron = surface.create_entity{
     name = serialised_data.name,
     position = position,
@@ -192,6 +206,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     global.vehicle_to_enter_this_tick[game.tick][player.index] = spidertron
   end
 
+  return true
 end
 
 script.on_event(defines.events.on_player_driving_changed_state,
@@ -221,8 +236,10 @@ script.on_event("spidertron-enhancements-toggle-driving",
     local vehicle_from = player.vehicle
 
     if vehicle_from and serialised_data then
-      enter_spidertron(player, serialised_data, vehicle_from, true)
-      global.stored_spidertrons[player.index] = nil
+      local entered = enter_spidertron(player, serialised_data, vehicle_from, true)
+      if entered then
+        global.stored_spidertrons[player.index] = nil
+      end
       return
     end
 
@@ -243,8 +260,10 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     -- Off by default
     local serialised_data = global.stored_spidertrons[player.index]
     if player.driving and serialised_data then
-      enter_spidertron(player, serialised_data)
-      global.stored_spidertrons[player.index] = nil
+      local entered = enter_spidertron(player, serialised_data)
+      if entered then
+        global.stored_spidertrons[player.index] = nil
+      end
       return
     end
 
@@ -269,8 +288,10 @@ local function enter_vehicles_pressed(player, force_enter_entity)
         -- Ensures player is not in editor mode or Space Exploration star map
         if not (remote.interfaces["jetpack"] and remote.call("jetpack", "get_jetpacks", {surface_index = player.surface.index})[player.character.unit_number]) then
           -- Ensures player isn't in Jetpack
-          enter_spidertron(player, serialised_data)
-          global.stored_spidertrons_personal[player.index] = nil
+          local entered = enter_spidertron(player, serialised_data)
+          if entered then
+            global.stored_spidertrons_personal[player.index] = nil
+          end
         end
       end
       return
@@ -295,7 +316,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
 
           local surface = player.surface
           driver = player.character or player  -- Simulation shenanigans
-          local teleport_position = surface.find_non_colliding_position(driver.name, spidertron.position, 0, 0.1, true)
+          local teleport_position = surface.find_non_colliding_position(driver.name, spidertron.position, 20, 0.1, true)
           if teleport_position then
             --script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron})
             play_smoke(surface, {spidertron.position})
