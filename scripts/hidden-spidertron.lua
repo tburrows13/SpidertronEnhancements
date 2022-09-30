@@ -302,9 +302,10 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     if spidertron then
       local driver = spidertron.get_driver()
       if driver and driver.object_name == "LuaEntity" and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
-        if global.stored_spidertrons_personal[player.index] then
+        local personal_serialised_data = global.stored_spidertrons_personal[player.index]
+        if personal_serialised_data then
           player.create_local_flying_text{
-            text = {"cursor-message.spidertron-enhancements-player-contains-spidertron"},
+            text = {"cursor-message.spidertron-enhancements-player-contains-spidertron", personal_serialised_data.localised_name or game.entity_prototypes[serialised_data.name].localised_name},
             position = {spidertron.position.x, spidertron.position.y - 2.5}
           }
         else
