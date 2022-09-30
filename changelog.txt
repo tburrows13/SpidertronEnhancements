@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.10
+Date: 30 September 2022
+  Bugfixes:
+    - Fixed game freeze when quick-toggling a spidertron where it can't be placed
+    - Removed ability to issue a pathfind command to docked spidertrons from Space Spidertron
+---------------------------------------------------------------------------------------------------
 Version: 1.8.9
 Date: 21 September 2022
   Bugfixes:
