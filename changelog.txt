@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.11
+Date: 5 October 2022
+  Bugfixes:
+    - Fixed spidertrons being unable to exit trains
+    - Fixed Tips & Tricks simulations not working with Krastorio2
+---------------------------------------------------------------------------------------------------
 Version: 1.8.10
 Date: 30 September 2022
   Bugfixes:
