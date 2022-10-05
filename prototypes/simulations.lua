@@ -40,10 +40,17 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
           local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-10, 0}, force = "player"}
           spidertron.color = {0, 1, 0, 0.5}
           spidertron.torso_orientation = 0.7
+          local fuel_inventory = spidertron.get_fuel_inventory()
+          if fuel_inventory and game.item_prototypes["dt-fuel"] then
+            fuel_inventory.insert("dt-fuel")  -- Krastorio2
+          end
 
           local locomotive = game.surfaces[1].find_entities_filtered{name="locomotive", limit=1}[1]
           local train = locomotive.train
           locomotive.insert{name = "nuclear-fuel", count = 3}
+          if game.active_mods["Krastorio2"] then
+            locomotive.insert{name = "advanced-fuel", count = 600}
+          end
 
           local player = game.create_test_player{name = "character"}
           --game.camera_player = player
@@ -143,6 +150,10 @@ if mods["simhelper"] and not mods["SpidertronEngineer"] then
           local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-26, 0}, force = "player"}
           spidertron.color = {1, 0, 0, 0.5}
           --spidertron.torso_orientation = 0.4
+          local fuel_inventory = spidertron.get_fuel_inventory()
+          if fuel_inventory and game.item_prototypes["dt-fuel"] then
+            fuel_inventory.insert("dt-fuel")  -- Krastorio2
+          end
 
           local player = game.create_test_player{name = "character"}
           player.teleport{-26, 10}
