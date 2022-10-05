@@ -152,30 +152,30 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
   end
 
   local surface = player.surface
-  local position
+  local ideal_position
   if vehicle_from and vehicle_from.valid then
     -- If the player pressed 'enter' then they will have been moved out of the way of the vehicle
     -- but we still want the spidertron to appear on the vehicle
-    position = vehicle_from.position
+    ideal_position = vehicle_from.position
     if vehicle_from.type == "spider-vehicle" then
       -- Prevents strange z-fighting
-      position = {x = position.x - 2, y = position.y}
+      ideal_position = {x = ideal_position.x - 2, y = ideal_position.y}
     end
   else
-    position = player.position
+    ideal_position = player.position
   end
 
-  local can_place_entity = surface.can_place_entity{
-    name = serialised_data.name,
-    position = position,
-    force = serialised_data.force,
-    build_check_type = defines.build_check_type.manual,
-  }
+  local position = surface.find_non_colliding_position(
+    serialised_data.name,  -- name
+    ideal_position,  -- position
+    10, -- radius
+    0.1 -- precision
+  )
 
-  if not can_place_entity then
+  if not position then
     player.create_local_flying_text{
       text = {"cursor-message.spidertron-enhancements-cannot-create-spidertron", serialised_data.localised_name or game.entity_prototypes[serialised_data.name].localised_name},
-      position = position
+      position = ideal_position
     }
     return false
   end
