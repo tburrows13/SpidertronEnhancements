@@ -2,6 +2,7 @@ local corpse_blacklist = {
   ["companion"] = true,
   ["defender-unit"] = true,
   ["destroyer-unit"] = true,
+  ["spider-baby"] = true,  -- Broodmother
 }
 
 local function store_inventory(inventory, inventory_stacks)
