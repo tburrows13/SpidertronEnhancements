@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.12
+Date: 28 November 2022
+  Bugfixes:
+    - Fixed crash when a spidertron without the logistics tab (e.g. from Insectitronics) enters a vehicle or the player
+    - Fixed spider babies from Broodmother generating retrievable corpses
+---------------------------------------------------------------------------------------------------
 Version: 1.8.11
 Date: 5 October 2022
   Bugfixes:
