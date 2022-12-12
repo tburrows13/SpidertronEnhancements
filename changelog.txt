@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.13
+Date: 12 December 2022
+  Features:
+    - Spidertron pathfinder now navigates around large buildings (10x10 or greater)
+    - Distance between waypoints decreased with smaller spidertrons, and increased with larger spidertrons
+  Bugfixes:
+    - Improved compatibility with AAI Ironclad (requires future Ironclad update to work fully)
+---------------------------------------------------------------------------------------------------
 Version: 1.8.12
 Date: 28 November 2022
   Bugfixes:
