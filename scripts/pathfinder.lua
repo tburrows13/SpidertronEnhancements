@@ -1,23 +1,18 @@
-if script.active_mods["space-exploration"] then
-  collision_mask_util_extended = require("__space-exploration__/collision-mask-util-extended/control/collision-mask-util-control")
-end
+local collision_mask_util_extended = require "__SpidertronEnhancements__.collision-mask-util-extended.control.collision-mask-util-control"
 
 
 local function request_path(spidertron, start_position, target_position, clicked_position, resolution, player, start_tick, index)
   local path_collision_mask = {"water-tile", "colliding-with-tiles-only", "consider-tile-transitions"}
-  if collision_mask_util_extended then
-    log(collision_mask_util_extended.get_named_collision_mask("empty-space-tile"))
+  if game.active_mods["space-exploration"] then
     table.insert(path_collision_mask, collision_mask_util_extended.get_named_collision_mask("empty-space-tile"))
   end
-  --[[
-  -- Useful if we want them to pathfind around buildings, but too slow, unreliable, and travels around walls!
+  if game.entity_prototypes["collision-mask-large-entity-layer"] then
+    -- The game contains some large entities that we need to pathfind around
+    table.insert(path_collision_mask, collision_mask_util_extended.get_named_collision_mask("large-entity-layer"))
+    table.remove(path_collision_mask, 1)  -- Remove "water-tile"
+    table.remove(path_collision_mask, 1)  -- Remove "colliding-with-tiles-only"
+  end
   local leg = spidertron.get_spider_legs()[index]
-  local path_collision_mask = leg.prototype.collision_mask
-  -- We never want them to avoid rails
-  path_collision_mask["rail-layer"] = nil
-  path_collision_mask["colliding-with-tiles-only"] = true
-  path_collision_mask["consider-tile-transitions"] = true
-  ]]
 
   local request_id = spidertron.surface.request_path{
     bounding_box = {{-0.01, -0.01}, {0.01, 0.01}},
@@ -29,7 +24,7 @@ local function request_path(spidertron, start_position, target_position, clicked
     pathfind_flags = {prefer_straight_paths = false,
                       cache = false,
                       low_priority = false},
-    --entity_to_ignore = leg, -- not needed when only considering tiles
+    entity_to_ignore = leg, -- not needed when only considering tiles
   }
   global.pathfinder_requests[request_id] = {
     spidertron = spidertron,
