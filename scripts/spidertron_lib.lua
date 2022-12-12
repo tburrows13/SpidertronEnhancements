@@ -366,6 +366,9 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
     local driver = serialised_data.driver or serialised_data.player_occupied  -- Legacy
     -- driver is a character, not player
     if driver and driver.valid then
+      if driver.vehicle then  -- set_driver can fail if driver is already in a vehicle and can't exit it
+        driver.vehicle.set_driver(nil)
+      end
       spidertron.set_driver(driver)
     end
     -- `spidertron` could be invalid here because `.set_driver` raises an event that other mods can react to
@@ -375,6 +378,9 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
 
     local passenger = serialised_data.passenger
     if passenger and passenger.valid then
+      if passenger.vehicle then  -- set_driver can fail if driver is already in a vehicle and can't exit it
+        passenger.vehicle.set_driver(nil)
+      end
       spidertron.set_passenger(passenger)
     end
     -- Same check again here
