@@ -65,7 +65,11 @@ script.on_event(defines.events.on_tick,
 
 local function enter_nearby_entity(player, spidertron, override_vehicle_change)
   --local allowed_into_entities = global.allowed_into_entities
-  log("Searching for nearby entities to enter")
+  --log("Searching for nearby entities to enter")
+
+  if remote.interfaces["aai-vehicles-ironclad"] and remote.interfaces["aai-vehicles-ironclad"].disable_this_tick then
+    remote.call("aai-vehicles-ironclad", "disable_this_tick", player.index)
+  end        
 
   for radius=1, 5 do
     local nearby_entities
@@ -73,7 +77,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
     if nearby_entities and #nearby_entities >= 1 then
       for _, entity_to_drive in pairs(nearby_entities) do
         if entity_to_drive ~= spidertron and not entity_to_drive.get_driver() and entity_to_drive.prototype.allow_passengers and spidertron.minable and spidertron.prototype.mineable_properties.minable and entity_to_drive.name:sub(1, 3) ~= "se-" then
-          log("Found entity to drive: " .. entity_to_drive.name)
+          --log("Found entity to drive: " .. entity_to_drive.name)
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
           serialised_data.autopilot_destination = nil
           serialised_data.follow_target = nil
@@ -134,6 +138,10 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
   -- The player just got out of a vehicle and needs to be put back into their spidertron
   -- serialised_data may contain all the data, or just name and dummy_spidertron
   -- vehicle_from is a LuaEntity from on_player_driving_changed_state
+
+  if remote.interfaces["aai-vehicles-ironclad"] and remote.interfaces["aai-vehicles-ironclad"].disable_this_tick then
+    remote.call("aai-vehicles-ironclad", "disable_this_tick", player.index)
+  end        
 
   local dummy_spidertron = serialised_data.dummy_spidertron
   if dummy_spidertron then
