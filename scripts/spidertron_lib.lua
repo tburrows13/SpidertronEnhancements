@@ -133,6 +133,7 @@ function spidertron_lib.serialise_spidertron(spidertron)
     serialised_data.passenger = passenger
   end
 
+  serialised_data.leg_name = spidertron.get_spider_legs()[1].name
   serialised_data.localised_name = spidertron.localised_name  -- Can be used for warnings if spidertron recreation is blocked
   serialised_data.force = spidertron.force
   serialised_data.torso_orientation = spidertron.torso_orientation

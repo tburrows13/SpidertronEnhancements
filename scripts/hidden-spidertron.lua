@@ -114,7 +114,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                 spidertron_lib.deserialise_spidertron(dummy_spidertron, serialised_data)
 
                 -- Only store the information that is lost because we are going via the dummy
-                serialised_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive}
+                serialised_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive, leg_name = serialised_data.leg_name}
               else
                 spidertron.destroy()
               end
@@ -150,6 +150,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
       new_serialised_data.driver = nil
       new_serialised_data.passenger = nil
       new_serialised_data.name = serialised_data.name
+      new_serialised_data.leg_name = serialised_data.leg_name
       old_serialised_data = serialised_data
       serialised_data = new_serialised_data
     else
@@ -174,7 +175,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
   end
 
   local position = surface.find_non_colliding_position(
-    serialised_data.name,  -- name
+    serialised_data.leg_name or serialised_data.name,  -- name
     ideal_position,  -- position
     10, -- radius
     0.1 -- precision
