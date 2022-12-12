@@ -159,10 +159,14 @@ script.on_event(defines.events.on_script_path_request_finished,
               min_i = i
             end
           end
+
+          -- Heights spiderling=0.7, spidertron=1.5, spidertron-mk3=2
+          -- Using height as proxy for leg spread. Distance of 15 works well for regular spidertron
+          local minimum_distance_between_waypoints = (spidertron.prototype.height + 0.5) * 7.5
           for i, waypoint in pairs(event.path) do
             if i >= min_i + 1 then
               local position = waypoint.position
-              if util.distance(last_position, position) > 15 then
+              if util.distance(last_position, position) > minimum_distance_between_waypoints then
                 -- Each waypoint will be at least x apart from each other
                 spidertron.add_autopilot_destination(position)
                 last_position = position
