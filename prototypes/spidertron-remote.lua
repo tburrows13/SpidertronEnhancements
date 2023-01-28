@@ -20,4 +20,3 @@ local function generate_temporary_remote(remote_name)
 end
 
 generate_temporary_remote("spidertron-remote")
-generate_temporary_remote("sp-spidertron-patrol-remote")

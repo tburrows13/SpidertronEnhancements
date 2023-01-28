@@ -15,13 +15,19 @@ local function pipette_remote(event, remote_name)
     end
 
     if spidertron and spidertron.type == "spider-vehicle" then
-      if settings.global["spidertron-enhancements-pipette-temporary-remote"].value then
+      if remote_name == "spidertron-remote" and settings.global["spidertron-enhancements-pipette-temporary-remote"].value then
         local cursor = player.cursor_stack
         cursor.set_stack("spidertron-enhancements-temporary-" .. remote_name)
         cursor.connected_entity = spidertron
         player.play_sound{path = "utility/smart_pipette"}
+      elseif remote_name == "sp-spidertron-patrol-remote" then
+        -- Patrol remote is always free/temporary
+        local cursor = player.cursor_stack
+        cursor.set_stack(remote_name)
+        cursor.connected_entity = spidertron
+        player.play_sound{path = "utility/smart_pipette"}
       else
-          -- Adapted from spidertron_lib.lua get_remotes()
+        -- Adapted from spidertron_lib.lua get_remotes()
         local remote
         local index
         local at_least_one_remote_found = false
