@@ -28,18 +28,22 @@ if mods["nullius"] then remote_name = "nullius-mecha-remote" end
 
 local remote = data.raw["spidertron-remote"][remote_name]
 if remote then
+  local font_start = "[font=default-semibold][color=255, 230, 192]"
+  local font_end = "[/color][/font]"
+  local line_start = "\n  •   "
   remote.localised_description = {
-    "item-description.spidertron-enhancements-spidertron-remote-append",
+    "",
     {"item-description." .. remote_name},
-    {"item-description.spidertron-enhancements-spidertron-remote-append-pathfinder"},
-  }
-end
-
-local patrol_remote = data.raw["spidertron-remote"]["sp-spidertron-patrol-remote"]
-if patrol_remote then
-  patrol_remote.localised_description = {
-    "item-description.spidertron-enhancements-spidertron-remote-append",
-    {"item-description.sp-spidertron-patrol-remote"},
-    {"item-description.sp-spidertron-patrol-remote-append"},
+    "\n",
+    font_start,
+    {"gui.instruction-when-in-cursor"},
+    ":",
+    line_start,
+    {"item-description.spe-open-inventory"},
+    line_start,
+    {"item-description.spe-reset-remote"},
+    line_start,
+    {"item-description.spe-use-pathfinder"},
+    font_end,
   }
 end
