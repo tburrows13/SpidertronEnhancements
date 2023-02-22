@@ -124,7 +124,7 @@ script.on_event(defines.events.on_script_path_request_finished,
         elseif not event.path then
           -- No path found. Try again at a larger resolution
           --game.print(event.id .. " - No path found at resolution " .. resolution)
-          if resolution < 3 then
+          if resolution < 1 then
             -- Retry with larger resolution
             request_path(spidertron, start_position, target_position, clicked_position, resolution + 2, player, start_tick, index)
           else

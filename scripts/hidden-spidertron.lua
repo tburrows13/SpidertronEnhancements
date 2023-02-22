@@ -178,7 +178,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     serialised_data.leg_name or serialised_data.name,  -- name
     ideal_position,  -- position
     10, -- radius
-    0.1 -- precision
+    1 -- precision
   )
 
   if not position then
