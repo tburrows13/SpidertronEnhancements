@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.15
+Date: 12 March 2023
+  Bugfixes:
+    - Fixed crash when quick toggling back a spidertron that contained filtered slots or logistic requests for items from mods that have been removed
+---------------------------------------------------------------------------------------------------
 Version: 1.8.14
 Date: 22 February 2023
   Features:

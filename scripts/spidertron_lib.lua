@@ -71,12 +71,13 @@ local function copy_inventory(old_inventory, inventory, filter_table)
     position = entity_owner.position
   end
 
+  local item_prototypes = game.item_prototypes
   local newsize = #inventory
   for i = 1, #old_inventory do
     if i <= newsize then
       local transferred = inventory[i].set_stack(old_inventory[i])
       if (not transferred) and surface and position then
-        -- If  only part of the stack was transferred then the remainder will be spilled
+        -- If only part of the stack was transferred then the remainder will be spilled
         surface.spill_item_stack(position, old_inventory[i], true, nil, false)
       end
 
@@ -85,7 +86,7 @@ local function copy_inventory(old_inventory, inventory, filter_table)
       if store_filters then
         filter_table[i] = old_inventory.get_filter(i)
       end
-      if load_filters then
+      if load_filters and item_prototypes[filter_table[i]] then
         inventory.set_filter(i, filter_table[i])
       end
     end
@@ -287,9 +288,13 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
 
   -- Copy across logistic request slots
   local logistic_slots = serialised_data.logistic_slots
+  local item_prototypes = game.item_prototypes
   if logistic_slots then
     for i, slot in pairs(logistic_slots) do
-      spidertron.set_vehicle_logistic_slot(i, slot)
+      if item_prototypes[slot.name] then
+        -- Only attempt deserialization if item prototype still exists
+        spidertron.set_vehicle_logistic_slot(i, slot)
+      end
     end
   end
 
