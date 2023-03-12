@@ -29,10 +29,25 @@ remote.add_interface("SpidertronEnhancements",
   }
 )
 
+function reset_reach_distance_bonuses()
+  -- Reset reach distance bonuses from 1.8.14 and earlier
+  local reach_distance_bonuses = global.reach_distance_bonuses or {}
+  for player_index, _ in pairs(reach_distance_bonuses) do
+    local player = game.get_player(player_index)
+    if player and player.character and (player.opened_gui_type ~= defines.gui_type.entity or player.opened.type ~= "spider-vehicle") then
+      local reach_distance_bonus = player.character_reach_distance_bonus
+      if reach_distance_bonus >= 100000 then
+        player.character_reach_distance_bonus = player.character_reach_distance_bonus - 100000
+      end
+      global.reach_distance_bonuses[player.index] = nil
+    end
+  end
+end
 script.on_event(defines.events.on_gui_opened,
   function(event)
     auto_sort.on_gui_opened(event)
-    open_inventory.on_gui_opened(event)
+
+    reset_reach_distance_bonuses()
   end
 )
 
@@ -57,8 +72,6 @@ script.on_init(
 
     global.vehicle_to_enter_this_tick = {}  -- Indexed by game.tick
 
-    global.reach_distance_bonuses = {}  -- Indexed by player.index
-
     recall_spidertron.on_init()
   end
 )
@@ -78,8 +91,6 @@ script.on_configuration_changed(
     global.player_last_driving_change_tick = nil  -- Removed in v1.4.0
 
     global.paths_assigned_on_tick = nil  -- Removed in v1.4.3
-
-    global.reach_distance_bonuses = global.reach_distance_bonuses or {}  -- Added in 1.5.0
 
     -- Remove now-invalid spidertron prototypes
     for i, serialised_data in pairs(global.stored_spidertrons_personal) do
