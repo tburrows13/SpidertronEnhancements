@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.8.15
 Date: 12 March 2023
+  Features:
+    - 'Shift + Q' (Spidertron remote pipette) now works when hovering the cursor over a spidertron in map view
   Bugfixes:
     - Fixed crash when quick toggling back a spidertron that contained filtered slots or logistic requests for items from mods that have been removed
 ---------------------------------------------------------------------------------------------------

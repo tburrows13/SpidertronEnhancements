@@ -12,6 +12,17 @@ local function pipette_remote(event, remote_name)
     if not (spidertron and spidertron.type == "spider-vehicle") then
       -- Try the player's current vehicle
       spidertron = player.vehicle
+      if not (spidertron and spidertron.type == "spider-vehicle") then
+        -- Try from the map
+        if player.render_mode == defines.render_mode.chart then
+          -- Don't need to check chart_zoomed_in because spidertron's have radars, so would be selectable
+          local position = event.cursor_position
+          local spidertrons = player.surface.find_entities_filtered{type = "spider-vehicle", position = position, radius = 9, limit = 1}
+          if #spidertrons > 0 then
+            spidertron = spidertrons[1]
+          end
+        end
+      end
     end
 
     if spidertron and spidertron.type == "spider-vehicle" then
