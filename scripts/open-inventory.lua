@@ -41,7 +41,7 @@ script.on_event(defines.events.on_gui_closed,
       local player = game.get_player(event.player_index)
       -- If still in range, assume that it was closed deliberately
       if remote.interfaces["RemoteConfiguration"] then
-        if not remote.call("RemoteConfiguration", "reset_this_tick", player) then -- and not player.can_reach_entity(spidertron) then
+        if not remote.call("RemoteConfiguration", "reset_this_tick", player) and not player.can_reach_entity(spidertron) then
           remote.call("RemoteConfiguration", "open_entity", player, spidertron)
         end
       else
