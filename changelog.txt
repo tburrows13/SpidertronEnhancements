@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.16
+Date: 14 March 2023
+  Bugfixes:
+    - Fixed currently-driving spidertron overriding map view spidertron when using 'Shift + Q' (Spidertron remote pipette)
+    - Fixed being unable to close spidertron inventory when in range and in map view
+---------------------------------------------------------------------------------------------------
 Version: 1.8.15
 Date: 12 March 2023
   Features:
