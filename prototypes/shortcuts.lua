@@ -4,7 +4,7 @@ local recall_shortcut = {
   action = "lua",
   associated_control_input = "spidertron-enhancements-recall-shortcut",
   toggleable = true,
-  order = "a",
+  order = "d[spidertron-enhancements]",
   icon =
   {
     filename = "__SpidertronEnhancements__/graphics/follow-shortcut.png",
