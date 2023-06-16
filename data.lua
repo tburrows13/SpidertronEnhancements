@@ -41,6 +41,7 @@ local use_remote = {
   type = "custom-input",
   name = "spidertron-enhancements-use-alt-spidertron-remote",
   key_sequence = "ALT + mouse-button-1",
+  controller_key_sequence = "controller-lefttrigger + controller-righttrigger + controller-a",
 }
 
 local disconnect_remote = {
