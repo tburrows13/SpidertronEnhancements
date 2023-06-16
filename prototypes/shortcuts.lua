@@ -33,7 +33,7 @@ local recall_input = {
 	name = "spidertron-enhancements-recall-shortcut",
 	key_sequence = "ALT + C",
   consuming = "none",
-  order = "a"
+  order = "a-a"
 }
 
 data:extend{recall_shortcut, recall_input}

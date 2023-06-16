@@ -4,6 +4,14 @@ require "prototypes.simulations"
 require "prototypes.shortcuts"
 require "prototypes.corpse"
 
+local use_remote = {
+  type = "custom-input",
+  name = "spidertron-enhancements-use-alt-spidertron-remote",
+  key_sequence = "ALT + mouse-button-1",
+  controller_key_sequence = "controller-lefttrigger + controller-righttrigger + controller-a",
+  order = "a-b",
+}
+
 local toggle_driving = {
   type = "custom-input",
   name = "spidertron-enhancements-toggle-driving",
@@ -15,33 +23,29 @@ local direct_control = {
   type = "custom-input",
   name = "spidertron-enhancements-enter-vehicles",
   key_sequence = "U",
-}
-
-local spidertron_pipette = {
-  type = "custom-input",
-  name = "spidertron-enhancements-spidertron-pipette",
-  key_sequence = "SHIFT + Q",
-  order = "a-a",
-}
-
-local spidertron_patrol_pipette = {
-  type = "custom-input",
-  name = "spidertron-enhancements-spidertron-patrol-pipette",
-  key_sequence = "CONTROL + SHIFT + Q",
-  order = "a-b",
+  order = "b",
 }
 
 local open_inventory = {
   type = "custom-input",
   name = "spidertron-enhancements-open-vehicle-inventory",
   key_sequence = "SHIFT + E",
+  order = "c",
 }
 
-local use_remote = {
+
+local spidertron_pipette = {
   type = "custom-input",
-  name = "spidertron-enhancements-use-alt-spidertron-remote",
-  key_sequence = "ALT + mouse-button-1",
-  controller_key_sequence = "controller-lefttrigger + controller-righttrigger + controller-a",
+  name = "spidertron-enhancements-spidertron-pipette",
+  key_sequence = "SHIFT + Q",
+  order = "d-a",
+}
+
+local spidertron_patrol_pipette = {
+  type = "custom-input",
+  name = "spidertron-enhancements-spidertron-patrol-pipette",
+  key_sequence = "CONTROL + SHIFT + Q",
+  order = "d-b",
 }
 
 local disconnect_remote = {
