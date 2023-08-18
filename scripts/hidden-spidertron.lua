@@ -335,6 +335,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     if spidertron then
       local driver = spidertron.get_driver()
       if driver and driver.object_name == "LuaEntity" and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
+          -- Only allowed if the player is the driver, not the passenger
         local personal_serialised_data = global.stored_spidertrons_personal[player.index]
         if personal_serialised_data then
           player.create_local_flying_text{
@@ -342,7 +343,34 @@ local function enter_vehicles_pressed(player, force_enter_entity)
             position = {spidertron.position.x, spidertron.position.y - 2.5}
           }
         else
-          -- Only allowed if the player is the driver, not the passenger
+          -- Try and handle active robots
+          local logistic_cell = spidertron.logistic_cell
+          if logistic_cell then
+            local charging_robots = logistic_cell.charging_robots
+            local to_charge_robots = logistic_cell.to_charge_robots
+            if next(charging_robots) or next(to_charge_robots) then
+              -- Put charging robots back into the spidertron's inventory
+              local inventory = spidertron.get_inventory(defines.inventory.spider_trunk)
+              for _, robot in pairs(charging_robots) do
+                robot.mine{inventory = inventory, force = false, raise_destroyed = true, ignore_minable = false}
+              end
+              for _, robot in pairs(to_charge_robots) do
+                robot.mine{inventory = inventory, force = false, raise_destroyed = true, ignore_minable = false}
+              end
+            end
+
+            local logistic_network = logistic_cell.logistic_network
+            if logistic_network then
+              local active_robots = #logistic_network.construction_robots
+              if active_robots > 0 then
+                player.create_local_flying_text{
+                  text = {"cursor-message.spidertron-enhancements-robots-left-behind", active_robots},
+                  position = {spidertron.position.x, spidertron.position.y - 2.5}
+                }
+              end
+            end
+          end
+
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
           serialised_data.autopilot_destination = nil
           serialised_data.follow_target = nil
