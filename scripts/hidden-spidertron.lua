@@ -8,6 +8,13 @@ local util = require("__core__/lualib/util")
 )
 ]]
 
+local is_rolling_stock = {
+  ["locomotive"] = true,
+  ["cargo-wagon"] = true,
+  ["fluid-wagon"] = true,
+  ["artillery-wagon"] = true,
+}
+
 local function filtered_drivable_types()
   allowed_entities_setting = settings.global["spidertron-enhancements-enter-entity"].value
   if allowed_entities_setting == "all-except-spidertrons" then  -- Default path
@@ -41,21 +48,38 @@ script.on_event(defines.events.on_tick,
         local vehicle = serialised_data.on_vehicle
         local spidertron = serialised_data.dummy_spidertron
         if vehicle and vehicle.valid and spidertron and spidertron.valid then
+          local position
+          local orientation
+          if is_rolling_stock[vehicle.type] then
+            -- Trains are actually drawn at a different position to their entity position, exposed in draw_data
+            local draw_data = vehicle.draw_data
+            position = draw_data.position
+            position = {x = position.x, y = position.y - 0.85}
+            orientation = draw_data.orientation
+          elseif vehicle.type == "spider-vehicle" then
+            -- Spidertrons have a different orientation definition and it doesn't look good to place the rider underneath their body
+            position = vehicle.position
+            position = {x = position.x, y = position.y - 1.9}
+            orientation = vehicle.torso_orientation
+          else
+            -- type == "car"
+            position = vehicle.position
+            if vehicle.name == "tank" then
+              position = {x = position.x, y = position.y - 0.95}
+            else
+              position = {x = position.x, y = position.y - 0.4}
+            end
+            orientation = vehicle.orientation
+          end
+
           -- Extra calculations to allow for the fact that the vehicle will move after the teleport
           -- so we need to place the spidertron where the vehicle will be, not where it is now
-          local position = vehicle.position
-          local orientation = vehicle.orientation * 2 * math.pi
+          local calc_orientation = orientation * 2 * math.pi
           local speed = vehicle.speed
-          local y = position.y - (math.cos(orientation) * speed)
-          local x = position.x + (math.sin(orientation) * speed)
-          if vehicle.type == "spider-vehicle" then
-            -- Spidertrons have a different orientation definition and it doesn't look good to place the rider underneath their body
-            spidertron.teleport({x, y-1.4})
-            spidertron.torso_orientation = vehicle.torso_orientation
-          else
-            spidertron.teleport({x, y})
-            spidertron.torso_orientation = vehicle.orientation
-          end
+          local y = position.y - (math.cos(calc_orientation) * speed)
+          local x = position.x + (math.sin(calc_orientation) * speed)
+          spidertron.teleport({x, y})
+          spidertron.torso_orientation = orientation
         end
       end
     end

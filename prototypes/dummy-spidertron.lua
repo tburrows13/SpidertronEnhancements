@@ -25,6 +25,9 @@ end
 local function adjust_render_layer(graphics_set)
   graphics_set.base_render_layer = "entity-info-icon-above"
   graphics_set.render_layer = "entity-info-icon-above"
+
+  graphics_set.base_animation = util.empty_sprite(1)
+  graphics_set.shadow_base_animation = util.empty_sprite(1)
   return graphics_set
 end
 
@@ -42,7 +45,7 @@ function create_dummy_spidertron(arguments)
       localised_name = {"entity-name.spidertron-enhancements-dummy-spidertron", spidertron.localised_name or {"entity-name." .. spidertron.name}},
       collision_box = nil, --{{-1 * scale, -1 * scale}, {1 * scale, 1 * scale}},
       sticker_box = nil, --{{-1.5 * scale, -1.5 * scale}, {1.5 * scale, 1.5 * scale}},
-      selection_box = {{-1 * scale, -1 * scale}, {1 * scale, 1 * scale}},
+      selection_box = {{-1 * scale, -1 * scale}, {1 * scale, 0.5 * scale}},
       drawing_box = {{-3 * scale, -4 * scale}, {3 * scale, 2 * scale}},
       icon = "__base__/graphics/icons/spidertron.png",
       mined_sound = {filename = "__core__/sound/deconstruct-large.ogg",volume = 0.8},
@@ -87,7 +90,7 @@ function create_dummy_spidertron(arguments)
       inventory_size = spidertron.inventory_size,
       equipment_grid = spidertron.equipment_grid,
       trash_inventory_size = spidertron.trash_inventory_size,
-      height = 1.5  * scale * leg_scale,
+      height = 0,
       torso_rotation_speed = 0.005,
       chunk_exploration_radius = spidertron.chunk_exploration_radius,
       selection_priority = 51,
@@ -103,72 +106,15 @@ function create_dummy_spidertron(arguments)
         {
           { -- 1
             leg = name .. "-leg-1",
-            mount_position = util.by_pixel(15  * scale, -22 * scale),--{0.5, -0.75},
-            ground_position = {2.25  * leg_scale, -2.5  * leg_scale},
-            blocking_legs = {2},
-            leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
+            mount_position = util.by_pixel(0, 0),--{0.5, -0.75},
+            ground_position = {0, 0},
+            blocking_legs = {},
           },
-          { -- 2
-            leg = name .. "-leg-2",
-            mount_position = util.by_pixel(23  * scale, -10  * scale),--{0.75, -0.25},
-            ground_position = {3  * leg_scale, -1  * leg_scale},
-            blocking_legs = {1, 3},
-            leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
-          },
-          { -- 3
-            leg = name .. "-leg-3",
-            mount_position = util.by_pixel(25  * scale, 4  * scale),--{0.75, 0.25},
-            ground_position = {3  * leg_scale, 1  * leg_scale},
-            blocking_legs = {2, 4},
-            leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
-          },
-          { -- 4
-            leg = name .. "-leg-4",
-            mount_position = util.by_pixel(15  * scale, 17  * scale),--{0.5, 0.75},
-            ground_position = {2.25  * leg_scale, 2.5  * leg_scale},
-            blocking_legs = {3},
-            leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
-          },
-          { -- 5
-            leg = name .. "-leg-5",
-            mount_position = util.by_pixel(-15 * scale, -22 * scale),--{-0.5, -0.75},
-            ground_position = {-2.25 * leg_scale, -2.5 * leg_scale},
-            blocking_legs = {6, 1},
-            leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
-          },
-          { -- 6
-            leg = name .. "-leg-6",
-            mount_position = util.by_pixel(-23 * scale, -10 * scale),--{-0.75, -0.25},
-            ground_position = {-3 * leg_scale, -1 * leg_scale},
-            blocking_legs = {5, 7},
-            leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
-          },
-          { -- 7
-            leg = name .. "-leg-7",
-            mount_position = util.by_pixel(-25 * scale, 4 * scale),--{-0.75, 0.25},
-            ground_position = {-3 * leg_scale, 1 * leg_scale},
-            blocking_legs = {6, 8},
-            leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
-          },
-          { -- 8
-            leg = name .. "-leg-8",
-            mount_position = util.by_pixel(-15 * scale, 17 * scale),--{-0.5, 0.75},
-            ground_position = {-2.25 * leg_scale, 2.5 * leg_scale},
-            blocking_legs = {7},
-            leg_hit_the_ground_trigger = get_leg_hit_the_ground_trigger()
-          }
         },
         military_target = "spidertron-military-target"
       }
     },
     remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 1)),
-    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 2)),
-    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 3)),
-    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 4)),
-    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 5)),
-    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 6)),
-    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 7)),
-    remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 8)),
   })
 end
 
@@ -178,7 +124,7 @@ local spidertrons = data.raw["spider-vehicle"]
 for _, spidertron in pairs(spidertrons) do
   if spidertron.allow_passengers ~= false then
     create_dummy_spidertron{spidertron = spidertron,
-                            scale = 0.8,
+                            scale = 1,
                             leg_scale = 0.5,
                             leg_thickness = 1.5,
                             leg_movement_speed = 1,
