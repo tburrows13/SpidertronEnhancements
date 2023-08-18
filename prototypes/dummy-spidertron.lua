@@ -22,7 +22,7 @@ local function remove_hitboxes(spidertron_leg)
   return spidertron_leg
 end
 
-local function adjust_render_layer(graphics_set)
+local function adjust_graphics_set(graphics_set)
   graphics_set.base_render_layer = "entity-info-icon-above"
   graphics_set.render_layer = "entity-info-icon-above"
 
@@ -94,7 +94,7 @@ function create_dummy_spidertron(arguments)
       torso_rotation_speed = 0.005,
       chunk_exploration_radius = spidertron.chunk_exploration_radius,
       selection_priority = 51,
-      graphics_set = adjust_render_layer(spidertron_torso_graphics_set(scale)),
+      graphics_set = adjust_graphics_set(table.deepcopy(spidertron.graphics_set)),
       burner = spidertron.burner,
       energy_source = spidertron.energy_source,
       movement_energy_consumption = spidertron.movement_energy_consumption,

@@ -59,7 +59,7 @@ script.on_event(defines.events.on_tick,
           elseif vehicle.type == "spider-vehicle" then
             -- Spidertrons have a different orientation definition and it doesn't look good to place the rider underneath their body
             position = vehicle.position
-            position = {x = position.x, y = position.y - vehicle.prototype.height - 0.4}
+            position = {x = position.x, y = position.y - vehicle.prototype.height - 0.35}
             orientation = vehicle.torso_orientation
           else
             -- type == "car"
