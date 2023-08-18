@@ -186,6 +186,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
 
   local surface = player.surface
   local ideal_position
+  local player_position = player.position
   if vehicle_from and vehicle_from.valid then
     -- If the player pressed 'enter' then they will have been moved out of the way of the vehicle
     -- but we still want the spidertron to appear on the vehicle
@@ -195,15 +196,19 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
       ideal_position = {x = ideal_position.x - 2, y = ideal_position.y}
     end
   else
-    ideal_position = player.position
+    ideal_position = player_position
   end
+
+  -- Teleport player out of the way so that it isn't in the way of the collision check
+  player.teleport(10, 0)
 
   local position = surface.find_non_colliding_position(
     serialised_data.leg_name or serialised_data.name,  -- name
     ideal_position,  -- position
     10, -- radius
     1 -- precision
-  )
+    )
+  player.teleport(player_position)
 
   if not position then
     player.create_local_flying_text{
