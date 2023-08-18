@@ -22,7 +22,7 @@ local toggle_driving = {
 local direct_control = {
   type = "custom-input",
   name = "spidertron-enhancements-enter-vehicles",
-  key_sequence = "U",
+  key_sequence = "SHIFT + RETURN",
   order = "b",
 }
 
