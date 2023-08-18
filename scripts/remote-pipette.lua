@@ -33,9 +33,8 @@ local function pipette_remote(event, remote_name)
         player.play_sound{path = "utility/smart_pipette"}
       elseif remote_name == "sp-spidertron-patrol-remote" then
         -- Patrol remote is always free/temporary
-        local cursor = player.cursor_stack
-        cursor.set_stack(remote_name)
-        cursor.connected_entity = spidertron
+        -- Let SP handle it so that it can manage the blinking paths
+        remote.call("SpidertronPatrols", "give_patrol_remote", player, spidertron)
         player.play_sound{path = "utility/smart_pipette"}
       else
         -- Adapted from spidertron_lib.lua get_remotes()
