@@ -93,7 +93,11 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
 
   if remote.interfaces["aai-vehicles-ironclad"] and remote.interfaces["aai-vehicles-ironclad"].disable_this_tick then
     remote.call("aai-vehicles-ironclad", "disable_this_tick", player.index)
-  end        
+  end
+  if remote.interfaces["cargo-ships-enter"] and remote.interfaces["cargo-ships-enter"].disable_this_tick then
+    remote.call("cargo-ships-enter", "disable_this_tick", player.index)
+  end
+
 
   for radius=1, 5 do
     local nearby_entities
@@ -165,7 +169,10 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
 
   if remote.interfaces["aai-vehicles-ironclad"] and remote.interfaces["aai-vehicles-ironclad"].disable_this_tick then
     remote.call("aai-vehicles-ironclad", "disable_this_tick", player.index)
-  end        
+  end
+  if remote.interfaces["cargo-ships-enter"] and remote.interfaces["cargo-ships-enter"].disable_this_tick then
+    remote.call("cargo-ships-enter", "disable_this_tick", player.index)
+  end
 
   local dummy_spidertron = serialised_data.dummy_spidertron
   if dummy_spidertron then
