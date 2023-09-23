@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.9.0
+Date: 23 September 2023
+  Features:
+    - Added 'Shift + M' when holding a spidertron remote to view the connected spidertron in the map
+    - When a spidertron is quick-toggled, any charging robots are returned to its inventory and the player is warned about any active robots
+  Changes:
+    - Changed default keybind for 'Quick toggle spidertron' from 'U' to 'Shift + Enter'
+    - Improved visuals of spidertrons riding trains and other vehicles
+  Bugfixes:
+    - Fixed spidertrons being unable to ride ships from Cargo Ships
+---------------------------------------------------------------------------------------------------
 Version: 1.8.17
 Date: 16 June 2023
   Features:
