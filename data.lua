@@ -30,9 +30,15 @@ local open_inventory = {
   type = "custom-input",
   name = "spidertron-enhancements-open-vehicle-inventory",
   key_sequence = "SHIFT + E",
-  order = "c",
+  order = "c-a",
 }
 
+local open_in_map = {
+  type = "custom-input",
+  name = "spidertron-enhancements-open-in-map",
+  key_sequence = "SHIFT + M",
+  order = "c-b",
+}
 
 local spidertron_pipette = {
   type = "custom-input",
@@ -57,4 +63,4 @@ local disconnect_remote = {
   order = "ab"
 }
 
-data:extend{toggle_driving, direct_control, spidertron_pipette, spidertron_patrol_pipette, open_inventory, use_remote, disconnect_remote}
+data:extend{toggle_driving, direct_control, spidertron_pipette, spidertron_patrol_pipette, open_inventory, open_in_map, use_remote, disconnect_remote}

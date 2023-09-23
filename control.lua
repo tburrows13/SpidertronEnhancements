@@ -13,6 +13,7 @@ local create_corpse = require "scripts.create-corpse"
 require "scripts.disconnect-remote"
 require "scripts.remote-pipette"
 require "scripts.open-inventory"
+require "scripts.open-in-map"
 require "scripts.pathfinder"
 local recall_spidertron = require "scripts.recall-last-spidertron"
 

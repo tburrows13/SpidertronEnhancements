@@ -41,6 +41,8 @@ if remote then
     line_start,
     {"item-description.spe-open-inventory"},
     line_start,
+    {"item-description.spe-open-in-map"},
+    line_start,
     {"item-description.spe-reset-remote"},
     line_start,
     {"item-description.spe-use-pathfinder"},
