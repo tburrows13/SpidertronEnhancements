@@ -6,7 +6,15 @@
     "homepage": "https://discord.gg/pkJc4v9nfT",
     "description": "Some simple features to make your life easier whilst using a spidertron:\n - Enter a vehicle without leaving your spidertron\n - Quickly toggle between engineer and spidertron\n - Use spidertron remote pathfinder to navigate around lakes\n - Automatically sort spidertron inventories\n - Pipette remotes from inventory by hovering over spidertrons\n - Directly open the inventory of a vehicle that you are currently driving",
     "factorio_version": "1.1",
-    "dependencies": ["base >= 1.1.89", "simhelper >= 1.1.2", "? RemoteConfiguration", "(?) SpidertronWaypoints >= 1.7.2", "(?) SpidertronWeaponSwitcher >= 1.2.2", "(?) spidertron-grid", "(?) aai-vehicles-ironclad"],
+    "dependencies": [
+      "base >= 1.1.89",
+      "simhelper >= 1.1.2",
+      "? RemoteConfiguration",
+      "(?) SpidertronWaypoints >= 1.7.2",
+      "(?) SpidertronWeaponSwitcher >= 1.2.2",
+      "(?) spidertron-grid",
+      "(?) aai-vehicles-ironclad"
+    ],
     "package": {
       "ignore": ["resources/*", "scenarios/*"]
     }
