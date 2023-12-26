@@ -13,7 +13,8 @@
       "(?) SpidertronWaypoints >= 1.7.2",
       "(?) SpidertronWeaponSwitcher >= 1.2.2",
       "(?) spidertron-grid",
-      "(?) aai-vehicles-ironclad"
+      "(?) aai-vehicles-ironclad",
+      "(?) aai-programmable-vehicles"
     ],
     "package": {
       "ignore": ["resources/*", "scenarios/*"]
