@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.9.1
+Date: 26 December 2023
+  Bugfixes:
+    - Fixed crash when using "Enter vehicles" feature with AI spidertron from AAI Programmable Vehicles
+---------------------------------------------------------------------------------------------------
 Version: 1.9.0
 Date: 23 September 2023
   Features:
