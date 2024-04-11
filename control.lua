@@ -79,6 +79,10 @@ script.on_init(
 
 script.on_configuration_changed(
   function()
+    -- Added in 1.0.0? Added here for sims after removal of simhelper
+    global.stored_spidertrons = global.stored_spidertrons or {}
+    global.stored_spidertrons_personal = global.stored_spidertrons_personal or {}
+
     -- Added in 1.3.0
     global.pathfinder_requests = global.pathfinder_requests or {}
     global.pathfinder_statuses = global.pathfinder_statuses or {}
