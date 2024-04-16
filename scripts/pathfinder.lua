@@ -1,5 +1,5 @@
 local function request_path(spidertron, start_position, target_position, clicked_position, resolution, player, start_tick, index)
-  local path_collision_mask = {layers = {"water_tile"}, "colliding_with_tiles_only" = true, "consider_tile_transitions" = true}
+  local path_collision_mask = {layers = {water_tile = true}, colliding_with_tiles_only = true, consider_tile_transitions = true}
   if game.active_mods["space-exploration"] then
     path_collision_mask.layers["empty_space_tile"] = true
   end
