@@ -54,13 +54,4 @@ local spidertron_patrol_pipette = {
   order = "d-b",
 }
 
-local disconnect_remote = {
-  type = "custom-input",
-  name = "spidertron-enhancements-disconnect-remote",
-  key_sequence = "",
-  linked_game_control = "stack-split",  -- SHIFT + mouse-button-2 by default
-  consuming = "none",
-  order = "ab"
-}
-
 data:extend{toggle_driving, direct_control, spidertron_pipette, spidertron_patrol_pipette, open_inventory, open_in_map, use_remote, disconnect_remote}
