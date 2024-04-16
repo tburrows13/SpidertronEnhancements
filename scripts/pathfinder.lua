@@ -1,16 +1,13 @@
-local collision_mask_util_extended = require "__SpidertronEnhancements__.collision-mask-util-extended.control.collision-mask-util-control"
-
-
 local function request_path(spidertron, start_position, target_position, clicked_position, resolution, player, start_tick, index)
-  local path_collision_mask = {"water-tile", "colliding-with-tiles-only", "consider-tile-transitions"}
+  local path_collision_mask = {layers = {"water_tile"}, "colliding_with_tiles_only" = true, "consider_tile_transitions" = true}
   if game.active_mods["space-exploration"] then
-    table.insert(path_collision_mask, collision_mask_util_extended.get_named_collision_mask("empty-space-tile"))
+    path_collision_mask.layers["empty_space_tile"] = true
   end
-  if game.entity_prototypes["collision-mask-large-entity-layer"] then
+  if game.collision_layer_prototypes["large_entity"] then
     -- The game contains some large entities that we need to pathfind around
-    table.insert(path_collision_mask, collision_mask_util_extended.get_named_collision_mask("large-entity-layer"))
-    table.remove(path_collision_mask, 1)  -- Remove "water-tile"
-    table.remove(path_collision_mask, 1)  -- Remove "colliding-with-tiles-only"
+    path_collision_mask.layers["large_entity"] = true
+    path_collision_mask.layers["water_tile"] = nil
+    path_collision_mask.layers["colliding_with_tiles_only"] = nil
   end
   local leg = spidertron.get_spider_legs()[index]
 

@@ -15,7 +15,7 @@ local sprite_fields = {
 local function remove_hitboxes(spidertron_leg)
   spidertron_leg.collision_box = nil
   spidertron_leg.selection_box = nil
-  spidertron_leg.collision_mask = {}
+  spidertron_leg.collision_mask = {layers = {}}
   for _, field in pairs(sprite_fields) do
     spidertron_leg.graphics_set[field] = nil
   end
@@ -78,7 +78,7 @@ function create_dummy_spidertron(arguments)
       braking_force = 1,
       friction_force = 1,
       flags = {"placeable-neutral", "player-creation", "placeable-off-grid"},
-      collision_mask = {},
+      collision_mask = {layers = {}},
       minable = spidertron.minable,
       max_health = spidertron.max_health,
       resistances = spidertron.resistances,

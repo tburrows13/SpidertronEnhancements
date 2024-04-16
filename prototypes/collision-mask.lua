@@ -1,8 +1,8 @@
 -- Add custom layer to all prototypes with "player-layer" and over a certain size
 local math2d = require "math2d"
-local collision_mask_util_extended = require "__SpidertronEnhancements__.collision-mask-util-extended.data.collision-mask-util-extended"
+local collision_mask_util = require "__core__/lualib/collision-mask-util"
 
-local prototypes = collision_mask_util_extended.collect_prototypes_with_layer("player-layer")
+local prototypes = collision_mask_util.collect_prototypes_with_layer("player")
 
 local function collision_box_too_large(collision_box)
   local left_top = math2d.position.ensure_xy(collision_box[1])
@@ -14,26 +14,34 @@ local function collision_box_too_large(collision_box)
   end
 end
 
+-- Find all buildings colliding with "player" layer and bigger than 9x9, and add "large_entity" layer to them
 local large_entity_found = false
 for _, prototype in pairs(prototypes) do
   if prototype.type ~= "tile" and (prototype.collision_box and collision_box_too_large(prototype.collision_box)) then
-    log("Added large-entity-layer to entity: " .. prototype.name)
-    local large_entity_layer = collision_mask_util_extended.get_make_named_collision_mask("large-entity-layer")
-    local collision_mask = collision_mask_util_extended.get_mask(prototype)
-    collision_mask_util_extended.add_layer(collision_mask, large_entity_layer)
-    prototype.collision_mask = collision_mask
+    log("Added large_entity layer to entity: " .. prototype.name)
+    local collision_mask = collision_mask_util.get_mask(prototype)
+    collision_mask.layers["large_entity"] = true
     large_entity_found = true
   end
 end
 
+-- Add "large_entity" layer to all tiles with "player" layer so that we don't have to collide with "water_tile" when pathfinding (why?)
 if large_entity_found then
-  local large_entity_layer = collision_mask_util_extended.get_named_collision_mask("large-entity-layer")
   for _, prototype in pairs(prototypes) do
     if prototype.type == "tile" then
       log("Added large-entity-layer to tile: " .. prototype.name)
-      -- Tiles require collision_mask to be set
-      collision_mask_util_extended.add_layer(prototype.collision_mask, large_entity_layer)
+      local collision_mask = collision_mask_util.get_mask(prototype)
+      collision_mask.layers["large_entity"] = true
       large_entity_found = true
     end
   end
+end
+
+if large_entity_found then
+  data:extend{
+    {
+      type = "collision-layer",
+      name = "large_entity",
+    }
+  }
 end  
