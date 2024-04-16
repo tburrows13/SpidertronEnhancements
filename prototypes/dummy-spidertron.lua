@@ -26,8 +26,8 @@ local function adjust_graphics_set(graphics_set)
   graphics_set.base_render_layer = "entity-info-icon-above"
   graphics_set.render_layer = "entity-info-icon-above"
 
-  graphics_set.base_animation = util.empty_sprite(1)
-  graphics_set.shadow_base_animation = util.empty_sprite(1)
+  graphics_set.base_animation = util.empty_animation(1)
+  graphics_set.shadow_base_animation = util.empty_animation(1)
   return graphics_set
 end
 
@@ -108,7 +108,7 @@ function create_dummy_spidertron(arguments)
             leg = name .. "-leg-1",
             mount_position = util.by_pixel(0, 0),--{0.5, -0.75},
             ground_position = {0, 0},
-            blocking_legs = {},
+            walking_group = 1,
           },
         },
         military_target = "spidertron-military-target"
