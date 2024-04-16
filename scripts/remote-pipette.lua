@@ -26,7 +26,7 @@ local function pipette_remote(event, remote_name)
     end
 
     if spidertron and spidertron.type == "spider-vehicle" then
-      if remote_name == "spidertron-remote" then
+      if remote_name == "rts-tool" then
         local cursor = player.cursor_stack
         cursor.set_stack("rts-tool")
         cursor.connected_entity = spidertron
@@ -45,7 +45,7 @@ end
 
 script.on_event("spidertron-enhancements-spidertron-pipette",
   function(event)
-    pipette_remote(event, script.active_mods["nullius"] and "nullius-mecha-remote" or "spidertron-remote")
+    pipette_remote(event, script.active_mods["nullius"] and "nullius-mecha-remote" or "rts-tool")
   end
 )
 script.on_event("spidertron-enhancements-spidertron-patrol-pipette",

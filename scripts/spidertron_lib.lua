@@ -14,7 +14,7 @@ local function get_remotes_in_inventory(inventory, spidertron, found_remotes)
     for i = 1, #inventory do
       local item = inventory[i]
       if item.valid_for_read then  -- Check if it isn't an empty inventory slot
-        if (spidertron and item.connected_entity == spidertron) or (not spidertron and item.type == "spidertron-remote" and not item.connected_entity) then
+        if (spidertron and item.connected_entity == spidertron) or (not spidertron and item.type == "rts-tool" and not item.connected_entity) then
           found_remotes[item.item_number] = item
         end
       end
@@ -38,7 +38,7 @@ local function find_remotes(spidertron, connected_remotes)
       -- Check train wagons, cars, and (logistics) chests.
       local types = {"cargo-wagon", "container", "car", "logistic-container", "spider-vehicle"}
       for _, entity in pairs(character.surface.find_entities_filtered{position=character.position, radius=30, type=types}) do
-        if entity.get_item_count("spidertron-remote") > 0 then
+        if entity.get_item_count("rts-tool") > 0 then
           log("Found remotes in entity " .. entity.name .. ". Checking inventory " .. MAP_ENTITY_INVENTORY[entity.type])
           get_remotes_in_inventory(entity.get_inventory(MAP_ENTITY_INVENTORY[entity.type]), spidertron, connected_remotes)  -- Adds all remotes connected to spidertron to connected_remotes
         end
