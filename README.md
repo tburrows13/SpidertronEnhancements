@@ -26,10 +26,8 @@ Press `Alt + C` or click on the shortcut to call your most recently driven spide
 
 ### Spidertron remote pipette
 
-Press `Shift + Q` whilst hovering your cursor over a spidertron to select a remote from your inventory connected to that spidertron. If no connected remotes are found then an unconnected remote will be selected and connected (you can turn this off in **Per player** settings).
+Press `Shift + Q` whilst hovering your cursor over a spidertron to select a remote connected to that spidertron. 
 If you aren't hovering your cursor over a spidertron, it will pick a remote connected to the spidertron you are driving.
-
-Alternatively, there is a **Map** setting that enables picking a temporary remote without requiring you to have any remotes in your inventory.
 
 When [Spidertron Patrols](https://mods.factorio.com/mod/SpidertronPatrols) is installed, press `Control + Shift + Q` to pipette a patrol remote.
 
