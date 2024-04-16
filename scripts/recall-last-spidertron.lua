@@ -19,7 +19,7 @@ function on_player_driving_changed_state(event)
       -- Player has exited a spidertron
       player.set_shortcut_available(SHORTCUT_NAME, true)
       global.last_spidertron[player.index] = spidertron
-      local reg_id = script.register_on_entity_destroyed(spidertron)
+      local reg_id = script.register_on_object_destroyed(spidertron)
       global.destroy_registrations[reg_id] = player.index
     end
   end
@@ -46,7 +46,7 @@ script.on_event(defines.events.on_player_used_rts_tool,
   end
 )
 
-local function on_entity_destroyed(event)
+local function on_object_destroyed(event)
   local player_index = global.destroy_registrations[event.registration_number]
   if player_index then
     local player = game.get_player(player_index)
@@ -119,4 +119,4 @@ script.on_event(defines.events.on_player_created,
   end
 )
 
-return {on_init = on_init, on_entity_destroyed = on_entity_destroyed}
+return {on_init = on_init, on_object_destroyed = on_object_destroyed}

@@ -49,10 +49,10 @@ script.on_event(defines.events.on_gui_opened,
   end
 )
 
-script.on_event(defines.events.on_entity_destroyed,
+script.on_event(defines.events.on_object_destroyed,
   function(event)
-    recall_spidertron.on_entity_destroyed(event)
-    create_corpse.on_entity_destroyed(event)
+    recall_spidertron.on_object_destroyed(event)
+    create_corpse.on_object_destroyed(event)
   end
 )
 
