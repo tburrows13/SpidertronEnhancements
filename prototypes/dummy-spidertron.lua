@@ -46,13 +46,10 @@ function create_dummy_spidertron(arguments)
       collision_box = nil, --{{-1 * scale, -1 * scale}, {1 * scale, 1 * scale}},
       sticker_box = nil, --{{-1.5 * scale, -1.5 * scale}, {1.5 * scale, 1.5 * scale}},
       selection_box = {{-1 * scale, -1 * scale}, {1 * scale, 0.5 * scale}},
-      drawing_box = {{-3 * scale, -4 * scale}, {3 * scale, 2 * scale}},
       icon = "__base__/graphics/icons/spidertron.png",
       mined_sound = {filename = "__core__/sound/deconstruct-large.ogg",volume = 0.8},
       open_sound = { filename = "__base__/sound/spidertron/spidertron-door-open.ogg", volume= 0.35 },
       close_sound = { filename = "__base__/sound/spidertron/spidertron-door-close.ogg", volume = 0.4 },
-      sound_minimum_speed = 0.1,
-      sound_scaling_ratio = 0.6,
       allow_passengers = false,  -- Stops other players getting in the spidertron whilst it is on a vehicle
       working_sound =
       {
@@ -111,7 +108,6 @@ function create_dummy_spidertron(arguments)
             walking_group = 1,
           },
         },
-        military_target = "spidertron-military-target"
       }
     },
     remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 1)),
