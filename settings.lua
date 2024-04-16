@@ -44,17 +44,10 @@ data:extend({
     },
     {
         type = "bool-setting",
-        name = "spidertron-enhancements-auto-sort-inventory",
-        setting_type = "runtime-global",
-        default_value = true,
-        order = "c"
-    },
-    {
-        type = "bool-setting",
         name = "spidertron-enhancements-pipette-temporary-remote",
         setting_type = "runtime-global",
         default_value = false,
-        order = "d"
+        order = "c"
     },
     {
         type = "bool-setting",

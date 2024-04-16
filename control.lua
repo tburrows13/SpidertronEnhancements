@@ -8,7 +8,6 @@ end
 
 spidertron_lib = require "scripts.spidertron_lib"
 require "scripts.hidden-spidertron"
-require "scripts.auto-sort"
 local create_corpse = require "scripts.create-corpse"
 require "scripts.disconnect-remote"
 require "scripts.remote-pipette"
@@ -46,8 +45,6 @@ function reset_reach_distance_bonuses()
 end
 script.on_event(defines.events.on_gui_opened,
   function(event)
-    auto_sort.on_gui_opened(event)
-
     reset_reach_distance_bonuses()
   end
 )
