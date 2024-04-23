@@ -7,7 +7,7 @@ require "prototypes.corpse"
 local use_remote = {
   type = "custom-input",
   name = "spidertron-enhancements-use-alt-spidertron-remote",
-  key_sequence = "ALT + mouse-button-2",
+  key_sequence = "CONTROL + mouse-button-2",
   controller_key_sequence = "controller-lefttrigger + controller-righttrigger + controller-a",
   order = "a-b",
 }
