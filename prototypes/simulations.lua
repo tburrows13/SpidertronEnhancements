@@ -162,7 +162,7 @@ if not mods["SpidertronEngineer"] then
           game.camera_player_cursor_position = {0, 0}
 
           player.cursor_stack.set_stack({name = "rts-tool", count = 1})
-          player.cursor_stack.connected_entity = spidertron
+          player.rts_selection = {spidertron}
 
           game.camera_zoom = 0.5
           game.tick_paused = false
@@ -244,8 +244,6 @@ if not mods["SpidertronEngineer"] then
           game.camera_player = player
           game.camera_player_cursor_position = player.position
 
-          --player.cursor_stack.connected_entity = spidertron
-
           game.camera_zoom = 2
           game.tick_paused = false
           game.camera_alt_info = false
@@ -285,7 +283,7 @@ if not mods["SpidertronEngineer"] then
 
           step_4 = function()
             player.cursor_stack.set_stack({name = "rts-tool", count = 1})
-            player.cursor_stack.connected_entity = spidertron
+            player.rts_selection = {spidertron}
             local time = 0
             script.on_nth_tick(1, function()
               time = time + 1

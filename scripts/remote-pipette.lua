@@ -29,7 +29,7 @@ local function pipette_remote(event, remote_name)
       if remote_name == "rts-tool" then
         local cursor = player.cursor_stack
         cursor.set_stack("rts-tool")
-        cursor.connected_entity = spidertron
+        player.rts_selection = {spidertron}
         player.play_sound{path = "utility/smart_pipette"}
       elseif remote_name == "sp-spidertron-patrol-remote" then
         -- Let SP handle it so that it can manage the blinking paths
