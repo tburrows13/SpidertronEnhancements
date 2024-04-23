@@ -8,7 +8,6 @@
     "factorio_version": "1.1",
     "dependencies": [
       "base >= 1.1.107",
-      "? RemoteConfiguration",
       "(?) SpidertronWaypoints >= 1.7.2",
       "(?) SpidertronWeaponSwitcher >= 1.2.2",
       "(?) spidertron-grid",
