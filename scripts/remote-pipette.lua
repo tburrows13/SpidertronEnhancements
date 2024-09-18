@@ -1,5 +1,5 @@
 local function pipette_remote(event, remote_name)
-  if not game.item_prototypes[remote_name] then return end
+  if not prototypes.item[remote_name] then return end
   local player = game.get_player(event.player_index)
   if player then
     if not player.is_cursor_empty() then

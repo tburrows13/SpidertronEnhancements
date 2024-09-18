@@ -29,7 +29,7 @@ if not mods["SpidertronEngineer"] then
           spidertron.color = {0, 1, 0, 0.5}
           spidertron.torso_orientation = 0.7
           local fuel_inventory = spidertron.get_fuel_inventory()
-          if fuel_inventory and game.item_prototypes["dt-fuel"] then
+          if fuel_inventory and prototypes.item["dt-fuel"] then
             fuel_inventory.insert("dt-fuel")  -- Krastorio2
           end
 
@@ -152,7 +152,7 @@ if not mods["SpidertronEngineer"] then
           spidertron.color = {1, 0, 0, 0.5}
           --spidertron.torso_orientation = 0.4
           local fuel_inventory = spidertron.get_fuel_inventory()
-          if fuel_inventory and game.item_prototypes["dt-fuel"] then
+          if fuel_inventory and prototypes.item["dt-fuel"] then
             fuel_inventory.insert("dt-fuel")  -- Krastorio2
           end
 
