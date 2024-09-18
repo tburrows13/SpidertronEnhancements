@@ -8,26 +8,26 @@ function on_player_driving_changed_state(event)
     local player = game.get_player(event.player_index)
     if player.driving then
       -- Player has entered a spidertron
-      local following_spidertron = global.last_spidertron[player.index]
+      local following_spidertron = storage.last_spidertron[player.index]
       if following_spidertron and following_spidertron.valid and player.character and following_spidertron.follow_target == player.character then
         following_spidertron.follow_target = nil
       end
       player.set_shortcut_toggled(SHORTCUT_NAME, false)
       player.set_shortcut_available(SHORTCUT_NAME, false)
-      global.last_spidertron[player.index] = nil
+      storage.last_spidertron[player.index] = nil
     else
       -- Player has exited a spidertron
       player.set_shortcut_available(SHORTCUT_NAME, true)
-      global.last_spidertron[player.index] = spidertron
+      storage.last_spidertron[player.index] = spidertron
       local reg_id = script.register_on_object_destroyed(spidertron)
-      global.destroy_registrations[reg_id] = player.index
+      storage.destroy_registrations[reg_id] = player.index
     end
   end
 end
 
 function on_spidertron_given_new_destination(spidertron)
   -- Turn off the toggle for all players currently calling the spidertron
-  for player_index, last_spidertron in pairs(global.last_spidertron) do
+  for player_index, last_spidertron in pairs(storage.last_spidertron) do
     if last_spidertron.valid and spidertron == last_spidertron then
       local player = game.get_player(player_index)
       if player and player.valid then
@@ -47,30 +47,30 @@ script.on_event(defines.events.on_player_used_rts_tool,
 )
 
 local function on_object_destroyed(event)
-  local player_index = global.destroy_registrations[event.registration_number]
+  local player_index = storage.destroy_registrations[event.registration_number]
   if player_index then
     local player = game.get_player(player_index)
     if player then
-      local spidertron = global.last_spidertron[player.index]
+      local spidertron = storage.last_spidertron[player.index]
       if not (spidertron and spidertron.valid) then
         player.set_shortcut_toggled(SHORTCUT_NAME, false)
         player.set_shortcut_available(SHORTCUT_NAME, false)
-        global.last_spidertron[player.index] = nil
+        storage.last_spidertron[player.index] = nil
       end
     end
-    global.destroy_registrations[event.registration_number] = nil
+    storage.destroy_registrations[event.registration_number] = nil
   end
 end
 
 local function on_shortcut_pressed(event)
   local player = game.get_player(event.player_index)
-  local spidertron = global.last_spidertron[player.index]
+  local spidertron = storage.last_spidertron[player.index]
 
   local toggle_on = not player.is_shortcut_toggled(SHORTCUT_NAME)
   if toggle_on then
     if player and player.character and spidertron and spidertron.valid then
       -- Toggle off other player's shortcuts if they were calling this spidertron
-      for player_index, last_spidertron in pairs(global.last_spidertron) do
+      for player_index, last_spidertron in pairs(storage.last_spidertron) do
         if last_spidertron == spidertron then
           -- That player may be calling the current spidertron
           local other_player = game.get_player(player_index)

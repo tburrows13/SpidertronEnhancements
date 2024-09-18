@@ -28,7 +28,7 @@ remote.add_interface("SpidertronEnhancements",
 
 function reset_reach_distance_bonuses()
   -- Reset reach distance bonuses from 1.8.14 and earlier
-  local reach_distance_bonuses = global.reach_distance_bonuses or {}
+  local reach_distance_bonuses = storage.reach_distance_bonuses or {}
   for player_index, _ in pairs(reach_distance_bonuses) do
     local player = game.get_player(player_index)
     if player and player.character and (player.opened_gui_type ~= defines.gui_type.entity or player.opened.type ~= "spider-vehicle") then
@@ -36,7 +36,7 @@ function reset_reach_distance_bonuses()
       if reach_distance_bonus >= 100000 then
         player.character_reach_distance_bonus = player.character_reach_distance_bonus - 100000
       end
-      global.reach_distance_bonuses[player.index] = nil
+      storage.reach_distance_bonuses[player.index] = nil
     end
   end
 end
@@ -55,17 +55,17 @@ script.on_event(defines.events.on_object_destroyed,
 
 script.on_init(
   function()
-    global.stored_spidertrons = {}  -- Indexed by player.index
-    global.stored_spidertrons_personal = {}  -- Indexed by player.index
+    storage.stored_spidertrons = {}  -- Indexed by player.index
+    storage.stored_spidertrons_personal = {}  -- Indexed by player.index
 
-    global.pathfinder_requests = {}  -- Indexed by request_id
-    global.pathfinder_statuses = {}  -- Indexed by spidertron.unit_number, then by start_tick
+    storage.pathfinder_requests = {}  -- Indexed by request_id
+    storage.pathfinder_statuses = {}  -- Indexed by spidertron.unit_number, then by start_tick
 
-    global.last_spidertron = {}  -- Indexed by player.index
-    global.destroy_registrations = {}  -- Indexed by registration number
-    global.corpse_destroy_registrations = {}  -- Indexed by registration number
+    storage.last_spidertron = {}  -- Indexed by player.index
+    storage.destroy_registrations = {}  -- Indexed by registration number
+    storage.corpse_destroy_registrations = {}  -- Indexed by registration number
 
-    global.vehicle_to_enter_this_tick = {}  -- Indexed by game.tick
+    storage.vehicle_to_enter_this_tick = {}  -- Indexed by game.tick
 
     recall_spidertron.on_init()
   end
@@ -74,32 +74,32 @@ script.on_init(
 script.on_configuration_changed(
   function()
     -- Added in 1.0.0? Added here for sims after removal of simhelper
-    global.stored_spidertrons = global.stored_spidertrons or {}
-    global.stored_spidertrons_personal = global.stored_spidertrons_personal or {}
+    storage.stored_spidertrons = storage.stored_spidertrons or {}
+    storage.stored_spidertrons_personal = storage.stored_spidertrons_personal or {}
 
     -- Added in 1.3.0
-    global.pathfinder_requests = global.pathfinder_requests or {}
-    global.pathfinder_statuses = global.pathfinder_statuses or {}
+    storage.pathfinder_requests = storage.pathfinder_requests or {}
+    storage.pathfinder_statuses = storage.pathfinder_statuses or {}
 
     -- Added in 1.4.0
-    global.last_spidertron = global.last_spidertron or {}
-    global.destroy_registrations = global.destroy_registrations or {}
-    global.corpse_destroy_registrations = global.corpse_destroy_registrations or {}
+    storage.last_spidertron = storage.last_spidertron or {}
+    storage.destroy_registrations = storage.destroy_registrations or {}
+    storage.corpse_destroy_registrations = storage.corpse_destroy_registrations or {}
 
-    global.vehicle_to_enter_this_tick = global.vehicle_to_enter_this_tick or {}
-    global.player_last_driving_change_tick = nil  -- Removed in v1.4.0
+    storage.vehicle_to_enter_this_tick = storage.vehicle_to_enter_this_tick or {}
+    storage.player_last_driving_change_tick = nil  -- Removed in v1.4.0
 
-    global.paths_assigned_on_tick = nil  -- Removed in v1.4.3
+    storage.paths_assigned_on_tick = nil  -- Removed in v1.4.3
 
     -- Remove now-invalid spidertron prototypes
-    for i, serialised_data in pairs(global.stored_spidertrons_personal) do
+    for i, serialised_data in pairs(storage.stored_spidertrons_personal) do
       if not game.entity_prototypes[serialised_data.name] then
-        global.stored_spidertrons_personal[i] = nil
+        storage.stored_spidertrons_personal[i] = nil
       end
     end
-    for i, serialised_data in pairs(global.stored_spidertrons) do
+    for i, serialised_data in pairs(storage.stored_spidertrons) do
       if not (serialised_data.name and game.entity_prototypes[serialised_data.name]) then
-        global.stored_spidertrons[i] = nil
+        storage.stored_spidertrons[i] = nil
       end
     end
   end

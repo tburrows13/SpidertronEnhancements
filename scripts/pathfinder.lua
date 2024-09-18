@@ -23,7 +23,7 @@ local function request_path(spidertron, start_position, target_position, clicked
                       low_priority = false},
     entity_to_ignore = leg, -- not needed when only considering tiles
   }
-  global.pathfinder_requests[request_id] = {
+  storage.pathfinder_requests[request_id] = {
     spidertron = spidertron,
     start_position = start_position,
     target_position = target_position,
@@ -59,8 +59,8 @@ local function request_multiple_paths(spidertron, clicked_position, resolution, 
     end
   end
 
-  global.pathfinder_statuses[spidertron.unit_number] = global.pathfinder_statuses[spidertron.unit_number] or {}
-  global.pathfinder_statuses[spidertron.unit_number][game.tick] = {finished = 0, success = false}
+  storage.pathfinder_statuses[spidertron.unit_number] = storage.pathfinder_statuses[spidertron.unit_number] or {}
+  storage.pathfinder_statuses[spidertron.unit_number][game.tick] = {finished = 0, success = false}
 end
 
 script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
@@ -88,7 +88,7 @@ remote.add_interface("SpidertronEnhancementsInternal-pf",
 
 script.on_event(defines.events.on_script_path_request_finished,
   function(event)
-    local request_info = global.pathfinder_requests[event.id]
+    local request_info = storage.pathfinder_requests[event.id]
     if request_info then
       local spidertron = request_info.spidertron
       local player = request_info.player
@@ -103,7 +103,7 @@ script.on_event(defines.events.on_script_path_request_finished,
         local start_tick = request_info.start_tick
         local index = request_info.index
 
-        local status_table = global.pathfinder_statuses[spidertron.unit_number][start_tick]
+        local status_table = storage.pathfinder_statuses[spidertron.unit_number][start_tick]
         local autopilot_destination = spidertron.autopilot_destination
         if status_table.success then
           -- One of the other pathfinders succeeded
@@ -181,11 +181,11 @@ script.on_event(defines.events.on_script_path_request_finished,
         end
 
         if status_table.finished == total_path_requests then
-          global.pathfinder_statuses[spidertron.unit_number][start_tick] = nil
+          storage.pathfinder_statuses[spidertron.unit_number][start_tick] = nil
         end
 
       end
-      global.pathfinder_requests[event.id] = nil
+      storage.pathfinder_requests[event.id] = nil
     end
   end
 )
