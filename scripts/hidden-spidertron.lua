@@ -104,7 +104,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
     nearby_entities = player.surface.find_entities_filtered{position = spidertron.position, radius = radius, type = filtered_drivable_types()}
     if nearby_entities and #nearby_entities >= 1 then
       for _, entity_to_drive in pairs(nearby_entities) do
-        if entity_to_drive ~= spidertron and not entity_to_drive.get_driver() and entity_to_drive.prototype.allow_passengers and spidertron.minable and spidertron.prototype.mineable_properties.minable and entity_to_drive.name:sub(1, 3) ~= "se-" then
+        if entity_to_drive ~= spidertron and not entity_to_drive.get_driver() and entity_to_drive.prototype.allow_passengers and spidertron.prototype.mineable_properties.minable and entity_to_drive.name:sub(1, 3) ~= "se-" then
           --log("Found entity to drive: " .. entity_to_drive.name)
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
           serialised_data.autopilot_destination = nil
@@ -315,7 +315,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     local spidertron = player.vehicle
     if spidertron then
       local driver = spidertron.get_driver()
-      if driver and driver.object_name == "LuaEntity" and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
+      if driver and driver.object_name == "LuaEntity" and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.prototype.mineable_properties.minable then
         entered = enter_nearby_entity(player, spidertron)
         if entered then
           return
@@ -346,7 +346,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     local spidertron = player.vehicle
     if spidertron then
       local driver = spidertron.get_driver()
-      if driver and driver.object_name == "LuaEntity" and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.minable and spidertron.prototype.mineable_properties.minable then
+      if driver and driver.object_name == "LuaEntity" and driver.player == player and spidertron.type == "spider-vehicle" and spidertron.prototype.mineable_properties.minable then
           -- Only allowed if the player is the driver, not the passenger
         local personal_serialised_data = storage.stored_spidertrons_personal[player.index]
         if personal_serialised_data then
