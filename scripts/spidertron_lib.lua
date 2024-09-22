@@ -142,7 +142,6 @@ function spidertron_lib.serialise_spidertron(spidertron)
   serialised_data.color = spidertron.color
   serialised_data.entity_label = spidertron.entity_label
 
-  serialised_data.vehicle_logistic_requests_enabled = spidertron.vehicle_logistic_requests_enabled
   serialised_data.enable_logistics_while_moving = spidertron.enable_logistics_while_moving
   serialised_data.vehicle_automatic_targeting_parameters = spidertron.vehicle_automatic_targeting_parameters
 
@@ -191,6 +190,8 @@ function spidertron_lib.serialise_spidertron(spidertron)
   end
   serialised_data.logistic_slots = logistic_slots
 
+  local logistic_point = spidertron.get_logistic_point(defines.logistic_member_index.character_requester)
+  serialised_data.logistics_enabled = logistic_point.enabled
   -- Find all connected remotes in player inventories or in radius 30 around all players
   local connected_remotes = {}
   find_remotes(spidertron, connected_remotes)
@@ -224,7 +225,6 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
                             "last_user",
                             "color",
                             "entity_label",
-                            "vehicle_logistic_requests_enabled",
                             "enable_logistics_while_moving",
                             "request_from_buffers",
                             "vehicle_automatic_targeting_parameters",
@@ -297,6 +297,9 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
       end
     end
   end
+  local logistics_enabled = serialised_data.logistics_enabled
+  local logistic_point = spidertron.get_logistic_point(defines.logistic_member_index.character_requester)
+  logistic_point.enabled = logistics_enabled or serialised_data.vehicle_logistic_requests_enabled  -- legacy
 
   -- Copy across equipment grid
   local previous_grid_contents = serialised_data.equipment
