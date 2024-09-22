@@ -71,7 +71,7 @@ local function copy_inventory(old_inventory, inventory, filter_table)
     position = entity_owner.position
   end
 
-  local item_prototypes = game.item_prototypes
+  local item_prototypes = prototypes.item
   local newsize = #inventory
   for i = 1, #old_inventory do
     if i <= newsize then
@@ -303,7 +303,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
   local spidertron_grid = spidertron.grid
   if previous_grid_contents then
     for _, equipment in pairs(previous_grid_contents) do
-      if game.equipment_prototypes[equipment.name] then
+      if prototypes.equipment[equipment.name] then
         -- Only attempt deserialization if equipment prototype still exists
         if spidertron_grid then
           local placed_equipment = spidertron_grid.put( {name=equipment.name, position=equipment.position} )
