@@ -13,9 +13,9 @@ local sprite_fields = {
 
 
 local function remove_hitboxes(spidertron_leg)
-  spidertron_leg.collision_box = nil
+  --spidertron_leg.collision_box = nil
   spidertron_leg.selection_box = nil
-  spidertron_leg.collision_mask = {layers = {}}
+  --spidertron_leg.collision_mask = {layers = {}}
   for _, field in pairs(sprite_fields) do
     spidertron_leg.graphics_set[field] = nil
   end
