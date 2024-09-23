@@ -306,7 +306,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
   local spidertron_grid = spidertron.grid
   if previous_grid_contents then
     for _, equipment in pairs(previous_grid_contents) do
-      if prototypes.equipment[equipment.name] then
+      if prototypes.equipment[equipment.name] and equipment.name ~= "equipment-ghost" then  -- TODO support equipment ghost
         -- Only attempt deserialization if equipment prototype still exists
         if spidertron_grid then
           local placed_equipment = spidertron_grid.put( {name=equipment.name, position=equipment.position} )
