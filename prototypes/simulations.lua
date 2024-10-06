@@ -128,7 +128,7 @@ if not mods["SpidertronEngineer"] then
     {
       type = "tips-and-tricks-item",
       name = "spidertron-enhancements-pathfinder",
-      tag = "[item=rts-tool]",
+      tag = "[item=spidertron-remote]",
       category = "spidertron-enhancements",
       indent = 1,
       order = "zzc",
@@ -161,8 +161,8 @@ if not mods["SpidertronEngineer"] then
           game.simulation.camera_player = player
           game.simulation.camera_player_cursor_position = {0, 0}
 
-          player.cursor_stack.set_stack({name = "rts-tool", count = 1})
-          player.rts_selection = {spidertron}
+          player.cursor_stack.set_stack({name = "spidertron-remote", count = 1})
+          player.spidertron_remote_selection = {spidertron}
 
           game.simulation.camera_zoom = 0.5
           game.tick_paused = false
@@ -220,7 +220,7 @@ if not mods["SpidertronEngineer"] then
     {
       type = "tips-and-tricks-item",
       name = "spidertron-enhancements-remote-pipette",
-      tag = "[item=rts-tool]",
+      tag = "[item=spidertron-remote]",
       category = "spidertron-enhancements",
       indent = 1,
       order = "zzd",
@@ -282,8 +282,8 @@ if not mods["SpidertronEngineer"] then
 
 
           step_4 = function()
-            player.cursor_stack.set_stack({name = "rts-tool", count = 1})
-            player.rts_selection = {spidertron}
+            player.cursor_stack.set_stack({name = "spidertron-remote", count = 1})
+            player.spidertron_remote_selection = {spidertron}
             local time = 0
             script.on_nth_tick(1, function()
               time = time + 1

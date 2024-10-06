@@ -26,10 +26,10 @@ local function pipette_remote(event, remote_name)
     end
 
     if spidertron and spidertron.type == "spider-vehicle" then
-      if remote_name == "rts-tool" then
+      if remote_name == "spidertron-remote" then
         local cursor = player.cursor_stack
-        cursor.set_stack("rts-tool")
-        player.rts_selection = {spidertron}
+        cursor.set_stack("spidertron-remote")
+        player.spidertron_remote_selection = {spidertron}
         player.play_sound{path = "utility/smart_pipette"}
       elseif remote_name == "sp-spidertron-patrol-remote" then
         -- Let SP handle it so that it can manage the blinking paths
@@ -45,7 +45,7 @@ end
 
 script.on_event("spidertron-enhancements-spidertron-pipette",
   function(event)
-    pipette_remote(event, script.active_mods["nullius"] and "nullius-mecha-remote" or "rts-tool")
+    pipette_remote(event, script.active_mods["nullius"] and "nullius-mecha-remote" or "spidertron-remote")
   end
 )
 script.on_event("spidertron-enhancements-spidertron-patrol-pipette",

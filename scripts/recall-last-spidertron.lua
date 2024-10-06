@@ -37,7 +37,7 @@ function on_spidertron_given_new_destination(spidertron)
   end
 end
 
-script.on_event(defines.events.on_player_used_rts_tool,
+script.on_event(defines.events.on_player_used_spidertron_remote,
   function(event)
     if event.success then
       local spidertron = event.vehicle

@@ -23,12 +23,12 @@ for _, spidertron in pairs(spidertrons) do
 end
 
 -- Only set this here so that modded spidertron remotes are not affected
-local remote_name = "rts-tool"
+local remote_name = "spidertron-remote"
 --[[ TODO Nullius 2.0 compatibility
 if mods["nullius"] then remote_name = "nullius-mecha-remote" end
 ]]
 
-local remote = data.raw["rts-tool"][remote_name]
+local remote = data.raw["spidertron-remote"][remote_name]
 if remote then
   local font_start = "[font=default-semibold][color=255, 230, 192]"
   local font_end = "[/color][/font]"
