@@ -36,7 +36,7 @@ if not mods["SpidertronEngineer"] then
           local locomotive = game.surfaces[1].find_entities_filtered{name="locomotive", limit=1}[1]
           local train = locomotive.train
           locomotive.insert{name = "nuclear-fuel", count = 3}
-          if game.active_mods["Krastorio2"] then
+          if script.active_mods["Krastorio2"] then
             locomotive.insert{name = "advanced-fuel", count = 600}
           end
 
