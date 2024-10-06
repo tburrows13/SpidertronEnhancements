@@ -36,7 +36,8 @@ local open_inventory = {
 local open_in_map = {
   type = "custom-input",
   name = "spidertron-enhancements-open-in-map",
-  key_sequence = "SHIFT + M",
+  key_sequence = "SHIFT + TAB",
+  alternative_key_sequence = "SHIFT + M",
   order = "c-b",
 }
 
