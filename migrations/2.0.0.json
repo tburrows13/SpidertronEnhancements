@@ -1,0 +1,6 @@
+{
+  "entity":
+  [
+    "local prefix = \"spidertron-enhancements-dummy-\" local length = string.len(prefix) for k,v in pairs(mapping) do if string.sub(k, 1, length) == prefix then mapping[k] = string.sub(k, length+1) end end"
+  ]
+}
