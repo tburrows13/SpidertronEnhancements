@@ -93,12 +93,12 @@ script.on_configuration_changed(
 
     -- Remove now-invalid spidertron prototypes
     for i, serialised_data in pairs(storage.stored_spidertrons_personal) do
-      if not game.entity_prototypes[serialised_data.name] then
+      if not prototypes.entity[serialised_data.name] then
         storage.stored_spidertrons_personal[i] = nil
       end
     end
     for i, serialised_data in pairs(storage.stored_spidertrons) do
-      if not (serialised_data.name and game.entity_prototypes[serialised_data.name]) then
+      if not (serialised_data.name and prototypes.entity[serialised_data.name]) then
         storage.stored_spidertrons[i] = nil
       end
     end

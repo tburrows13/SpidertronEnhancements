@@ -219,7 +219,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
 
   if not position then
     player.create_local_flying_text{
-      text = {"cursor-message.spidertron-enhancements-cannot-create-spidertron", serialised_data.localised_name or game.entity_prototypes[serialised_data.name].localised_name},
+      text = {"cursor-message.spidertron-enhancements-cannot-create-spidertron", serialised_data.localised_name or prototypes.entity[serialised_data.name].localised_name},
       position = ideal_position
     }
     return false
@@ -351,7 +351,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
         local personal_serialised_data = storage.stored_spidertrons_personal[player.index]
         if personal_serialised_data then
           player.create_local_flying_text{
-            text = {"cursor-message.spidertron-enhancements-player-contains-spidertron", personal_serialised_data.localised_name or game.entity_prototypes[serialised_data.name].localised_name},
+            text = {"cursor-message.spidertron-enhancements-player-contains-spidertron", personal_serialised_data.localised_name or prototypes.entity[serialised_data.name].localised_name},
             position = {spidertron.position.x, spidertron.position.y - 2.5}
           }
         else

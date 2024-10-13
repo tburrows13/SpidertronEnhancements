@@ -3,7 +3,7 @@ local function request_path(spidertron, start_position, target_position, clicked
   if script.active_mods["space-exploration"] then
     path_collision_mask.layers["empty_space_tile"] = true
   end
-  if game.collision_layer_prototypes["large_entity"] then
+  if prototypes.collision_layer["large_entity"] then
     -- The game contains some large entities that we need to pathfind around
     path_collision_mask.layers["large_entity"] = true
     path_collision_mask.layers["water_tile"] = nil
