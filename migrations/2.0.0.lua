@@ -115,7 +115,11 @@ local function deserialise_spidertron(spidertron, serialised_data)
   end
 end
 
+for _, spidertron_data in pairs(storage.stored_spidertrons) do
+  spidertron_data.active = true
+end
 storage.stored_spidertrons = {}  -- This is handled in 2.0.0.json
+
 for _, player in pairs(game.players) do
   local serialised_data = storage.stored_spidertrons_personal[player.index]
   if not serialised_data then goto continue end
