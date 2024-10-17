@@ -36,10 +36,6 @@ When [Spidertron Patrols](https://mods.factorio.com/mod/SpidertronPatrols) is in
 Press `Shift + E` whilst holding a spidertron remote to open the inventory of the connected spidertron. If not holding a remote, it will open the inventory of the vehicle (not just a spidertron!) you are driving.
 Spidertron inventories will never be forcibly closed, no matter how far away the spidertron becomes from the player.
 
-### Spidertron inventory sort
-
-Spidertron inventories are automatically sorted just like the player's.
-
 ### Spidertron corpse with inventory
 
 Spidertron inventories are saved into a corpse instead of being lost when it dies.
