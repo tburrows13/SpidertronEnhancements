@@ -10,7 +10,7 @@ Press `Enter` near a vehicle whilst riding a spidertron to enter the vehicle. Co
 
 ### Quick toggle spidertron
 
-Press `U` to exit or re-enter the spidertron.
+Press `Shift + Enter` to exit or re-enter the spidertron.
 
 ![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/quick-toggle.gif)
 
