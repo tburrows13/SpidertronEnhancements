@@ -1,6 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.0
+Date: 18 October 2024
+  Features:
+    - Factorio 2.0 compatibility
+    - Changed default keybind for pathfinding from Alt+Left-click to Alt+Right-click
+    - Removed features that are now in the base game (disconnect remote, auto-sort spidertron inventories)
+---------------------------------------------------------------------------------------------------
 Version: 1.9.2
-Date: 11 April 2023
+Date: 11 April 2024
   Bugfixes:
     - Fixed simulations not working in 1.1.107
     - Fixed crash when using 'Shift + M' to view a spidertron that is on a different surface (if SE is installed, it now opens the spidertron using Navigation Satellite)
