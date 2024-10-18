@@ -29,22 +29,22 @@ if not mods["SpidertronEngineer"] then
           spidertron.color = {0, 1, 0, 0.5}
           spidertron.torso_orientation = 0.7
           local fuel_inventory = spidertron.get_fuel_inventory()
-          if fuel_inventory and game.item_prototypes["dt-fuel"] then
+          if fuel_inventory and prototypes.item["dt-fuel"] then
             fuel_inventory.insert("dt-fuel")  -- Krastorio2
           end
 
           local locomotive = game.surfaces[1].find_entities_filtered{name="locomotive", limit=1}[1]
           local train = locomotive.train
           locomotive.insert{name = "nuclear-fuel", count = 3}
-          if game.active_mods["Krastorio2"] then
+          if script.active_mods["Krastorio2"] then
             locomotive.insert{name = "advanced-fuel", count = 600}
           end
 
-          local player = game.create_test_player{name = "character"}
-          --game.camera_player = player
-          game.camera_zoom = 0.37
+          local player = game.simulation.create_test_player{name = "character"}
+          --game.simulation.camera_player = player
+          game.simulation.camera_zoom = 0.37
           game.tick_paused = false
-          game.camera_alt_info = false
+          game.simulation.camera_alt_info = false
           spidertron.set_driver(player)
 
           local train_location = {-33, -4}
@@ -109,12 +109,12 @@ if not mods["SpidertronEngineer"] then
           local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-0.5, 1.5}, force = "player"}
           spidertron.color = {0, 1, 1, 0.5}
           --spidertron.torso_orientation = 0.4
-          local player = game.create_test_player{name = "character"}
+          local player = game.simulation.create_test_player{name = "character"}
 
-          --game.camera_player = player
-          game.camera_zoom = 2
+          --game.simulation.camera_player = player
+          game.simulation.camera_zoom = 2
           game.tick_paused = false
-          game.camera_alt_info = false
+          game.simulation.camera_alt_info = false
           spidertron.set_driver(player)
 
           script.on_nth_tick(120, function(event)
@@ -152,21 +152,21 @@ if not mods["SpidertronEngineer"] then
           spidertron.color = {1, 0, 0, 0.5}
           --spidertron.torso_orientation = 0.4
           local fuel_inventory = spidertron.get_fuel_inventory()
-          if fuel_inventory and game.item_prototypes["dt-fuel"] then
+          if fuel_inventory and prototypes.item["dt-fuel"] then
             fuel_inventory.insert("dt-fuel")  -- Krastorio2
           end
 
-          local player = game.create_test_player{name = "character"}
+          local player = game.simulation.create_test_player{name = "character"}
           player.teleport{-26, 10}
-          game.camera_player = player
-          game.camera_player_cursor_position = {0, 0}
+          game.simulation.camera_player = player
+          game.simulation.camera_player_cursor_position = {0, 0}
 
           player.cursor_stack.set_stack({name = "spidertron-remote", count = 1})
-          player.cursor_stack.connected_entity = spidertron
+          player.spidertron_remote_selection = {spidertron}
 
-          game.camera_zoom = 0.5
+          game.simulation.camera_zoom = 0.5
           game.tick_paused = false
-          game.camera_alt_info = false
+          game.simulation.camera_alt_info = false
 
           -- Generate water tiles
           fill_tiles({-19, -70}, {-5, 10}, "water")
@@ -175,7 +175,7 @@ if not mods["SpidertronEngineer"] then
           destinations = {{26, 0}, {-26, 0}}
           step_1 = function()
             script.on_nth_tick(1, function()
-              local finished = game.move_cursor({position = destinations[1]})
+              local finished = game.simulation.move_cursor({position = destinations[1]})
               if finished then
                 script.on_nth_tick(1, nil)
                 step_2()
@@ -195,7 +195,7 @@ if not mods["SpidertronEngineer"] then
 
           step_3 = function()
             script.on_nth_tick(1, function()
-              local finished = game.move_cursor({position = destinations[2]})
+              local finished = game.simulation.move_cursor({position = destinations[2]})
               if finished then
                 script.on_nth_tick(1, nil)
                 step_4()
@@ -239,16 +239,14 @@ if not mods["SpidertronEngineer"] then
           local pipette_position = get_centre(spidertron.selection_box)
           --spidertron.torso_orientation = 0.4
 
-          local player = game.create_test_player{name = "character"}
+          local player = game.simulation.create_test_player{name = "character"}
           player.teleport{-4, 1.5}
-          game.camera_player = player
-          game.camera_player_cursor_position = player.position
+          game.simulation.camera_player = player
+          game.simulation.camera_player_cursor_position = player.position
 
-          --player.cursor_stack.connected_entity = spidertron
-
-          game.camera_zoom = 2
+          game.simulation.camera_zoom = 2
           game.tick_paused = false
-          game.camera_alt_info = false
+          game.simulation.camera_alt_info = false
 
           step_1 = function()
             local time = 0
@@ -263,7 +261,7 @@ if not mods["SpidertronEngineer"] then
 
           step_2 = function()
             script.on_nth_tick(1, function()
-              local finished = game.move_cursor({position = pipette_position})
+              local finished = game.simulation.move_cursor({position = pipette_position})
               if finished then
                 script.on_nth_tick(1, nil)
                 step_3()
@@ -285,7 +283,7 @@ if not mods["SpidertronEngineer"] then
 
           step_4 = function()
             player.cursor_stack.set_stack({name = "spidertron-remote", count = 1})
-            player.cursor_stack.connected_entity = spidertron
+            player.spidertron_remote_selection = {spidertron}
             local time = 0
             script.on_nth_tick(1, function()
               time = time + 1
@@ -298,8 +296,8 @@ if not mods["SpidertronEngineer"] then
 
           step_5 = function()
             script.on_nth_tick(1, function()
-              local finished = game.move_cursor({position = player.position})
-              if game.camera_player_cursor_position.x < -3 then
+              local finished = game.simulation.move_cursor({position = player.position})
+              if game.simulation.camera_player_cursor_position.x < -3 then
                 player.cursor_stack.clear()
               end
               if finished then

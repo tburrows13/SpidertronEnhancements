@@ -7,7 +7,7 @@ require "prototypes.corpse"
 local use_remote = {
   type = "custom-input",
   name = "spidertron-enhancements-use-alt-spidertron-remote",
-  key_sequence = "ALT + mouse-button-1",
+  key_sequence = "CONTROL + mouse-button-2",
   controller_key_sequence = "controller-lefttrigger + controller-righttrigger + controller-a",
   order = "a-b",
 }
@@ -36,7 +36,8 @@ local open_inventory = {
 local open_in_map = {
   type = "custom-input",
   name = "spidertron-enhancements-open-in-map",
-  key_sequence = "SHIFT + M",
+  key_sequence = "SHIFT + TAB",
+  alternative_key_sequence = "SHIFT + M",
   order = "c-b",
 }
 
@@ -52,15 +53,6 @@ local spidertron_patrol_pipette = {
   name = "spidertron-enhancements-spidertron-patrol-pipette",
   key_sequence = "CONTROL + SHIFT + Q",
   order = "d-b",
-}
-
-local disconnect_remote = {
-  type = "custom-input",
-  name = "spidertron-enhancements-disconnect-remote",
-  key_sequence = "",
-  linked_game_control = "stack-split",  -- SHIFT + mouse-button-2 by default
-  consuming = "none",
-  order = "ab"
 }
 
 data:extend{toggle_driving, direct_control, spidertron_pipette, spidertron_patrol_pipette, open_inventory, open_in_map, use_remote, disconnect_remote}

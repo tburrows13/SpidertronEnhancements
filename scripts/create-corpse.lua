@@ -83,8 +83,8 @@ function on_spidertron_died(spidertron)
       local transferred = corpse_inventory[i].transfer_stack(temp_inventory[i])
     end
 
-    local reg_id = script.register_on_entity_destroyed(corpse)
-    global.corpse_destroy_registrations[reg_id] = {position = corpse.position, surface = corpse.surface}
+    local reg_id = script.register_on_object_destroyed(corpse)
+    storage.corpse_destroy_registrations[reg_id] = {position = corpse.position, surface = corpse.surface}
 
     temp_inventory.destroy()
   end
@@ -100,15 +100,15 @@ script.on_event(defines.events.on_entity_died,
   {{filter = "type", type = "spider-vehicle"}}
 )
 
-local function on_entity_destroyed(event)
-  local corpse_data = global.corpse_destroy_registrations[event.registration_number]
+local function on_object_destroyed(event)
+  local corpse_data = storage.corpse_destroy_registrations[event.registration_number]
   if corpse_data then
     local corpse = corpse_data.surface.find_entity("spidertron-remnants", corpse_data.position)
     if corpse then
       corpse.destroy()
     end
-    global.corpse_destroy_registrations[event.registration_number] = nil
+    storage.corpse_destroy_registrations[event.registration_number] = nil
   end
 end
 
-return {on_entity_destroyed = on_entity_destroyed}
+return {on_object_destroyed = on_object_destroyed}

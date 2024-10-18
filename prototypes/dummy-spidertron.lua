@@ -13,9 +13,9 @@ local sprite_fields = {
 
 
 local function remove_hitboxes(spidertron_leg)
-  spidertron_leg.collision_box = nil
+  --spidertron_leg.collision_box = nil
   spidertron_leg.selection_box = nil
-  spidertron_leg.collision_mask = {}
+  --spidertron_leg.collision_mask = {layers = {}}
   for _, field in pairs(sprite_fields) do
     spidertron_leg.graphics_set[field] = nil
   end
@@ -26,8 +26,8 @@ local function adjust_graphics_set(graphics_set)
   graphics_set.base_render_layer = "entity-info-icon-above"
   graphics_set.render_layer = "entity-info-icon-above"
 
-  graphics_set.base_animation = util.empty_sprite(1)
-  graphics_set.shadow_base_animation = util.empty_sprite(1)
+  graphics_set.base_animation = util.empty_animation(1)
+  graphics_set.shadow_base_animation = util.empty_animation(1)
   return graphics_set
 end
 
@@ -46,13 +46,10 @@ function create_dummy_spidertron(arguments)
       collision_box = nil, --{{-1 * scale, -1 * scale}, {1 * scale, 1 * scale}},
       sticker_box = nil, --{{-1.5 * scale, -1.5 * scale}, {1.5 * scale, 1.5 * scale}},
       selection_box = {{-1 * scale, -1 * scale}, {1 * scale, 0.5 * scale}},
-      drawing_box = {{-3 * scale, -4 * scale}, {3 * scale, 2 * scale}},
       icon = "__base__/graphics/icons/spidertron.png",
       mined_sound = {filename = "__core__/sound/deconstruct-large.ogg",volume = 0.8},
       open_sound = { filename = "__base__/sound/spidertron/spidertron-door-open.ogg", volume= 0.35 },
       close_sound = { filename = "__base__/sound/spidertron/spidertron-door-close.ogg", volume = 0.4 },
-      sound_minimum_speed = 0.1,
-      sound_scaling_ratio = 0.6,
       allow_passengers = false,  -- Stops other players getting in the spidertron whilst it is on a vehicle
       working_sound =
       {
@@ -78,7 +75,7 @@ function create_dummy_spidertron(arguments)
       braking_force = 1,
       friction_force = 1,
       flags = {"placeable-neutral", "player-creation", "placeable-off-grid"},
-      collision_mask = {},
+      collision_mask = {layers = {}},
       minable = spidertron.minable,
       max_health = spidertron.max_health,
       resistances = spidertron.resistances,
@@ -108,10 +105,9 @@ function create_dummy_spidertron(arguments)
             leg = name .. "-leg-1",
             mount_position = util.by_pixel(0, 0),--{0.5, -0.75},
             ground_position = {0, 0},
-            blocking_legs = {},
+            walking_group = 1,
           },
         },
-        military_target = "spidertron-military-target"
       }
     },
     remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 1)),

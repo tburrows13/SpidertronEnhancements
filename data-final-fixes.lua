@@ -24,7 +24,9 @@ end
 
 -- Only set this here so that modded spidertron remotes are not affected
 local remote_name = "spidertron-remote"
+--[[ TODO Nullius 2.0 compatibility
 if mods["nullius"] then remote_name = "nullius-mecha-remote" end
+]]
 
 local remote = data.raw["spidertron-remote"][remote_name]
 if remote then
@@ -38,13 +40,11 @@ if remote then
     font_start,
     {"gui.instruction-when-in-cursor"},
     ":",
-    line_start,
+    --line_start,
     {"item-description.spe-open-inventory"},
-    line_start,
+    --line_start,
     {"item-description.spe-open-in-map"},
-    line_start,
-    {"item-description.spe-reset-remote"},
-    line_start,
+    --line_start,
     {"item-description.spe-use-pathfinder"},
     font_end,
   }

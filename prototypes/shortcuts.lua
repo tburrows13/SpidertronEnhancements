@@ -5,29 +5,13 @@ local recall_shortcut = {
   associated_control_input = "spidertron-enhancements-recall-shortcut",
   toggleable = true,
   order = "d[spidertron-enhancements]",
-  icon =
-  {
-    filename = "__SpidertronEnhancements__/graphics/follow-shortcut.png",
-    size = 32,
-    flags = {"gui-icon"}
-  },
-  small_icon = {
-    filename = "__SpidertronEnhancements__/graphics/follow-shortcut-24.png",
-    size = 24,
-    flags = {"gui-icon"}
-  },
-  disabled_icon = {
-    filename = "__SpidertronEnhancements__/graphics/follow-shortcut-white.png",
-    size = 32,
-    flags = {"gui-icon"}
-  },
-  disabled_small_icon =
-  {
-    filename = "__SpidertronEnhancements__/graphics/follow-shortcut-white-24.png",
-    size = 24,
-    flags = {"gui-icon"}
-  }
+  icon = "__SpidertronEnhancements__/graphics/follow-shortcut.png",
+  icon_size = 32,
+  icon_mipmaps = 1,
+  small_icon = "__SpidertronEnhancements__/graphics/follow-shortcut-24.png",
+  small_icon_size = 24,
 }
+
 local recall_input = {
 	type = "custom-input",
 	name = "spidertron-enhancements-recall-shortcut",

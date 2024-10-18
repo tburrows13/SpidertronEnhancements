@@ -1,16 +1,13 @@
-local collision_mask_util_extended = require "__SpidertronEnhancements__.collision-mask-util-extended.control.collision-mask-util-control"
-
-
 local function request_path(spidertron, start_position, target_position, clicked_position, resolution, player, start_tick, index)
-  local path_collision_mask = {"water-tile", "colliding-with-tiles-only", "consider-tile-transitions"}
-  if game.active_mods["space-exploration"] then
-    table.insert(path_collision_mask, collision_mask_util_extended.get_named_collision_mask("empty-space-tile"))
+  local path_collision_mask = {layers = {water_tile = true}, colliding_with_tiles_only = true, consider_tile_transitions = true}
+  if script.active_mods["space-exploration"] then
+    path_collision_mask.layers["empty_space_tile"] = true
   end
-  if game.entity_prototypes["collision-mask-large-entity-layer"] then
+  if prototypes.collision_layer["large_entity"] then
     -- The game contains some large entities that we need to pathfind around
-    table.insert(path_collision_mask, collision_mask_util_extended.get_named_collision_mask("large-entity-layer"))
-    table.remove(path_collision_mask, 1)  -- Remove "water-tile"
-    table.remove(path_collision_mask, 1)  -- Remove "colliding-with-tiles-only"
+    path_collision_mask.layers["large_entity"] = true
+    path_collision_mask.layers["water_tile"] = nil
+    path_collision_mask.layers["colliding_with_tiles_only"] = nil
   end
   local leg = spidertron.get_spider_legs()[index]
 
@@ -26,7 +23,7 @@ local function request_path(spidertron, start_position, target_position, clicked
                       low_priority = false},
     entity_to_ignore = leg, -- not needed when only considering tiles
   }
-  global.pathfinder_requests[request_id] = {
+  storage.pathfinder_requests[request_id] = {
     spidertron = spidertron,
     start_position = start_position,
     target_position = target_position,
@@ -62,8 +59,8 @@ local function request_multiple_paths(spidertron, clicked_position, resolution, 
     end
   end
 
-  global.pathfinder_statuses[spidertron.unit_number] = global.pathfinder_statuses[spidertron.unit_number] or {}
-  global.pathfinder_statuses[spidertron.unit_number][game.tick] = {finished = 0, success = false}
+  storage.pathfinder_statuses[spidertron.unit_number] = storage.pathfinder_statuses[spidertron.unit_number] or {}
+  storage.pathfinder_statuses[spidertron.unit_number][game.tick] = {finished = 0, success = false}
 end
 
 script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
@@ -71,13 +68,14 @@ script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
     local player = game.get_player(event.player_index)
     if player then
       local cursor_item = player.cursor_stack
-      if cursor_item and cursor_item.valid_for_read and (cursor_item.type == "spidertron-remote" and cursor_item.name ~= "sp-spidertron-patrol-remote") then
-        local spidertron = cursor_item.connected_entity
-        if spidertron and spidertron.name:sub(1, 10) ~= "ss-docked-" then
-          -- Prevent remote working on docked spidertrons from Space Spidertron
-          local clicked_position = event.cursor_position
-          spidertron.autopilot_destination = clicked_position
-          request_multiple_paths(spidertron, clicked_position, -3, player)
+      if cursor_item and cursor_item.valid_for_read and (cursor_item.type == "spidertron-remote" and cursor_item.name ~= "sp-spidertron-patrol-remote") and player.spidertron_remote_selection then
+        for _, spidertron in pairs(player.spidertron_remote_selection) do
+          if spidertron and spidertron.name:sub(1, 10) ~= "ss-docked-" then
+            -- Prevent remote working on docked spidertrons from Space Spidertron
+            local clicked_position = event.cursor_position
+            spidertron.autopilot_destination = clicked_position
+            request_multiple_paths(spidertron, clicked_position, -3, player)
+          end
         end
       end
     end
@@ -90,7 +88,7 @@ remote.add_interface("SpidertronEnhancementsInternal-pf",
 
 script.on_event(defines.events.on_script_path_request_finished,
   function(event)
-    local request_info = global.pathfinder_requests[event.id]
+    local request_info = storage.pathfinder_requests[event.id]
     if request_info then
       local spidertron = request_info.spidertron
       local player = request_info.player
@@ -105,7 +103,7 @@ script.on_event(defines.events.on_script_path_request_finished,
         local start_tick = request_info.start_tick
         local index = request_info.index
 
-        local status_table = global.pathfinder_statuses[spidertron.unit_number][start_tick]
+        local status_table = storage.pathfinder_statuses[spidertron.unit_number][start_tick]
         local autopilot_destination = spidertron.autopilot_destination
         if status_table.success then
           -- One of the other pathfinders succeeded
@@ -183,11 +181,11 @@ script.on_event(defines.events.on_script_path_request_finished,
         end
 
         if status_table.finished == total_path_requests then
-          global.pathfinder_statuses[spidertron.unit_number][start_tick] = nil
+          storage.pathfinder_statuses[spidertron.unit_number][start_tick] = nil
         end
 
       end
-      global.pathfinder_requests[event.id] = nil
+      storage.pathfinder_requests[event.id] = nil
     end
   end
 )
