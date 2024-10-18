@@ -16,7 +16,7 @@ Press `Shift + Enter` to exit or re-enter the spidertron.
 
 ### Spidertron remote pathfinder
 
-`Alt + Click` with the spidertron remote to use the pathfinder to automatically navigate around water.
+`Alt + Right-click` with the spidertron remote to use the pathfinder to automatically navigate around water.
 
 ![Demo](https://github.com/tburrows13/SpidertronEnhancements/raw/master/resources/pathfinder.gif)
 
