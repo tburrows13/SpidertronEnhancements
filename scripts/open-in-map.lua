@@ -8,6 +8,7 @@ script.on_event("spidertron-enhancements-open-in-map",
         position = spidertron.position,
         surface = spidertron.surface,
       }
+      player.centered_on = spidertron
     end
   end
 )
