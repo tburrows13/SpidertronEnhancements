@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.1
+Date: 30 October 2024
+  Bugfixes:
+    - Fixed quality of equipment was not saved when the spidertron entered a vehicle or the player
+    - Fixed crash when spidertron dies (due to an engine crash, spidertron equipment is not saved into corpses currently)
+    - Fixed crash when using 'Shift + Tab' to open the selected spidertron in remote view
+---------------------------------------------------------------------------------------------------
 Version: 1.10.0
 Date: 18 October 2024
   Features:
