@@ -35,8 +35,8 @@ function on_spidertron_died(spidertron)
     local spidertron_grid = spidertron.grid
     if spidertron_grid then
       equipment_stacks = spidertron_grid.take_all()
-      for _, count in pairs(equipment_stacks) do
-        equipment_count = equipment_count + count
+      for _, equipment_data in pairs(equipment_stacks) do
+        equipment_count = equipment_count + equipment_data.count
       end
     end
 
@@ -48,9 +48,9 @@ function on_spidertron_died(spidertron)
     end
 
     if equipment_stacks then
-      for name, count in pairs(equipment_stacks) do
-        if name ~= "tarantulator-reactor" then
-          temp_inventory.insert({name = name, count = count})
+      for _, equipment_data in pairs(equipment_stacks) do
+        if equipment_data.name ~= "tarantulator-reactor" then
+          temp_inventory.insert(equipment_data)
         end
       end
     end
