@@ -302,7 +302,9 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
         if spidertron_grid then
           local placed_equipment
           if equipment.name == "equipment-ghost" then
-            placed_equipment = spidertron_grid.put( {name=equipment.ghost_name, quality=equipment.quality, position=equipment.position, ghost=true} )
+            if equipment.ghost_name then  -- Legacy check
+              placed_equipment = spidertron_grid.put( {name=equipment.ghost_name, quality=equipment.quality, position=equipment.position, ghost=true} )
+            end
           else
             placed_equipment = spidertron_grid.put( {name=equipment.name, quality=equipment.quality, position=equipment.position} )
           end
