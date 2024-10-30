@@ -33,12 +33,15 @@ function on_spidertron_died(spidertron)
     local equipment_count = 0
     local equipment_stacks
     local spidertron_grid = spidertron.grid
+    --[[
+    -- take_all causes crash in 2.0.12, probably due to quality and/or ghost equipment
     if spidertron_grid then
       equipment_stacks = spidertron_grid.take_all()
       for _, equipment_data in pairs(equipment_stacks) do
         equipment_count = equipment_count + equipment_data.count
       end
     end
+    ]]
 
     -- Put all LuaItemStacks and equipment into a script inventory
     local temp_inventory = game.create_inventory(#inventory_stacks + equipment_count)
