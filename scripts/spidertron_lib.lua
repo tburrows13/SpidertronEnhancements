@@ -133,7 +133,10 @@ function spidertron_lib.serialise_spidertron(spidertron)
   local grid_contents = {}
   if spidertron.grid then
     for _, equipment in pairs(spidertron.grid.equipment) do
-      local equipment_data = {name=equipment.name, position=equipment.position, energy=equipment.energy, shield=equipment.shield}
+      local equipment_data = {name=equipment.name, quality=equipment.quality, position=equipment.position, energy=equipment.energy, shield=equipment.shield, to_be_removed=equipment.to_be_removed}
+      if equipment.name == "equipment-ghost" then
+        equipment_data.ghost_name = equipment.ghost_name
+      end
       if equipment.burner then  -- e.g. BurnerGenerator mod
         equipment_data.burner = serialise_burner(equipment.burner)
       end
@@ -294,13 +297,19 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
   local spidertron_grid = spidertron.grid
   if previous_grid_contents then
     for _, equipment in pairs(previous_grid_contents) do
-      if prototypes.equipment[equipment.name] and equipment.name ~= "equipment-ghost" then  -- TODO support equipment ghost
+      if prototypes.equipment[equipment.name] then
         -- Only attempt deserialization if equipment prototype still exists
         if spidertron_grid then
-          local placed_equipment = spidertron_grid.put( {name=equipment.name, position=equipment.position} )
+          local placed_equipment
+          if equipment.name == "equipment-ghost" then
+            placed_equipment = spidertron_grid.put( {name=equipment.ghost_name, quality=equipment.quality, position=equipment.position, ghost=true} )
+          else
+            placed_equipment = spidertron_grid.put( {name=equipment.name, quality=equipment.quality, position=equipment.position} )
+          end
           if placed_equipment then
             if equipment.energy then placed_equipment.energy = equipment.energy end
             if equipment.shield and equipment.shield > 0 then placed_equipment.shield = equipment.shield end
+            if equipment.to_be_removed then spidertron_grid.order_removal(placed_equipment) end
             if equipment.burner and placed_equipment.burner then
               deserialise_burner(placed_equipment.burner, equipment.burner)
             end
