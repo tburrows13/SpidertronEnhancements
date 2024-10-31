@@ -326,7 +326,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
   end
 
   -- Reconnect remotes
-  local players_selecting_spidertron = serialised_data.players_selecting_spidertron
+  local players_selecting_spidertron = serialised_data.players_selecting_spidertron or {}
   for player_index, _ in pairs(players_selecting_spidertron) do
     local player = game.get_player(player_index)
     if player and player.connected then
