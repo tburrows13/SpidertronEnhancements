@@ -105,24 +105,25 @@ local function deserialise_spidertron(spidertron, serialised_data)
             if equipment.energy then placed_equipment.energy = equipment.energy end
             if equipment.shield and equipment.shield > 0 then placed_equipment.shield = equipment.shield end
           else  -- No space in the grid because we have moved to a smaller grid
-            spidertron.surface.spill_item_stack(spidertron.position, {name=equipment.name})
+            spidertron.surface.spill_item_stack{position=spidertron.position, stack={name=equipment.name}}
           end
         else   -- No space in the grid because the grid has gone entirely
-          spidertron.surface.spill_item_stack(spidertron.position, {name=equipment.name})
+          spidertron.surface.spill_item_stack{position=spidertron.position, stack={name=equipment.name}}
         end
       end
     end
   end
 end
 
-for _, spidertron_data in pairs(storage.stored_spidertrons) do
-  spidertron_data.active = true
-end
-storage.stored_spidertrons = {}  -- This is handled in 2.0.0.json
-
 for _, player in pairs(game.players) do
   local serialised_data = storage.stored_spidertrons_personal[player.index]
   if not serialised_data then goto continue end
+
+  if not (prototypes.entity[serialised_data.name] and prototypes.entity[serialised_data.leg_name]) then
+    storage.stored_spidertrons_personal[player.index] = nil
+    goto continue
+  end
+
   local surface = player.surface
 
   local ideal_position = player.position
