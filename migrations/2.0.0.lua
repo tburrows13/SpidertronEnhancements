@@ -126,7 +126,7 @@ for _, player in pairs(game.players) do
 
   local surface = player.surface
 
-  local ideal_position = player.position
+  local ideal_position = player.physical_position
   player.teleport(10, 0)
 
   local position = surface.find_non_colliding_position(

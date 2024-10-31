@@ -193,7 +193,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
 
   local surface = player.surface
   local ideal_position
-  local player_position = player.position
+  local player_position = player.physical_position
   if vehicle_from and vehicle_from.valid then
     -- If the player pressed 'enter' then they will have been moved out of the way of the vehicle
     -- but we still want the spidertron to appear on the vehicle
