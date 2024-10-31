@@ -101,7 +101,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
 
   for radius=1, 5 do
     local nearby_entities
-    nearby_entities = player.surface.find_entities_filtered{position = spidertron.position, radius = radius, type = filtered_drivable_types()}
+    nearby_entities = player.physical_surface.find_entities_filtered{position = spidertron.position, radius = radius, type = filtered_drivable_types()}
     if nearby_entities and #nearby_entities >= 1 then
       for _, entity_to_drive in pairs(nearby_entities) do
         if entity_to_drive ~= spidertron and not entity_to_drive.get_driver() and entity_to_drive.prototype.allow_passengers and spidertron.prototype.mineable_properties.minable and entity_to_drive.name:sub(1, 3) ~= "se-" then
@@ -192,7 +192,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     end
   end
 
-  local surface = player.surface
+  local surface = player.physical_surface
   local ideal_position
   local player_position = player.physical_position
   if vehicle_from and vehicle_from.valid then
@@ -333,7 +333,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
     if not player.driving and serialised_data then
       if player.character then
         -- Ensures player is not in editor mode or Space Exploration star map
-        if not (remote.interfaces["jetpack"] and remote.call("jetpack", "get_jetpacks", {surface_index = player.surface.index})[player.character.unit_number]) then
+        if not (remote.interfaces["jetpack"] and remote.call("jetpack", "get_jetpacks", {surface_index = player.physical_surface_index})[player.character.unit_number]) then
           -- Ensures player isn't in Jetpack
           local entered = enter_spidertron(player, serialised_data)
           if entered then
@@ -391,7 +391,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
           serialised_data.passenger = nil
           serialised_data.players_selecting_spidertron = nil
 
-          local surface = player.surface
+          local surface = player.physical_surface
           driver = player.character or player  -- Simulation shenanigans
           local teleport_position = surface.find_non_colliding_position(driver.name, spidertron.position, 20, 0.1, true)
           if teleport_position then

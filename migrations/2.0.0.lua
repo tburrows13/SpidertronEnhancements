@@ -124,7 +124,7 @@ for _, player in pairs(game.players) do
     goto continue
   end
 
-  local surface = player.surface
+  local surface = player.physical_surface
 
   local ideal_position = player.physical_position
   player.teleport(10, 0)
