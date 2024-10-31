@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.2
+Date: 31 October 2024
+  Bugfixes:
+    - Fixed quality of spidertron was not saved when the spidertron entered a vehicle or the player
+    - Fixed player teleporting to remote view position when quick-toggling spidertron
+    - Fixed crash when migrating from 1.1 to 2.0 if spidertron prototypes have been removed
+---------------------------------------------------------------------------------------------------
 Version: 1.10.1
 Date: 30 October 2024
   Bugfixes:
