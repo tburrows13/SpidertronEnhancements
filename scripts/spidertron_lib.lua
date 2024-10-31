@@ -79,6 +79,7 @@ function spidertron_lib.serialise_spidertron(spidertron)
   serialised_data.version = 2  -- Allows the deserialiser to know exactly what format the data is in
   serialised_data.unit_number = spidertron.unit_number
   serialised_data.name = spidertron.name
+  serialised_data.quality = spidertron.quality
 
   serialised_data.driver_is_gunner = spidertron.driver_is_gunner
 

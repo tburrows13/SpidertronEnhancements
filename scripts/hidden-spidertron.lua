@@ -127,6 +127,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                 serialised_data.vehicle_in = entity_to_drive
                 local dummy_spidertron = surface.create_entity{
                   name = "spidertron-enhancements-dummy-" .. serialised_data.name,
+                  quality = serialised_data.quality,
                   force = player.force,
                   position = entity_to_drive.position,
                   create_build_effect_smoke = true,
@@ -226,6 +227,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
   end
   local spidertron = surface.create_entity{
     name = serialised_data.name,
+    quality = serialised_data.quality,
     position = position,
     force = serialised_data.force,
     create_build_effect_smoke = true,
