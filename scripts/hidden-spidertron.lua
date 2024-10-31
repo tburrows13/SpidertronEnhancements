@@ -387,6 +387,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
           serialised_data.autopilot_destination = nil
           serialised_data.follow_target = nil
           serialised_data.passenger = nil
+          serialised_data.players_selecting_spidertron = nil
 
           local surface = player.surface
           driver = player.character or player  -- Simulation shenanigans

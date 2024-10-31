@@ -330,7 +330,10 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
   for player_index, _ in pairs(players_selecting_spidertron) do
     local player = game.get_player(player_index)
     if player and player.connected then
-      -- TODO
+      -- Causes engine crash as of 2.0.13
+      --local spidertrons_selected = player.spidertron_remote_selection or {}
+      --table.insert(spidertrons_selected, spidertron)
+      --player.spidertron_remote_selection = spidertrons_selected
     end
   end
 
