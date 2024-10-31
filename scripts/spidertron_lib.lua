@@ -38,7 +38,7 @@ local function copy_inventory(old_inventory, inventory, filter_table)
       local transferred = inventory[i].set_stack(old_inventory[i])
       if (not transferred) and surface and position then
         -- If only part of the stack was transferred then the remainder will be spilled
-        surface.spill_item_stack(position, old_inventory[i], true, nil, false)
+        surface.spill_item_stack{position=position, stack=old_inventory[i], allow_belts=false}
       end
 
       -- Can't set filters in script inventories, so must store them separately
@@ -316,10 +316,10 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
               deserialise_burner(placed_equipment.burner, equipment.burner)
             end
           else  -- No space in the grid because we have moved to a smaller grid
-            spidertron.surface.spill_item_stack(spidertron.position, {name=equipment.name})
+            spidertron.surface.spill_item_stack{position=spidertron.position, stack={name=equipment.name, quality=equipment.quality}}
           end
         else   -- No space in the grid because the grid has gone entirely
-          spidertron.surface.spill_item_stack(spidertron.position, {name=equipment.name})
+          spidertron.surface.spill_item_stack{position=spidertron.position, stack={name=equipment.name, quality=equipment.quality}}
         end
       end
     end
