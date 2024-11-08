@@ -3,7 +3,14 @@ script.on_event("spidertron-enhancements-open-vehicle-inventory",
     local player = game.get_player(event.player_index)
     if player.opened_gui_type == defines.gui_type.none then
       if player.spidertron_remote_selection then
-        player.opened = player.spidertron_remote_selection[1]
+        local spidertron = player.spidertron_remote_selection[1]
+        if not player.can_reach_entity(spidertron) then
+          player.set_controller{
+            type = defines.controllers.remote,
+            position = player.position,
+          }
+        end
+        player.opened = spidertron
       else
         local vehicle = player.vehicle
         if vehicle and vehicle.valid then
@@ -15,4 +22,49 @@ script.on_event("spidertron-enhancements-open-vehicle-inventory",
       player.opened = nil
     end
   end
+)
+
+script.on_event("spidertron-enhancements-open-gui",
+  function(event)
+    local player = game.get_player(event.player_index)
+    if not player.is_cursor_empty() then return end
+    local selected = player.selected
+
+    if not selected then
+      -- Try from the map for trains (and other vehicles)
+      if player.render_mode == defines.render_mode.chart then
+        -- Don't need to check chart_zoomed_in because spidertrons have radars, so would be selectable
+        local position = event.cursor_position
+        local vehicles = player.surface.find_entities_filtered{type = {"locomotive", "spider-vehicle"}, position = position, radius = 4.5, limit = 1}
+        if #vehicles > 0 then
+          selected = vehicles[1]
+        end
+      end
+    end
+    if selected then
+      if not player.can_reach_entity(selected) then
+        player.set_controller{
+          type = defines.controllers.remote,
+          position = player.position,
+        }
+      end
+      player.opened = selected
+  end
+  end
+)
+
+script.on_event(defines.events.on_gui_closed,
+function(event)
+  local spidertron = event.entity
+  if spidertron and spidertron.type == "spider-vehicle" then
+    local player = game.get_player(event.player_index)
+    if not player.can_reach_entity(spidertron) then
+      player.set_controller{
+        type = defines.controllers.remote,
+        position = player.position,
+      }
+      player.opened = spidertron
+    end
+  end
+end
 )

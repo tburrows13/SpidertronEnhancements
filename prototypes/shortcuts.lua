@@ -20,4 +20,12 @@ local recall_input = {
   order = "a-a"
 }
 
-data:extend{recall_shortcut, recall_input}
+local open_gui_input = {
+  type = "custom-input",
+  name = "spidertron-enhancements-open-gui",
+  key_sequence = "",
+  linked_game_control = "open-gui",
+  order = "a",
+}
+
+data:extend{recall_shortcut, recall_input, open_gui_input}
