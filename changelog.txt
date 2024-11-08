@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.3
+Date: 8 November 2024
+  Features:
+    - Player will now enter remote view when attempting to open inventory of out-of-range spidertron
+    - Changed default keybind of 'Call last used spidertron' from Alt+C to Alt+S to avoid conflict with 2.0 copper wire shortcut
+  Bugfixes:
+    - Fixed spidertron equipment not being transferred to its corpse when the spidertron dies
+    - Fixed spidertron remote selection being lost when the spidertron enters a vehicle
+---------------------------------------------------------------------------------------------------
 Version: 1.10.2
 Date: 31 October 2024
   Bugfixes:
