@@ -7,7 +7,7 @@
     "description": "Some simple features to make your life easier whilst using a spidertron:\n - Enter a vehicle without leaving your spidertron\n - Quickly toggle between engineer and spidertron\n - Use spidertron remote pathfinder to navigate around lakes\n - Pipette remotes by hovering over spidertrons\n - Directly open the inventory of a vehicle that you are currently driving",
     "factorio_version": "2.0",
     "dependencies": [
-      "base >= 2.0.8",
+      "base >= 2.0.15",
       "(?) SpidertronWeaponSwitcher",
       "(?) spidertron-grid",
       "(?) aai-vehicles-ironclad",
