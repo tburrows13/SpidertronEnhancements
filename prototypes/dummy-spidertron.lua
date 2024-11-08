@@ -13,9 +13,9 @@ local sprite_fields = {
 
 
 local function remove_hitboxes(spidertron_leg)
-  --spidertron_leg.collision_box = nil
+  spidertron_leg.collision_box = nil
   spidertron_leg.selection_box = nil
-  --spidertron_leg.collision_mask = {layers = {}}
+  spidertron_leg.collision_mask = {layers = {}}
   for _, field in pairs(sprite_fields) do
     spidertron_leg.graphics_set[field] = nil
   end
@@ -36,80 +36,35 @@ function create_dummy_spidertron(arguments)
   local scale = arguments.scale
   local leg_scale = scale * arguments.leg_scale
   local name = "spidertron-enhancements-dummy-" .. spidertron.name
+
+  local dummy_spidertron = table.deepcopy(spidertron)
+  dummy_spidertron.name = name
+  dummy_spidertron.localised_name = {"entity-name.spidertron-enhancements-dummy-spidertron", spidertron.localised_name or {"entity-name." .. spidertron.name}}
+  dummy_spidertron.collision_box = nil
+  dummy_spidertron.sticker_box = nil
+  dummy_spidertron.selection_box = {{-1 * scale, -1 * scale}, {1 * scale, 0.5 * scale}}
+  dummy_spidertron.allow_passengers = false
+  dummy_spidertron.allow_remote_driving = false
+  dummy_spidertron.collision_mask = {layers = {}}
+  dummy_spidertron.height = 0
+  dummy_spidertron.alert_icon_shift = {0, 0}
+  dummy_spidertron.graphics_set = adjust_graphics_set(dummy_spidertron.graphics_set)
+  dummy_spidertron.spider_engine =
+  {
+    legs =
+    {
+      { -- 1
+        leg = name .. "-leg-1",
+        mount_position = util.by_pixel(0, 0),--{0.5, -0.75},
+        ground_position = {0, 0},
+        walking_group = 1,
+      },
+    },
+  }
+
   data:extend(
   {
-    {
-      type = "spider-vehicle",
-      name = name,
-      -- localised_name transforms e.g. "Spidertron MK2" into "Travelling Spidretron MK2"
-      localised_name = {"entity-name.spidertron-enhancements-dummy-spidertron", spidertron.localised_name or {"entity-name." .. spidertron.name}},
-      collision_box = nil, --{{-1 * scale, -1 * scale}, {1 * scale, 1 * scale}},
-      sticker_box = nil, --{{-1.5 * scale, -1.5 * scale}, {1.5 * scale, 1.5 * scale}},
-      selection_box = {{-1 * scale, -1 * scale}, {1 * scale, 0.5 * scale}},
-      icon = "__base__/graphics/icons/spidertron.png",
-      mined_sound = {filename = "__core__/sound/deconstruct-large.ogg",volume = 0.8},
-      open_sound = { filename = "__base__/sound/spidertron/spidertron-door-open.ogg", volume= 0.35 },
-      close_sound = { filename = "__base__/sound/spidertron/spidertron-door-close.ogg", volume = 0.4 },
-      allow_passengers = false,  -- Stops other players getting in the spidertron whilst it is on a vehicle
-      working_sound =
-      {
-        sound =
-        {
-          filename = "__base__/sound/spidertron/spidertron-vox.ogg",
-          volume = 0.35
-        },
-        activate_sound =
-        {
-          filename = "__base__/sound/spidertron/spidertron-activate.ogg",
-          volume = 0.5
-        },
-        deactivate_sound =
-        {
-          filename = "__base__/sound/spidertron/spidertron-deactivate.ogg",
-          volume = 0.5
-        },
-        match_speed_to_activity = true
-      },
-      icon_size = 64, icon_mipmaps = 4,
-      weight = 1,
-      braking_force = 1,
-      friction_force = 1,
-      flags = {"placeable-neutral", "player-creation", "placeable-off-grid"},
-      collision_mask = {layers = {}},
-      minable = spidertron.minable,
-      max_health = spidertron.max_health,
-      resistances = spidertron.resistances,
-      minimap_representation = spidertron.minimap_representation,
-      corpse = spidertron.corpse,
-      dying_explosion = spidertron.dying_explosion,
-      energy_per_hit_point = spidertron.energy_per_hit_point,
-      guns = spidertron.guns,
-      inventory_size = spidertron.inventory_size,
-      equipment_grid = spidertron.equipment_grid,
-      trash_inventory_size = spidertron.trash_inventory_size,
-      height = 0,
-      torso_rotation_speed = 0.005,
-      chunk_exploration_radius = spidertron.chunk_exploration_radius,
-      selection_priority = 51,
-      graphics_set = adjust_graphics_set(table.deepcopy(spidertron.graphics_set)),
-      burner = spidertron.burner,
-      energy_source = spidertron.energy_source,
-      movement_energy_consumption = spidertron.movement_energy_consumption,
-      automatic_weapon_cycling = spidertron.automatic_weapon_cycling,
-      chain_shooting_cooldown_modifier = spidertron.chain_shooting_cooldown_modifier,
-      spider_engine =
-      {
-        legs =
-        {
-          { -- 1
-            leg = name .. "-leg-1",
-            mount_position = util.by_pixel(0, 0),--{0.5, -0.75},
-            ground_position = {0, 0},
-            walking_group = 1,
-          },
-        },
-      }
-    },
+    dummy_spidertron,
     remove_hitboxes(make_spidertron_leg(name, leg_scale, arguments.leg_thickness, arguments.leg_movement_speed, 1)),
   })
 end
