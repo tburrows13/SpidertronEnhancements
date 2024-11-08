@@ -15,7 +15,7 @@ local recall_shortcut = {
 local recall_input = {
 	type = "custom-input",
 	name = "spidertron-enhancements-recall-shortcut",
-	key_sequence = "ALT + C",
+	key_sequence = "ALT + S",
   consuming = "none",
   order = "a-a"
 }
