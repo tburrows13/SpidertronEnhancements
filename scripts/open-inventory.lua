@@ -29,6 +29,9 @@ script.on_event("spidertron-enhancements-open-gui",
     local player = game.get_player(event.player_index)
     if not player.is_cursor_empty() then return end
     local selected = player.selected
+    if selected and selected.type ~= "spider-vehicle" then
+      selected = nil
+    end
 
     if not selected then
       -- Try from the map for trains (and other vehicles)
@@ -49,7 +52,7 @@ script.on_event("spidertron-enhancements-open-gui",
         }
       end
       player.opened = selected
-  end
+    end
   end
 )
 
