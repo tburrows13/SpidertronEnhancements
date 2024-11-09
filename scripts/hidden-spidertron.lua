@@ -331,8 +331,8 @@ local function enter_vehicles_pressed(player, force_enter_entity)
 
     local serialised_data = storage.stored_spidertrons_personal[player.index]
     if not player.driving and serialised_data then
-      if player.character then
-        -- Ensures player is not in editor mode or Space Exploration star map
+      if player.character and not player.physical_surface.platform then
+        -- Ensures player is not in editor mode or Space Exploration star map, or on space platform
         if not (remote.interfaces["jetpack"] and remote.call("jetpack", "get_jetpacks", {surface_index = player.physical_surface_index})[player.character.unit_number]) then
           -- Ensures player isn't in Jetpack
           local entered = enter_spidertron(player, serialised_data)
