@@ -35,7 +35,7 @@ script.on_event("spidertron-enhancements-open-gui",
 
     if not selected then
       -- Try from the map for trains (and other vehicles)
-      if player.render_mode == defines.render_mode.chart then
+      if player.render_mode == defines.render_mode.chart and not player.opened then
         -- Don't need to check chart_zoomed_in because spidertrons have radars, so would be selectable
         local position = event.cursor_position
         local vehicles = player.surface.find_entities_filtered{type = {"locomotive", "spider-vehicle"}, position = position, radius = 4.5, limit = 1}
