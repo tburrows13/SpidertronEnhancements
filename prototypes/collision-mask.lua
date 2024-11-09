@@ -5,8 +5,8 @@ local collision_mask_util = require "__core__/lualib/collision-mask-util"
 local prototypes = collision_mask_util.collect_prototypes_with_layer("player")
 
 local function collision_box_too_large(collision_box)
-  local left_top = math2d.position.ensure_xy(collision_box[1])
-  local right_bottom = math2d.position.ensure_xy(collision_box[2])
+  local left_top = math2d.position.ensure_xy(collision_box[1] or collision_box.left_top)
+  local right_bottom = math2d.position.ensure_xy(collision_box[2] or collision_box.right_bottom)
   local width = math.abs(right_bottom.x - left_top.x)
   local height = math.abs(right_bottom.y - left_top.y)
   if width > 9 and height > 9 then
