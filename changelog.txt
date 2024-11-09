@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.4
+Date: 9 November 2024
+  Bugfixes:
+    - Fixed clicking on non-spidertrons would open in remote view
+    - Fixed quick toggle spidertron working on space platforms
+    - Fixed error on load with Package Logistics
+---------------------------------------------------------------------------------------------------
 Version: 1.10.3
 Date: 8 November 2024
   Features:
