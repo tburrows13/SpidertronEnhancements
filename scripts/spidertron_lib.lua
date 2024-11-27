@@ -49,6 +49,11 @@ local function copy_inventory(old_inventory, inventory, filter_table)
       if load_filters and item_prototypes[filter_table[i]] then
         inventory.set_filter(i, filter_table[i])
       end
+    else
+      -- If the inventory is smaller than the old inventory, spill the remainder
+      if surface and position then
+        surface.spill_item_stack{position=position, stack=old_inventory[i], allow_belts=false}
+      end
     end
   end
   return {inventory = inventory, filters = filter_table}
