@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.5
+Date: 27 November 2024
+  Bugfixes:
+    - Fixed opening spidertron GUIs would trigger 'double click'
+    - Fixed opening spidertron GUIs would play error sound
+    - Fixed items being lost when a spidertron with toolbelt equipment entered a vehicle or the player (items are now spilled, awaiting proper fix in future)
+---------------------------------------------------------------------------------------------------
 Version: 1.10.4
 Date: 9 November 2024
   Bugfixes:
