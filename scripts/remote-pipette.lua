@@ -28,6 +28,7 @@ local function pipette_remote(event, remote_name)
     if spidertron and spidertron.type == "spider-vehicle" then
       if remote_name == "spidertron-remote" then
         local cursor = player.cursor_stack
+        if not cursor then return end
         cursor.set_stack("spidertron-remote")
         player.spidertron_remote_selection = {spidertron}
         player.play_sound{path = "utility/smart_pipette"}
