@@ -39,9 +39,12 @@ end
 
 script.on_event(defines.events.on_player_used_spidertron_remote,
   function(event)
-    if event.success then
-      local spidertron = event.vehicle
-      on_spidertron_given_new_destination(spidertron)
+    local player = game.get_player(event.player_index)  ---@cast player -?
+    local spidertrons = player.spidertron_remote_selection
+    if spidertrons then
+      for _, spidertron in pairs(spidertrons) do
+        on_spidertron_given_new_destination(spidertron)
+      end
     end
   end
 )
