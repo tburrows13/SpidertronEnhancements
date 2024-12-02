@@ -32,6 +32,7 @@ local function copy_inventory(old_inventory, inventory, filter_table)
   end
 
   local item_prototypes = prototypes.item
+  local quality_prototypes = prototypes.quality
   local newsize = #inventory
   for i = 1, #old_inventory do
     if i <= newsize then
@@ -46,7 +47,10 @@ local function copy_inventory(old_inventory, inventory, filter_table)
       if store_filters then
         filter_table[i] = old_inventory.get_filter(i)
       end
-      if load_filters and item_prototypes[filter_table[i]] then
+      if load_filters and filter_table[i] and filter_table[i].name and item_prototypes[filter_table[i].name] then
+        if filter_table[i].quality and not quality_prototypes[filter_table[i].quality] then
+          filter_table[i].quality = nil
+        end
         inventory.set_filter(i, filter_table[i])
       end
     else
