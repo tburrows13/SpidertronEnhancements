@@ -55,8 +55,10 @@ script.on_event(defines.events.on_object_destroyed,
 
 script.on_init(
   function()
-    storage.stored_spidertrons = {}  -- Indexed by player.index
-    storage.stored_spidertrons_personal = {}  -- Indexed by player.index
+    ---@type table<PlayerIndex, SerialisedDummySpidertron>
+    storage.stored_spidertrons = {}
+    ---@type table<PlayerIndex, SerialisedSpidertron>
+    storage.stored_spidertrons_personal = {}
 
     storage.pathfinder_requests = {}  -- Indexed by request_id
     storage.pathfinder_statuses = {}  -- Indexed by spidertron.unit_number, then by start_tick

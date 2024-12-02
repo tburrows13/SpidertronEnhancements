@@ -1,6 +1,6 @@
 script.on_event("spidertron-enhancements-open-in-map",
   function(event)
-    local player = game.get_player(event.player_index)
+    local player = game.get_player(event.player_index)  ---@cast player -?
     if player.spidertron_remote_selection then
       local spidertron = player.spidertron_remote_selection[1]
       player.set_controller{

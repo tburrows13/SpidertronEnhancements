@@ -1,6 +1,6 @@
 script.on_event("spidertron-enhancements-open-vehicle-inventory",
   function(event)
-    local player = game.get_player(event.player_index)
+    local player = game.get_player(event.player_index)  ---@cast player -?
     if player.opened_gui_type == defines.gui_type.none then
       if player.spidertron_remote_selection then
         local spidertron = player.spidertron_remote_selection[1]
@@ -26,7 +26,7 @@ script.on_event("spidertron-enhancements-open-vehicle-inventory",
 
 script.on_event("spidertron-enhancements-open-gui",
   function(event)
-    local player = game.get_player(event.player_index)
+    local player = game.get_player(event.player_index)  ---@cast player -?
     if not player.is_cursor_empty() then return end
     local selected = player.selected
     if selected and selected.type == "spider-vehicle" then
@@ -56,7 +56,7 @@ script.on_event(defines.events.on_gui_closed,
 function(event)
   local spidertron = event.entity
   if spidertron and spidertron.type == "spider-vehicle" then
-    local player = game.get_player(event.player_index)
+    local player = game.get_player(event.player_index)  ---@cast player -?
     if not player.can_reach_entity(spidertron) then
       player.set_controller{
         type = defines.controllers.remote,

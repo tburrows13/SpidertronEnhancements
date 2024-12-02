@@ -5,6 +5,8 @@ local corpse_blacklist = {
   ["spider-baby"] = true,  -- Broodmother
 }
 
+---@param inventory LuaInventory?
+---@param inventory_stacks LuaItemStack[]
 local function store_inventory(inventory, inventory_stacks)
   if inventory then
     for i = 1, #inventory do
@@ -16,7 +18,7 @@ local function store_inventory(inventory, inventory_stacks)
   end
 end
 
--- Kill player upon spidertron death
+---@param spidertron LuaEntity
 function on_spidertron_died(spidertron)
   if spidertron and spidertron.valid and not corpse_blacklist[spidertron.name] then
     -- Spill all spidertron items onto the ground
@@ -50,7 +52,11 @@ function on_spidertron_died(spidertron)
     if equipment_stacks then
       for _, equipment_data in pairs(equipment_stacks) do
         if equipment_data.name ~= "tarantulator-reactor" then
-          temp_inventory.insert(equipment_data)
+          temp_inventory.insert{
+            name = equipment_data.name,
+            count = equipment_data.count,
+            quality = equipment_data.quality
+          }
         end
       end
     end
@@ -72,13 +78,15 @@ function on_spidertron_died(spidertron)
       position = spidertron.position,
       inventory_size = inventory_size,
     }
+    if not corpse then return end
     corpse.color = spidertron.color  -- Doesn't work as of at least 1.1.30 (https://forums.factorio.com/viewtopic.php?f=28&t=97238)
     if string.sub(spidertron.name, 1, 20) == "spidertron-engineer-" and spidertron.last_user then
       corpse.character_corpse_player_index = spidertron.last_user.index
     end
 
     -- Copy across contents of the temporary inventory into the corpse inventory
-    local corpse_inventory = corpse.get_inventory(defines.inventory.character_corpse)
+    local corpse_inventory = corpse.get_inventory(defines.inventory.character_corpse)  ---@cast corpse_inventory -?
+
     for i = 1, inventory_size do
       local transferred = corpse_inventory[i].transfer_stack(temp_inventory[i])
     end
@@ -100,6 +108,7 @@ script.on_event(defines.events.on_entity_died,
   {{filter = "type", type = "spider-vehicle"}}
 )
 
+---@param event EventData.on_object_destroyed
 local function on_object_destroyed(event)
   local corpse_data = storage.corpse_destroy_registrations[event.registration_number]
   if corpse_data then

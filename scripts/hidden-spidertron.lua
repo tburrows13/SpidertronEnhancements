@@ -8,6 +8,10 @@ local util = require("__core__/lualib/util")
 )
 ]]
 
+---@class SerialisedDummySpidertron: SerialisedSpidertron
+---@field dummy_spidertron LuaEntity
+---@field on_vehicle LuaEntity
+
 local is_rolling_stock = {
   ["locomotive"] = true,
   ["cargo-wagon"] = true,
@@ -15,6 +19,7 @@ local is_rolling_stock = {
   ["artillery-wagon"] = true,
 }
 
+---@return string[]
 local function filtered_drivable_types()
   allowed_entities_setting = settings.global["spidertron-enhancements-enter-entity"].value
   if allowed_entities_setting == "all-except-spidertrons" then  -- Default path
@@ -28,6 +33,8 @@ local function filtered_drivable_types()
   end
 end
 
+---@param surface LuaSurface
+---@param positions MapPosition[]
 local function play_smoke(surface, positions)
   for _ = 1, 6 do
     -- Plays 6 smokes in the same area to make a thick cloud
@@ -87,6 +94,10 @@ script.on_event(defines.events.on_tick,
 )
 
 
+---@param player LuaPlayer
+---@param spidertron LuaEntity
+---@param override_vehicle_change boolean?
+---@return boolean
 local function enter_nearby_entity(player, spidertron, override_vehicle_change)
   --local allowed_into_entities = storage.allowed_into_entities
   --log("Searching for nearby entities to enter")
@@ -97,7 +108,6 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
   if remote.interfaces["cargo-ships-enter"] and remote.interfaces["cargo-ships-enter"].disable_this_tick then
     remote.call("cargo-ships-enter", "disable_this_tick", player.index)
   end
-
 
   for radius=1, 5 do
     local nearby_entities
@@ -133,6 +143,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                   create_build_effect_smoke = true,
                   raise_built = true,
                 }
+                ---@cast dummy_spidertron -?
                 dummy_spidertron.active = false
 
                 -- Has to be a specific order:
@@ -163,6 +174,12 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
   return false
 end
 
+
+---@param player LuaPlayer
+---@param serialised_data unknown
+---@param vehicle_from LuaEntity?
+---@param override_vehicle_change boolean?
+---@return boolean
 local function enter_spidertron(player, serialised_data, vehicle_from, override_vehicle_change)
   -- The player just got out of a vehicle and needs to be put back into their spidertron
   -- serialised_data may contain all the data, or just name and dummy_spidertron
@@ -208,7 +225,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
   end
 
   -- Teleport player out of the way so that it isn't in the way of the collision check
-  player.teleport(10, 0)
+  player.teleport(10, 0)  ---@diagnostic disable-line: param-type-mismatch
 
   local position = surface.find_non_colliding_position(
     serialised_data.leg_name or serialised_data.name,  -- name
@@ -233,6 +250,13 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
     create_build_effect_smoke = true,
     raise_built = true,
   }
+  if not spidertron then
+    player.create_local_flying_text{
+      text = {"cursor-message.spidertron-enhancements-cannot-create-spidertron", serialised_data.localised_name or prototypes.entity[serialised_data.name].localised_name},
+      position = ideal_position
+    }
+    return false
+  end
 
   if dummy_spidertron then
     script.raise_event(on_spidertron_replaced, {old_spidertron = dummy_spidertron, new_spidertron = spidertron})
@@ -262,7 +286,7 @@ script.on_event(defines.events.on_player_driving_changed_state,
 
     local overrides = storage.vehicle_to_enter_this_tick[game.tick]
     if overrides then
-      local player = game.get_player(event.player_index)
+      local player = game.get_player(event.player_index)  ---@cast player -?
       local override_entity = overrides[player.index]
       if override_entity and override_entity.valid then
         overrides[player.index] = nil
@@ -277,7 +301,7 @@ script.on_event(defines.events.on_player_driving_changed_state,
 
 script.on_event("spidertron-enhancements-toggle-driving",
   function(event)
-    local player = game.get_player(event.player_index)
+    local player = game.get_player(event.player_index)  ---@cast player -?
 
     local serialised_data = storage.stored_spidertrons[player.index]
     local vehicle_from = player.vehicle
@@ -300,6 +324,8 @@ script.on_event("spidertron-enhancements-toggle-driving",
 end
 )
 
+---@param player LuaPlayer
+---@param force_enter_entity boolean?
 local function enter_vehicles_pressed(player, force_enter_entity)
   -- Entering a nearby vehicle has priority
 
@@ -410,7 +436,7 @@ end
 
 script.on_event("spidertron-enhancements-enter-vehicles",
   function(event)
-    local player = game.get_player(event.player_index)
+    local player = game.get_player(event.player_index)  ---@cast player -?
     enter_vehicles_pressed(player)
   end
 )

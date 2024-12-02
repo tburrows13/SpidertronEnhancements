@@ -4,7 +4,7 @@ if settings.startup["spidertron-enhancements-enable-corpse"].value then
       type = "character-corpse",
       name = "spidertron-enhancements-corpse",
       icon = "__base__/graphics/icons/spidertron.png",
-      icon_size = 64, icon_mipmaps = 4,
+      icon_size = 64,
       minable = {mining_time = 3},
       time_to_live = 30 * 60 * 60, -- 30 minutes
       selection_box = {{-3, -3}, {3, 3}},

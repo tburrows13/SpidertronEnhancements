@@ -1,3 +1,5 @@
+--- @param event EventData.CustomInputEvent
+--- @param remote_name string
 local function pipette_remote(event, remote_name)
   if not prototypes.item[remote_name] then return end
   local player = game.get_player(event.player_index)

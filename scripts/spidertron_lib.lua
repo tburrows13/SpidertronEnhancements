@@ -1,3 +1,62 @@
+---@class SerialisedBurner
+---@field inventory LuaInventory,
+---@field burnt_result_inventory LuaInventory,
+---@field heat number
+---@field currently_burning ItemWithQualityID?
+---@field remaining_burning_fuel number
+
+---@class SerialisedEquipment
+---@field name string
+---@field quality string
+---@field position EquipmentPosition
+---@field energy number
+---@field shield number
+---@field to_be_removed boolean
+---@field ghost_name string?
+---@field burner SerialisedBurner?
+
+---@class SerialisedLogisticSection
+---@field active boolean
+---@field multiplier number
+---@field group string?
+---@field filters ItemFilter[]?
+
+---@class SerialisedSpidertron
+---@field version number?
+---@field unit_number UnitNumber?
+---@field name string?
+---@field quality string?
+---@field driver_is_gunner boolean?
+---@field driver (LuaEntity|LuaPlayer)?
+---@field walking_state LuaControl.walking_state?
+---@field passenger (LuaEntity|LuaPlayer)?
+---@field leg_name string?
+---@field localised_name LocalisedString?
+---@field force LuaForce?
+---@field torso_orientation number?
+---@field last_user LuaPlayer?
+---@field color Color?
+---@field entity_label string?
+---@field enable_logistics_while_moving boolean?
+---@field vehicle_automatic_targeting_parameters VehicleAutomaticTargetingParameters?
+---@field autopilot_destinations MapPosition[]?
+---@field follow_target LuaEntity?
+---@field follow_offset Vector?
+---@field selected_gun_index number?
+---@field health number?
+---@field request_from_buffers boolean?
+---@field trunk { inventory: LuaInventory, filters: ItemFilter[]? }?
+---@field ammo { inventory: LuaInventory, filters: ItemFilter[]? }?
+---@field trash { inventory: LuaInventory, filters: ItemFilter[]? }?
+---@field burner SerialisedBurner?
+---@field equipment SerialisedEquipment[]?
+---@field logistics_enabled boolean?
+---@field logistics_trash_not_requested boolean?
+---@field logistic_sections SerialisedLogisticSection[]?
+---@field players_selecting_spidertron table<PlayerIndex, boolean>?
+---@field players_with_gui_open LuaPlayer[]?
+
+
 MAP_ENTITY_INVENTORY = {["cargo-wagon"] = defines.inventory.cargo_wagon,
                         ["container"] = defines.inventory.chest,
                         ["car"] = defines.inventory.car_trunk,
@@ -8,6 +67,10 @@ MAP_ENTITY_INVENTORY = {["cargo-wagon"] = defines.inventory.cargo_wagon,
 
 local spidertron_lib = {}
 
+---@param old_inventory LuaInventory
+---@param inventory LuaInventory?
+---@param filter_table ItemFilter[]?
+---@return { inventory: LuaInventory, filters: ItemFilter[] }
 local function copy_inventory(old_inventory, inventory, filter_table)
   if not inventory then
     inventory = game.create_inventory(#old_inventory)
@@ -47,7 +110,7 @@ local function copy_inventory(old_inventory, inventory, filter_table)
       if store_filters then
         filter_table[i] = old_inventory.get_filter(i)
       end
-      if load_filters and filter_table[i] and filter_table[i].name and item_prototypes[filter_table[i].name] then
+      if load_filters and filter_table and filter_table[i] and filter_table[i].name and item_prototypes[filter_table[i].name] then
         if filter_table[i].quality and not quality_prototypes[filter_table[i].quality] then
           filter_table[i].quality = nil
         end
@@ -64,16 +127,21 @@ local function copy_inventory(old_inventory, inventory, filter_table)
 end
 spidertron_lib.copy_inventory = copy_inventory
 
+---@param burner LuaBurner
+---@return SerialisedBurner
 local function serialise_burner(burner)
-  local serialised_data = {}
-  serialised_data.inventory = copy_inventory(burner.inventory).inventory
-  serialised_data.burnt_result_inventory = copy_inventory(burner.burnt_result_inventory).inventory
-  serialised_data.heat = burner.heat
-  serialised_data.currently_burning = burner.currently_burning
-  serialised_data.remaining_burning_fuel = burner.remaining_burning_fuel
+  local serialised_data = {
+    inventory = copy_inventory(burner.inventory).inventory,
+    burnt_result_inventory = copy_inventory(burner.burnt_result_inventory).inventory,
+    heat = burner.heat,
+    currently_burning = burner.currently_burning,
+    remaining_burning_fuel = burner.remaining_burning_fuel,
+  }
   return serialised_data
 end
 
+---@param burner LuaBurner
+---@param serialised_data SerialisedBurner
 local function deserialise_burner(burner, serialised_data)
   copy_inventory(serialised_data.inventory, burner.inventory)
   copy_inventory(serialised_data.burnt_result_inventory, burner.burnt_result_inventory)
@@ -83,6 +151,8 @@ local function deserialise_burner(burner, serialised_data)
 end
 
 
+---@param spidertron LuaEntity
+---@return SerialisedSpidertron
 function spidertron_lib.serialise_spidertron(spidertron)
   local serialised_data = {}
   serialised_data.version = 2  -- Allows the deserialiser to know exactly what format the data is in
@@ -131,9 +201,12 @@ function spidertron_lib.serialise_spidertron(spidertron)
 
 
   -- Inventories
-  serialised_data.trunk = copy_inventory(spidertron.get_inventory(defines.inventory.spider_trunk))
-  serialised_data.ammo = copy_inventory(spidertron.get_inventory(defines.inventory.spider_ammo))
-  serialised_data.trash = copy_inventory(spidertron.get_inventory(defines.inventory.spider_trash))
+  local spider_trunk = spidertron.get_inventory(defines.inventory.spider_trunk)  ---@cast spider_trunk -?
+  serialised_data.trunk = copy_inventory(spider_trunk)
+  local spider_ammo = spidertron.get_inventory(defines.inventory.spider_ammo)  ---@cast spider_ammo -?
+  serialised_data.ammo = copy_inventory(spider_ammo)
+  local spider_trash = spidertron.get_inventory(defines.inventory.spider_trash)  ---@cast spider_trash -?
+  serialised_data.trash = copy_inventory(spider_trash)
 
   if spidertron.burner then
     serialised_data.burner = serialise_burner(spidertron.burner)
@@ -201,7 +274,9 @@ function spidertron_lib.serialise_spidertron(spidertron)
   return serialised_data
 end
 
-
+---@param spidertron LuaEntity
+---@param serialised_data SerialisedSpidertron
+---@param transfer_player_state boolean?
 function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, transfer_player_state)
   -- Copy all data in serialised_data into spidertron
   -- Set `serialised_data` fields to `nil` to prevent that attribute of `spidertron` being overwritten
@@ -393,7 +468,6 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
       end
     end
   end
-
 end
 
 return spidertron_lib

@@ -1,3 +1,11 @@
+---@param spidertron LuaEntity
+---@param start_position MapPosition
+---@param target_position MapPosition
+---@param clicked_position MapPosition
+---@param resolution integer
+---@param player LuaPlayer
+---@param start_tick integer
+---@param index integer
 local function request_path(spidertron, start_position, target_position, clicked_position, resolution, player, start_tick, index)
   local path_collision_mask = {layers = {water_tile = true}, colliding_with_tiles_only = true, consider_tile_transitions = true}
   if script.active_mods["space-exploration"] then
@@ -35,6 +43,10 @@ local function request_path(spidertron, start_position, target_position, clicked
   }
 end
 
+---@param spidertron LuaEntity
+---@param clicked_position MapPosition
+---@param resolution integer
+---@param player LuaPlayer
 local function request_multiple_paths(spidertron, clicked_position, resolution, player)
   if util.distance(spidertron.position, clicked_position) < 10 then
     spidertron.autopilot_destination = clicked_position
@@ -83,7 +95,7 @@ script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
 )
 
 remote.add_interface("SpidertronEnhancementsInternal-pf",
-  {["use-remote"] = function(spidertron, position) request_multiple_paths(spidertron, position, -1, {valid = true}) end}
+  {["use-remote"] = function(spidertron, position) request_multiple_paths(spidertron, position, -1, {valid = true} --[[@as LuaPlayer]]) end}
 )
 
 script.on_event(defines.events.on_script_path_request_finished,
