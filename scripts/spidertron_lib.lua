@@ -143,7 +143,7 @@ function spidertron_lib.serialise_spidertron(spidertron)
   local grid_contents = {}
   if spidertron.grid then
     for _, equipment in pairs(spidertron.grid.equipment) do
-      local equipment_data = {name=equipment.name, quality=equipment.quality, position=equipment.position, energy=equipment.energy, shield=equipment.shield, to_be_removed=equipment.to_be_removed}
+      local equipment_data = {name=equipment.name, quality=equipment.quality.name, position=equipment.position, energy=equipment.energy, shield=equipment.shield, to_be_removed=equipment.to_be_removed}
       if equipment.name == "equipment-ghost" then
         equipment_data.ghost_name = equipment.ghost_name
       end
