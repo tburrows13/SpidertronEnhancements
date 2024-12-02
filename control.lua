@@ -15,17 +15,6 @@ require "scripts.open-in-map"
 require "scripts.pathfinder"
 local recall_spidertron = require "scripts.recall-last-spidertron"
 
-on_spidertron_replaced = script.generate_event_name()
-remote.add_interface("SpidertronEnhancements",
-  {
-    get_events = function()
-      return {
-        on_spidertron_replaced = on_spidertron_replaced,
-      }
-    end
-  }
-)
-
 function reset_reach_distance_bonuses()
   -- Reset reach distance bonuses from 1.8.14 and earlier
   local reach_distance_bonuses = storage.reach_distance_bonuses or {}

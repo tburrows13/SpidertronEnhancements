@@ -149,7 +149,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                 -- Has to be a specific order:
                 -- Raise event when both spidertrons are valid
                 -- Destroy spidertron before deserialising into new one because deserialise_spidertron does checks on remote connected_entity validity
-                script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron, new_spidertron = dummy_spidertron})
+                script.raise_event("on_spidertron_replaced", {old_spidertron = spidertron, new_spidertron = dummy_spidertron})
                 spidertron.destroy()
                 spidertron_lib.deserialise_spidertron(dummy_spidertron, serialised_data)
 
@@ -259,7 +259,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
   end
 
   if dummy_spidertron then
-    script.raise_event(on_spidertron_replaced, {old_spidertron = dummy_spidertron, new_spidertron = spidertron})
+    script.raise_event("on_spidertron_replaced", {old_spidertron = dummy_spidertron, new_spidertron = spidertron})
     dummy_spidertron.destroy()
   end
 
@@ -421,7 +421,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
           driver = player.character or player  -- Simulation shenanigans
           local teleport_position = surface.find_non_colliding_position(driver.name, spidertron.position, 20, 0.1, true)
           if teleport_position then
-            --script.raise_event(on_spidertron_replaced, {old_spidertron = spidertron})
+            --script.raise_event("on_spidertron_replaced", {old_spidertron = spidertron})
             play_smoke(surface, {spidertron.position})
             surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = spidertron.position}
             spidertron.destroy()

@@ -4,6 +4,11 @@ require "prototypes.simulations"
 require "prototypes.shortcuts"
 require "prototypes.corpse"
 
+data:extend{{
+  type = "custom-event",
+  name = "on_spidertron_replaced",
+}}
+
 local use_remote = {
   type = "custom-input",
   name = "spidertron-enhancements-use-alt-spidertron-remote",
@@ -55,4 +60,4 @@ local spidertron_patrol_pipette = {
   order = "d-b",
 }
 
-data:extend{toggle_driving, direct_control, spidertron_pipette, spidertron_patrol_pipette, open_inventory, open_in_map, use_remote, disconnect_remote}
+data:extend{toggle_driving, direct_control, spidertron_pipette, spidertron_patrol_pipette, open_inventory, open_in_map, use_remote}
