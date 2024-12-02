@@ -155,25 +155,27 @@ function spidertron_lib.serialise_spidertron(spidertron)
   end
   serialised_data.equipment = grid_contents
 
-  local logistic_point = spidertron.get_logistic_point(defines.logistic_member_index.character_requester)
-  serialised_data.logistics_enabled = logistic_point.enabled
-  serialised_data.logistics_trash_not_requested = logistic_point.trash_not_requested
+  local logistic_point = spidertron.get_logistic_point(defines.logistic_member_index.character_requester)  ---@cast logistic_point LuaLogisticPoint
+  if logistic_point then
+    serialised_data.logistics_enabled = logistic_point.enabled
+    serialised_data.logistics_trash_not_requested = logistic_point.trash_not_requested
 
-  local sections = {}
-  for i = 1, 100 do
-    local section = logistic_point.get_section(i)
-    if not section then break end
-    local seralised_section = {}
-    seralised_section.active = section.active
-    seralised_section.multiplier = section.multiplier
-    if section.group ~= "" then
-      seralised_section.group = section.group
-    else
-      seralised_section.filters = section.filters
+    local sections = {}
+    for i = 1, 100 do
+      local section = logistic_point.get_section(i)
+      if not section then break end
+      local seralised_section = {}
+      seralised_section.active = section.active
+      seralised_section.multiplier = section.multiplier
+      if section.group ~= "" then
+        seralised_section.group = section.group
+      else
+        seralised_section.filters = section.filters
+      end
+      sections[i] = seralised_section
     end
-    sections[i] = seralised_section
+    serialised_data.logistic_sections = sections
   end
-  serialised_data.logistic_sections = sections
 
   -- Find all connected remotes in player inventories or in radius 30 around all players
   local players_selecting_spidertron = {}
@@ -276,30 +278,32 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
     deserialise_burner(spidertron.burner, burner)
   end
 
-  local logistic_point = spidertron.get_logistic_point(defines.logistic_member_index.character_requester)
-  logistic_point.enabled = serialised_data.logistics_enabled
-  logistic_point.trash_not_requested = serialised_data.logistics_trash_not_requested
-  for i, section in pairs(serialised_data.logistic_sections) do
-    local logistic_section
-    if i == 1 then
-      -- First section is always present
-      logistic_section = logistic_point.get_section(1)
-      if section.group then
-        logistic_section.group = section.group
+  local logistic_point = spidertron.get_logistic_point(defines.logistic_member_index.character_requester)  ---@cast logistic_point LuaLogisticPoint
+  if logistic_point then
+    logistic_point.enabled = serialised_data.logistics_enabled
+    logistic_point.trash_not_requested = serialised_data.logistics_trash_not_requested
+    for i, section in pairs(serialised_data.logistic_sections) do
+      local logistic_section
+      if i == 1 then
+        -- First section is always present
+        logistic_section = logistic_point.get_section(1)
+        if section.group then
+          logistic_section.group = section.group
+        else
+          logistic_section.filters = section.filters
+        end
       else
-        logistic_section.filters = section.filters
+        -- New sections beyond 1st
+        if section.group then
+          logistic_section = logistic_point.add_section(section.group)
+        else
+          logistic_section = logistic_point.add_section()
+          logistic_section.filters = section.filters
+        end
       end
-    else
-      -- New sections beyond 1st
-      if section.group then
-        logistic_section = logistic_point.add_section(section.group)
-      else
-        logistic_section = logistic_point.add_section()
-        logistic_section.filters = section.filters
-      end
+      logistic_section.active = section.active
+      logistic_section.multiplier = section.multiplier
     end
-    logistic_section.active = section.active
-    logistic_section.multiplier = section.multiplier
   end
 
   -- Copy across equipment grid
