@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.6
+Date: 5 December 2024
+  Bugfixes:
+    - Fixed crash when pressing Control + Q whilst respawning
+    - Fixed crash when being used with Lex's Aircraft
+    - Fixed filters being lost when a spidertron enters a vehicle or the player
+---------------------------------------------------------------------------------------------------
 Version: 1.10.5
 Date: 27 November 2024
   Bugfixes:
