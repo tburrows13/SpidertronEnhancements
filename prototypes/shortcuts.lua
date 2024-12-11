@@ -1,6 +1,7 @@
 local recall_shortcut = {
   type = "shortcut",
   name = "spidertron-enhancements-recall-shortcut",
+  localised_name = {"shortcut-name.spidertron-enhancements-recall-shortcut", SPIDERTRON_NAME},
   action = "lua",
   associated_control_input = "spidertron-enhancements-recall-shortcut",
   toggleable = true,

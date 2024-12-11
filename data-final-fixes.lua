@@ -22,6 +22,8 @@ for _, spidertron in pairs(spidertrons) do
   end
 end
 
+data.raw["shortcut"]["give-spidertron-remote"].localised_name = {"shortcut-name.spidertron-enhancements-make-spidertron-remote", SPIDERTRON_NAME}
+
 -- Only set this here so that modded spidertron remotes are not affected
 local remote_name = "spidertron-remote"
 --[[ TODO Nullius 2.0 compatibility
@@ -30,6 +32,7 @@ if mods["nullius"] then remote_name = "nullius-mecha-remote" end
 
 local remote = data.raw["spidertron-remote"][remote_name]
 if remote then
+  remote.localised_name = {"item-name.spe-spidertron-remote", SPIDERTRON_NAME_CAPITALISED}
   local font_start = "[font=default-semibold][color=255, 230, 192]"
   local font_end = "[/color][/font]"
   local line_start = "\n  •   "
@@ -41,11 +44,11 @@ if remote then
     {"gui.instruction-when-in-cursor"},
     ":",
     --line_start,
-    {"item-description.spe-open-inventory"},
+    {"item-description.spe-open-inventory", SPIDERTRON_NAME},
     --line_start,
-    {"item-description.spe-open-in-map"},
+    {"item-description.spe-open-in-map", SPIDERTRON_NAME},
     --line_start,
-    {"item-description.spe-use-pathfinder"},
+    {"item-description.spe-use-pathfinder", SPIDERTRON_NAME},
     font_end,
   }
 end
