@@ -13,7 +13,7 @@ script.on_event("spidertron-enhancements-open-vehicle-inventory",
         player.opened = spidertron
       else
         local vehicle = player.vehicle or player.physical_vehicle
-        if vehicle and vehicle.valid then
+        if vehicle then
           player.opened = vehicle
         end
       end

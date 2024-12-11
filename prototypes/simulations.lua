@@ -1,12 +1,17 @@
 if not mods["SpidertronEngineer"] then
   data:extend{
     {
+      type = "tips-and-tricks-item-category",
+      name = "spidertron-enhancements",
+      order = "-a[spidertron-enhancements]"
+    },
+    {
       type = "tips-and-tricks-item",
       name = "spidertron-enhancements",
       tag = "[entity=spidertron]",
       category = "spidertron-enhancements",
       is_title = true,
-      order = "z",
+      order = "a",
       trigger = {type = "build-entity", entity = "spidertron", match_type_only = true}
     },
     {
@@ -15,7 +20,7 @@ if not mods["SpidertronEngineer"] then
       tag = "[entity=spidertron][entity=locomotive][entity=car]",
       category = "spidertron-enhancements",
       indent = 1,
-      order = "zza",
+      order = "b",
       trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
       simulation = {
         save = "__SpidertronEnhancements__/simulations/SpidertronEnhancementsSim.zip",
@@ -100,7 +105,7 @@ if not mods["SpidertronEngineer"] then
       tag = "[entity=spidertron][entity=character]",
       category = "spidertron-enhancements",
       indent = 1,
-      order = "zzb",
+      order = "c",
       trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
       simulation = {
         mods = {"SpidertronEnhancements"},
@@ -131,7 +136,7 @@ if not mods["SpidertronEngineer"] then
       tag = "[item=spidertron-remote]",
       category = "spidertron-enhancements",
       indent = 1,
-      order = "zzc",
+      order = "d",
       trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
       simulation = {
         save = "__SpidertronEnhancements__/simulations/SpidertronEnhancementsSim.zip",
@@ -223,7 +228,7 @@ if not mods["SpidertronEngineer"] then
       tag = "[item=spidertron-remote]",
       category = "spidertron-enhancements",
       indent = 1,
-      order = "zzd",
+      order = "e",
       trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
       simulation = {
         mods = {"SpidertronEnhancements"},
@@ -282,6 +287,7 @@ if not mods["SpidertronEngineer"] then
 
 
           step_4 = function()
+            game.simulation.control_press{control = "spidertron-enhancements-spidertron-patrol-pipette", notify = true}
             player.cursor_stack.set_stack({name = "spidertron-remote", count = 1})
             player.spidertron_remote_selection = {spidertron}
             local time = 0
