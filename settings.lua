@@ -50,12 +50,20 @@ data:extend({
         order = "b",
     },
     {
+        type = "string-setting",
+        name = "spidertron-enhancements-spiderton-requires-fuel",
+        setting_type = "startup",
+        default_value = "Default",
+        allowed_values = {"Yes", "Default", "No"},
+        order = "c",
+    },
+    {
         type = "double-setting",
         name = "spidertron-enhancements-sound-pause",
         setting_type = "startup",
         default_value = 0,
         minimum_value = 0,
-        order = "c",
+        order = "d",
     },
     {
         type = "double-setting",
@@ -63,7 +71,7 @@ data:extend({
         setting_type = "startup",
         default_value = 1,
         minimum_value = 0,
-        order = "d",
+        order = "e",
     }
 })
 
