@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.7
+Date: 12 December 2024
+  Features:
+    - Added mod setting to enable fuel requirement for spidertron
+    - Names of some things will change from "spidertron" to "vehicle" when Lex's Aircraft or Maraxsis (submarines) are installed
+  Bugfixes:
+    - Fixed some tips and tricks not behaving correctly
+---------------------------------------------------------------------------------------------------
 Version: 1.10.6
 Date: 5 December 2024
   Bugfixes:
