@@ -5,7 +5,7 @@ data:extend{
   {
     type = "tips-and-tricks-item-category",
     name = "spidertron-enhancements",
-    order = "-a[spidertron-enhancements]"
+    order = "--a[spidertron-enhancements]"
   },
   {
     type = "tips-and-tricks-item",
@@ -14,6 +14,7 @@ data:extend{
     category = "spidertron-enhancements",
     is_title = true,
     order = "a",
+    starting_status = "unlocked",
     trigger = {type = "build-entity", entity = "spidertron", match_type_only = true}
   },
   {
@@ -23,6 +24,7 @@ data:extend{
     category = "spidertron-enhancements",
     indent = 1,
     order = "b",
+    starting_status = "unlocked",
     trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
     simulation = simulations.enter_train
   },
@@ -33,6 +35,7 @@ data:extend{
     category = "spidertron-enhancements",
     indent = 1,
     order = "c",
+    starting_status = "unlocked",
     trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
     simulation = simulations.quick_toggle
   },
@@ -43,6 +46,7 @@ data:extend{
     category = "spidertron-enhancements",
     indent = 1,
     order = "d",
+    starting_status = "unlocked",
     trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
     simulation = simulations.pathfinder
   },
@@ -53,6 +57,7 @@ data:extend{
     category = "spidertron-enhancements",
     indent = 1,
     order = "e",
+    starting_status = "unlocked",
     trigger = {type = "build-entity", entity = "spidertron", match_type_only = true},
     simulation = simulations.remote_pipette
   },

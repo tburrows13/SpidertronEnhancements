@@ -1,79 +1,105 @@
 local simulations = {}
 
+local insert_fuel_function = [[
+  local function insert_fuel_into_vehicle(vehicle, preferred_fuel)
+    local burner = vehicle.burner
+    if burner then
+      local fuel_categories = burner.fuel_categories
+      for fuel_category, _ in pairs(fuel_categories) do
+        local fuel_items = prototypes.get_item_filtered{{filter = "fuel-category", ["fuel-category"] = fuel_category}}
+        if preferred_fuel and fuel_items[preferred_fuel] then
+          local burner_inventory = vehicle.get_inventory(defines.inventory.fuel)
+          burner_inventory.insert{name = preferred_fuel, count = 1000}
+        else
+          for fuel_item, _ in pairs(fuel_items) do
+            local burner_inventory = vehicle.get_inventory(defines.inventory.fuel)
+            burner_inventory.insert{name = fuel_item, count = 1000}
+          end
+        end
+      end
+    end
+  end
+]]
+
 simulations.enter_train = {
-  save = "__SpidertronEnhancements__/simulations/SpidertronEnhancementsSim.zip",
   mods = {"SpidertronEnhancements"},
-  init =
-  [[
-    local bp="0eNq9mdtu2zAMht9F185gijrYud4b7HIoCtfxUmGOHfjQrijy7pPipGkzFiExbDctFNufSVG/SFOv6qGdm/0QukmtX1Wo+25U6++vagzbrmrTb9PLvlFrFaZmpzLVVbs0GqrQqkOmQrdpfqk1HO4y1XRTmEKzPH8cvNx38+6hGeINb0/W8/DUbFZHQKb2/Rif6bv0osjRmXpR6xUUEb0JQ1Mv19wh+4OoeUTIaSQSSHxDjlOkbR+nT6ArOEHtR6gnoIYLBaShQEAtz/mVOSH1baRj22lpOy0B9WIo3ra0YEM9DaUsLcVQuG1pWnxMaklTKVMBpNSSYSpTT/asp/y2RAGZzIJmUhoFtp40kM6TM2qlUM+YUbaijCeh1G4CbEU5gaUXRbV93e/6KTw1xG5y0qiJxH4IEVItV+OSqPu2H9J9w3G4jX+/aLCucNo7a23uAE2OqHMEHTkPx5RQpdtMWeRYxpvjPzAOncbcuMKn7SUlnTFhu7lum2pY/ZibNi0Mygu2hM+OeAqjL5pNlG41Tv2eYOBlesfzRKhv/TzUaer+yXxQ1rL3Ao3keqDkoLUUykhZmp1djSWhlBy0kUL97S1GM7OrM2c9UBAnXY10fNl61/SskfEtpFBGVtZs+RkkoVR8MZdCLaPMA2loyP0G+SrxpMNUaJCZMnFJwzljCg2TWFBETRHZ2dIA6TgZFLFegAzKRS91NWz71XO1jU9+BkEilYXuKY77IV7u5ralXlIIbaVNLUXbjLm9eEwutItc10YqD3LjMloUiGPpJ4+EQaGtZMo3RlSnAkMjxgrrNEZeMlKJlKSznlXf6PKE+Fjlvy92vjbjFLpl9P8qHiMWH6k+w1SfXtR3/QVNfe5YtvxOk3v9sUctJMtWIwIfyk5diHwoW4to+VB2gYeeD2WLEwWBcsKsyIJ6Yf3DghbCopkFLYVfuxyo45d//EA5tqIsP1COrSjLD5STZjcgE7qTtkw4bU0na0Fet18NhXTCvhYwGibOS6GMLwgnbUFCybBU2oIERs3gc2EHVsNtSz0Iodfuk5ZqYfddM1qlHiXnDtowfDeic4drJCVzb4VHBNeeYzp9GevHZjO3p+OXSx8vjaF4d8NyvPNny+q5CtN93Xeb4xsXTITsq6G5P50BxQIvO58HTWGXnppC/XNMO/XhLrn2WXX49/C75OTxEGr97swqU0/NMC5TW4Dxpfa61AjoDoff7kG9Jg=="
+  init = insert_fuel_function .. [[
+    require("__core__/lualib/story")
+
+    game.surfaces[1].build_checkerboard{{-100, -70}, {100, 70}}
+    local bp="0eNq9mc1u4jAQx9/F54Diz9g97xvscYVQCF5qbYhREuhWFe++4wRKl7rVzK7UAxAH5+exx2OP/3lhm/boD33oRvbwwkITu4E9/HhhQ9h1dZvudfXeswfW16Fl54KFbut/swd+XhXMd2MYg5+fmArP6+643/geKhTXJ5tjf/LbRQIsalawQxzgqdglOJAWQhXsGX6tA/w29L6Z/+XiXLzDilfsMAJx9zhO4ByW57EqQ5VoKnd4qsJTKzxV46kaTzV4qsRTKzyV4C2LphKc5dBQgq94iaYSfMU5mkrwFceHFsFXHB1aFCg6sij9RwcWxVXouKLMKnRYEeY/R0cVJVQ5Oqwoy4pAhxVlCRTosKIs1wIdVpStRUjs9praz1FNjqqy1E1ud70aW2E2bY3liiqPzVpr0NbK6+SSf2OzxlZYrOSv1BzHojMgeZmllUWY57DYa6eBmkt58FvTq3k6C7qFTeJ0i2GMh098AJQCmqzn/9j3eOwbD/Wb2MY+VYYvsG0H30vBtbFGVEZrXRouVSmlKCVPE2ozbRl1qqacLaWDyvDDlZFGyFIZ+4G96IB8Y3GOI+kDmJ0oUpENynNuUdbGJu7jGE7+M2tgegGj3rR+3cZdGMbQDOunxwDlfTyFDlzws24HX7DYB2js4rLyC31l6GPMs6CKPMZ5jiUbZFwW5FBRc11izN3qbd+G0DcPruvm0tf5RpXUIc2PhHpzUqz7XVw81bupI+8GVC11WdnJ6Amnl6UR+h8n8RL6J6wWruJaS1sK5Uohlax0OuOeoGbsoZXu2LY5owV5cTfmzoU5rKQu7vdUXuawirxTGo6wVlN3yntq3lpDzkL0fRaSPY5X1CzkHpulWrLQoTXGWkdWOu65WfWgJEsdKCwnax0orCCLHSisJKsdKKwiyx0orKbqHSiqoQoeKGpFFTxQVEsVPFBURxU8MFRTEgUPFJQTBQ8UVBAFDxRUEgUPFFQRBQ8UVFMFDxTVUAUPFLWiCh4oqqUKHiiqowoeGGpVUgWP99QVJM3No98e28sri9sxKZWlflNhSqB9E/vt5X3I+wPrUx3GdRO77dT6XA14h7r36/H5kEyFRLxgl+sx7NNTkJ/+GtIycV6lbn6Uxf8/fHWeOjzG5lcCdfM4XHsDd+cT46ZOV4rPxsS5cL0tdWKE0e+hjdubooKdfD9MZmsjnHJOw0dxC2emP66VgNU="
     game.surfaces[1].create_entities_from_blueprint_string{string = bp, position = {0, 0}}
 
     local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-10, 0}, force = "player"}
     spidertron.color = {0, 1, 0, 0.5}
     spidertron.torso_orientation = 0.7
-    local fuel_inventory = spidertron.get_fuel_inventory()
-    if fuel_inventory and prototypes.item["dt-fuel"] then
-      fuel_inventory.insert("dt-fuel")  -- Krastorio2
-    end
+    insert_fuel_into_vehicle(spidertron)
 
     local locomotive = game.surfaces[1].find_entities_filtered{name="locomotive", limit=1}[1]
     local train = locomotive.train
-    locomotive.insert{name = "nuclear-fuel", count = 3}
-    if script.active_mods["Krastorio2"] then
-      locomotive.insert{name = "advanced-fuel", count = 600}
-    end
+    train.manual_mode = true
+    insert_fuel_into_vehicle(locomotive, "nuclear-fuel")
 
     local player = game.simulation.create_test_player{name = "character"}
-    --game.simulation.camera_player = player
-    game.simulation.camera_zoom = 0.37
+    game.simulation.camera_player = player
+    game.simulation.camera_zoom = 0.54
     game.tick_paused = false
     game.simulation.camera_alt_info = false
+    game.simulation.hide_cursor = true
     spidertron.set_driver(player)
 
-    local train_location = {-33, -4}
-    spidertron.autopilot_destination = train_location
+    local train_location = {-31, 0.5}
 
-    script.on_event(defines.events.on_spider_command_completed,
-      function(event)
-        script.on_nth_tick(120,
-          function()
-            remote.call("SpidertronEnhancementsInternal-hs", "enter-vehicles", player)
-            train.manual_mode = false
-            script.on_nth_tick(120, nil)
+    local story_table =
+    {
+      {
+        {
+          name = "start",
+          condition = story_elapsed_check(0.2),
+          action = function()
+            insert_fuel_into_vehicle(spidertron)
+            insert_fuel_into_vehicle(locomotive, "nuclear-fuel")
+            spidertron.autopilot_destination = train_location
           end
-        )
-        script.on_event(defines.events.on_spider_command_completed, nil)
-      end
-    )
-
-    script.on_event(defines.events.on_train_changed_state,
-      function(event)
-        if event.old_state == defines.train_state.arrive_station and train.station then
-          log("Train arrived")
-          if train.station.backer_name == "Source" then
-            train.manual_mode = true
-            locomotive.insert{name = "solid-fuel", count = 150}
-            script.on_nth_tick(120,
-              function()
-                remote.call("SpidertronEnhancementsInternal-hs", "enter-vehicles", player)
-                train.manual_mode = false
-                script.on_nth_tick(120, nil)
-              end
-            )
-
-          elseif train.station.backer_name == "Destination" then
-            script.on_nth_tick(60,
-            function()
-              spidertron = remote.call("SpidertronEnhancementsInternal-hs", "enter-vehicles", player)
-              spidertron.autopilot_destination = train_location
-              script.on_nth_tick(60, nil)
-            end
-          )
+        },
+        {
+          condition = function() return not spidertron.autopilot_destination end,
+        },
+        {
+          condition = story_elapsed_check(1),
+          action = function() remote.call("SpidertronEnhancementsInternal-hs", "enter-vehicles", player) end
+        },
+        {
+          condition = story_elapsed_check(0.5),
+          action = function() train.manual_mode = false end
+        },
+        {
+          condition = function() return train.station and train.station.backer_name == "Destination" end,
+        },
+        {
+          condition = story_elapsed_check(0.5),
+          action = function() remote.call("SpidertronEnhancementsInternal-hs", "enter-vehicles", player) end
+        },
+        {
+          condition = story_elapsed_check(0.5),
+          action = function()
+            -- spidertron becomes invalid during serialisation
+            spidertron = game.surfaces[1].find_entities_filtered{name = "spidertron"}[1]
+            spidertron.autopilot_destination = train_location
           end
-        end
-        log("Changed state from " .. event.old_state)
-      end
-    )
+        },
+        {
+          condition = function() return train.station and train.station.backer_name == "Source" end,
+          action = function() train.manual_mode = true end
+        },
+        {
+          action = function()
+            story_jump_to(storage.story, "start")
+          end
+        }
+      }
+    }
+    tip_story_init(story_table)
   ]]
 }
 
@@ -101,11 +127,10 @@ simulations.quick_toggle = {
 }
 
 simulations.pathfinder = {
+  -- Pathfinder fails when not using save
   save = "__SpidertronEnhancements__/simulations/SpidertronEnhancementsSim.zip",
   mods = {"SpidertronEnhancements"},
-  init =
-  [[
-
+  init = insert_fuel_function .. [[
     local function fill_tiles(left_top, right_bottom, tile)
       local tiles = {}
       for i = left_top[1], right_bottom[1] do
@@ -118,10 +143,7 @@ simulations.pathfinder = {
     local spidertron = game.surfaces[1].create_entity{name = "spidertron", position = {-26, 0}, force = "player"}
     spidertron.color = {1, 0, 0, 0.5}
     --spidertron.torso_orientation = 0.4
-    local fuel_inventory = spidertron.get_fuel_inventory()
-    if fuel_inventory and prototypes.item["dt-fuel"] then
-      fuel_inventory.insert("dt-fuel")  -- Krastorio2
-    end
+    insert_fuel_into_vehicle(spidertron)
 
     local player = game.simulation.create_test_player{name = "character"}
     player.teleport{-26, 10}
@@ -141,6 +163,7 @@ simulations.pathfinder = {
 
     destinations = {{26, 0}, {-26, 0}}
     step_1 = function()
+      insert_fuel_into_vehicle(spidertron)
       script.on_nth_tick(1, function()
         local finished = game.simulation.move_cursor({position = destinations[1]})
         if finished then
@@ -241,9 +264,7 @@ simulations.remote_pipette = {
 
 
     step_4 = function()
-      game.simulation.control_press{control = "spidertron-enhancements-spidertron-patrol-pipette", notify = true}
-      player.cursor_stack.set_stack({name = "spidertron-remote", count = 1})
-      player.spidertron_remote_selection = {spidertron}
+      game.simulation.control_press{control = "spidertron-enhancements-spidertron-pipette", notify = true}
       local time = 0
       script.on_nth_tick(1, function()
         time = time + 1
