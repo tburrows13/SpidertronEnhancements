@@ -7,7 +7,7 @@ end
 
 require "prototypes.spidertron-scale"
 require "prototypes.spidertron-transitions"
-require "prototypes.simulations"
+require "prototypes.tips-and-tricks"
 require "prototypes.shortcuts"
 require "prototypes.corpse"
 
