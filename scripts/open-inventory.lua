@@ -57,7 +57,7 @@ function(event)
   local spidertron = event.entity
   if spidertron and spidertron.type == "spider-vehicle" then
     local player = game.get_player(event.player_index)  ---@cast player -?
-    if not player.can_reach_entity(spidertron) then
+    if not player.can_reach_entity(spidertron) and player.controller_type == defines.controllers.character then
       player.set_controller{
         type = defines.controllers.remote,
         position = player.position,
