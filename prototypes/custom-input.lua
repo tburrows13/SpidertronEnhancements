@@ -1,31 +1,72 @@
-local recall_shortcut = {
-  type = "shortcut",
-  name = "spidertron-enhancements-recall-shortcut",
-  localised_name = {"shortcut-name.spidertron-enhancements-recall-shortcut", SPIDERTRON_NAME},
-  action = "lua",
-  associated_control_input = "spidertron-enhancements-recall-shortcut",
-  toggleable = true,
-  order = "d[spidertron-enhancements]",
-  icon = "__SpidertronEnhancements__/graphics/follow-shortcut.png",
-  icon_size = 32,
-  small_icon = "__SpidertronEnhancements__/graphics/follow-shortcut-24.png",
-  small_icon_size = 24,
+data:extend{
+  {
+    type = "shortcut",
+    name = "spidertron-enhancements-recall-shortcut",
+    localised_name = {"shortcut-name.spidertron-enhancements-recall-shortcut", SPIDERTRON_NAME},
+    action = "lua",
+    associated_control_input = "spidertron-enhancements-recall-shortcut",
+    toggleable = true,
+    order = "d[spidertron-enhancements]",
+    icon = "__SpidertronEnhancements__/graphics/follow-shortcut.png",
+    icon_size = 32,
+    small_icon = "__SpidertronEnhancements__/graphics/follow-shortcut-24.png",
+    small_icon_size = 24,
+  },
+  {
+    type = "custom-input",
+    name = "spidertron-enhancements-recall-shortcut",
+    key_sequence = "ALT + S",
+    consuming = "none",
+    order = "a-a"
+  },
+  {
+    type = "custom-input",
+    name = "spidertron-enhancements-use-alt-spidertron-remote",
+    key_sequence = "CONTROL + mouse-button-2",
+    controller_key_sequence = "controller-lefttrigger + controller-righttrigger + controller-a",
+    order = "a-b",
+  },
+  {
+    type = "custom-input",
+    name = "spidertron-enhancements-enter-vehicles",
+    key_sequence = "SHIFT + RETURN",
+    order = "b",
+  },
+  {
+    type = "custom-input",
+    name = "spidertron-enhancements-open-vehicle-inventory",
+    key_sequence = "SHIFT + E",
+    order = "c-a",
+  },
+  {
+    type = "custom-input",
+    name = "spidertron-enhancements-open-in-map",
+    key_sequence = "SHIFT + TAB",
+    alternative_key_sequence = "SHIFT + M",
+    order = "c-b",
+  },
+  {
+    type = "custom-input",
+    name = "spidertron-enhancements-spidertron-pipette",
+    key_sequence = "SHIFT + Q",
+    order = "d-a",
+  },
+  {
+    type = "custom-input",
+    name = "spidertron-enhancements-spidertron-patrol-pipette",
+    key_sequence = "CONTROL + SHIFT + Q",
+    order = "d-b",
+  },
+  {
+    type = "custom-input",
+    name = "spidertron-enhancements-open-gui",
+    key_sequence = "",
+    linked_game_control = "open-gui",
+  },
+  {
+    type = "custom-input",
+    name = "spidertron-enhancements-toggle-driving",
+    key_sequence = "",
+    linked_game_control = "toggle-driving",
+  },
 }
-
-local recall_input = {
-	type = "custom-input",
-	name = "spidertron-enhancements-recall-shortcut",
-	key_sequence = "ALT + S",
-  consuming = "none",
-  order = "a-a"
-}
-
-local open_gui_input = {
-  type = "custom-input",
-  name = "spidertron-enhancements-open-gui",
-  key_sequence = "",
-  linked_game_control = "open-gui",
-  order = "a",
-}
-
-data:extend{recall_shortcut, recall_input, open_gui_input}
