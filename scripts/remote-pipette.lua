@@ -24,7 +24,7 @@ local function pipette_remote(event, remote_name)
     end
     if not (spidertron and spidertron.type == "spider-vehicle") then
       -- Try the player's current vehicle
-      spidertron = player.vehicle
+      spidertron = player.vehicle or player.physical_vehicle
     end
 
     if spidertron and spidertron.type == "spider-vehicle" then
