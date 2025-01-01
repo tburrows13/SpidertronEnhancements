@@ -3,6 +3,7 @@ if settings.startup["spidertron-enhancements-enable-corpse"].value then
     {
       type = "character-corpse",
       name = "spidertron-enhancements-corpse",
+      localised_name = {"entity-name.spidertron-enhancements-corpse", SPIDERTRON_NAME_CAPITALISED},
       icon = "__base__/graphics/icons/spidertron.png",
       icon_size = 64,
       minable = {mining_time = 3},

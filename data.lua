@@ -1,8 +1,8 @@
-SPIDERTRON_NAME = "spidertron"
-SPIDERTRON_NAME_CAPITALISED = "Spidertron"
+SPIDERTRON_NAME = {"spe-dynamic-entity-name.spidertron-lowercase"}
+SPIDERTRON_NAME_CAPITALISED = {"entity-name.spidertron"}
 if mods["maraxsis"] or mods["lex-aircraft"] then
-  SPIDERTRON_NAME = "vehicle"
-  SPIDERTRON_NAME_CAPITALISED = "Vehicle"
+  SPIDERTRON_NAME = {"spe-dynamic-entity-name.vehicle-lowercase"}
+  SPIDERTRON_NAME_CAPITALISED = {"spe-dynamic-entity-name.vehicle"}
 end
 
 require "prototypes.spidertron-scale"
