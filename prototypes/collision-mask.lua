@@ -21,18 +21,18 @@ for _, prototype in pairs(prototypes) do
     log("Added large_entity layer to entity: " .. prototype.name)
     local collision_mask = collision_mask_util.get_mask(prototype)
     collision_mask.layers["large_entity"] = true
+    prototype.collision_mask = collision_mask
     large_entity_found = true
   end
 end
 
--- Add "large_entity" layer to all tiles with "player" layer so that we don't have to collide with "water_tile" when pathfinding (why?)
+-- Add "large_entity" layer to all tiles with "player" layer so that we can use only "large_entity" layer for pathfinding
 if large_entity_found then
   for _, prototype in pairs(prototypes) do
     if prototype.type == "tile" then
       log("Added large-entity-layer to tile: " .. prototype.name)
       local collision_mask = collision_mask_util.get_mask(prototype)
       collision_mask.layers["large_entity"] = true
-      large_entity_found = true
     end
   end
 end

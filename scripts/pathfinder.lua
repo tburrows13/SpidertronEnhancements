@@ -7,18 +7,19 @@
 ---@param start_tick integer
 ---@param index integer
 local function request_path(spidertron, start_position, target_position, clicked_position, resolution, player, start_tick, index)
-  local path_collision_mask = {layers = {water_tile = true}, colliding_with_tiles_only = true, consider_tile_transitions = true}
-  if script.active_mods["space-exploration"] then
-    path_collision_mask.layers["empty_space_tile"] = true
-  end
-  if prototypes.collision_layer["large_entity"] then
-    -- The game contains some large entities that we need to pathfind around
-    path_collision_mask.layers["large_entity"] = true
-    path_collision_mask.layers["water_tile"] = nil
-    path_collision_mask.layers["colliding_with_tiles_only"] = nil
-  end
   local leg = spidertron.get_spider_legs()[index]
 
+  local leg_collision_mask = leg.prototype.collision_mask
+  local path_collision_mask = {layers = leg_collision_mask.layers, colliding_with_tiles_only = true, consider_tile_transitions = true}
+  --if script.active_mods["space-exploration"] then
+  --  path_collision_mask.layers["empty_space_tile"] = true
+  --end
+  if leg_collision_mask.layers["player"] and prototypes.collision_layer["large_entity"] then
+    -- "large_entity" layer is added to all >9x9 which collide with "player" layer
+    -- Since we now aren't using `colliding_with_tiles_only`, can't use exact leg_collision_mask
+    -- Using "large_entity" layer instead is a suitable approximation
+    path_collision_mask = {layers = {large_entity = true}, colliding_with_tiles_only = false, consider_tile_transitions = true}
+  end
   local request_id = spidertron.surface.request_path{
     bounding_box = {{-0.01, -0.01}, {0.01, 0.01}},
     collision_mask = path_collision_mask,
