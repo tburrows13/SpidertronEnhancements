@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.8
+Date: 15 January 2024
+  Changes:
+    - Improved shortcut icon to match new vanilla shortcut icons
+  Bugfixes:
+    - Fixed pathfinder not working correctly on Gleba
+    - Fixed not being able to close spidertron inventories that are open on another surface
+---------------------------------------------------------------------------------------------------
 Version: 1.10.7
 Date: 12 December 2024
   Features:
