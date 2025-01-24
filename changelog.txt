@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.10.8
-Date: 15 January 2024
+Date: 15 January 2025
   Changes:
     - Improved shortcut icon to match new vanilla shortcut icons
   Bugfixes:
