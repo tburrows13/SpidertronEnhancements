@@ -6,6 +6,7 @@ do
   end
 end
 
+util = require "util"
 spidertron_lib = require "scripts.spidertron_lib"
 require "scripts.hidden-spidertron"
 local create_corpse = require "scripts.create-corpse"
@@ -44,7 +45,7 @@ script.on_event(defines.events.on_object_destroyed,
 
 script.on_init(
   function()
-    ---@type table<PlayerIndex, SerialisedDummySpidertron>
+    ---@type table<PlayerIndex, SerialisedSpidertron|SerialisedDummySpidertron>
     storage.stored_spidertrons = {}
     ---@type table<PlayerIndex, SerialisedSpidertron>
     storage.stored_spidertrons_personal = {}

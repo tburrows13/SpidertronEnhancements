@@ -1,5 +1,3 @@
-local util = require("__core__/lualib/util")
-
 -- Intended for SpidertronEngineer compatibility but not used because
 -- SpidertronEngineer turns off all of the following features instead
 --[[
@@ -8,9 +6,11 @@ local util = require("__core__/lualib/util")
 )
 ]]
 
----@class SerialisedDummySpidertron: SerialisedSpidertron
+---@class SerialisedDummySpidertron
+---@field name string
 ---@field dummy_spidertron LuaEntity
 ---@field on_vehicle LuaEntity
+---@field leg_name string
 
 local is_rolling_stock = {
   ["locomotive"] = true,
@@ -117,7 +117,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
         if entity_to_drive ~= spidertron and not entity_to_drive.get_driver() and entity_to_drive.prototype.allow_passengers and spidertron.prototype.mineable_properties.minable and entity_to_drive.name:sub(1, 3) ~= "se-" then
           --log("Found entity to drive: " .. entity_to_drive.name)
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
-          serialised_data.autopilot_destination = nil
+          serialised_data.autopilot_destinations = nil
           serialised_data.follow_target = nil
           local surface = entity_to_drive.surface
 
@@ -133,8 +133,9 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                 storage.vehicle_to_enter_this_tick[game.tick][player.index] = entity_to_drive
               end
 
+              ---@type SerialisedDummySpidertron
+              local serialised_dummy_data
               if settings.global["spidertron-enhancements-show-spider-on-vehicle"].value then
-                serialised_data.vehicle_in = entity_to_drive
                 local dummy_spidertron = surface.create_entity{
                   name = "spidertron-enhancements-dummy-" .. serialised_data.name,
                   quality = serialised_data.quality,
@@ -154,13 +155,12 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                 spidertron_lib.deserialise_spidertron(dummy_spidertron, serialised_data)
 
                 -- Only store the information that is lost because we are going via the dummy
-                serialised_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive, leg_name = serialised_data.leg_name}
+                serialised_dummy_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive, leg_name = serialised_data.leg_name}
               else
                 spidertron.destroy()
               end
 
-
-              storage.stored_spidertrons[player.index] = serialised_data
+              storage.stored_spidertrons[player.index] = serialised_dummy_data or serialised_data
 
               entity_to_drive.surface.play_sound{path = "spidertron-enhancements-vehicle-embark", position = entity_to_drive.position}
 
@@ -176,7 +176,7 @@ end
 
 
 ---@param player LuaPlayer
----@param serialised_data unknown
+---@param serialised_data SerialisedSpidertron|SerialisedDummySpidertron
 ---@param vehicle_from LuaEntity?
 ---@param override_vehicle_change boolean?
 ---@return boolean
@@ -200,7 +200,6 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
       new_serialised_data.passenger = nil
       new_serialised_data.name = serialised_data.name
       new_serialised_data.leg_name = serialised_data.leg_name
-      old_serialised_data = serialised_data
       serialised_data = new_serialised_data
     else
       -- Dummy has been mined so we can exit here
@@ -208,6 +207,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
       return true
     end
   end
+  ---@cast serialised_data SerialisedSpidertron
 
   local surface = player.physical_surface
   local ideal_position
@@ -228,7 +228,7 @@ local function enter_spidertron(player, serialised_data, vehicle_from, override_
   player.teleport(10, 0)  ---@diagnostic disable-line: param-type-mismatch
 
   local position = surface.find_non_colliding_position(
-    serialised_data.leg_name or serialised_data.name,  -- name
+    serialised_data.leg_name,  -- name
     ideal_position,  -- position
     10, -- radius
     1 -- precision
@@ -299,7 +299,7 @@ script.on_event(defines.events.on_player_driving_changed_state,
   end
 )
 
-script.on_event("spidertron-enhancements-toggle-driving",
+script.on_event(prototypes.custom_input["spidertron-enhancements-toggle-driving"],
   function(event)
     local player = game.get_player(event.player_index)  ---@cast player -?
 
@@ -412,7 +412,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
           end
 
           local serialised_data = spidertron_lib.serialise_spidertron(spidertron)
-          serialised_data.autopilot_destination = nil
+          serialised_data.autopilot_destinations = nil
           serialised_data.follow_target = nil
           serialised_data.passenger = nil
           serialised_data.players_selecting_spidertron = nil
@@ -434,7 +434,7 @@ local function enter_vehicles_pressed(player, force_enter_entity)
   end
 end
 
-script.on_event("spidertron-enhancements-enter-vehicles",
+script.on_event(prototypes.custom_input["spidertron-enhancements-enter-vehicles"],
   function(event)
     local player = game.get_player(event.player_index)  ---@cast player -?
     enter_vehicles_pressed(player)

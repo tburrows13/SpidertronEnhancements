@@ -24,13 +24,13 @@
 ---@class SerialisedSpidertron
 ---@field version number?
 ---@field unit_number UnitNumber?
----@field name string?
+---@field name string
+---@field leg_name string
 ---@field quality string?
 ---@field driver_is_gunner boolean?
 ---@field driver (LuaEntity|LuaPlayer)?
 ---@field walking_state LuaControl.walking_state?
 ---@field passenger (LuaEntity|LuaPlayer)?
----@field leg_name string?
 ---@field localised_name LocalisedString?
 ---@field force LuaForce?
 ---@field torso_orientation number?

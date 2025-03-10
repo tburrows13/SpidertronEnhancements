@@ -76,7 +76,7 @@ local function request_multiple_paths(spidertron, clicked_position, resolution, 
   storage.pathfinder_statuses[spidertron.unit_number][game.tick] = {finished = 0, success = false}
 end
 
-script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
+script.on_event(prototypes.custom_input["spidertron-enhancements-use-alt-spidertron-remote"],
   function(event)
     local player = game.get_player(event.player_index)
     if player then
@@ -96,7 +96,8 @@ script.on_event("spidertron-enhancements-use-alt-spidertron-remote",
 )
 
 remote.add_interface("SpidertronEnhancementsInternal-pf",
-  {["use-remote"] = function(spidertron, position) request_multiple_paths(spidertron, position, -1, {valid = true} --[[@as LuaPlayer]]) end}
+  ---@diagnostic disable-next-line: missing-fields
+  {["use-remote"] = function(spidertron, position) request_multiple_paths(spidertron, position, -1, {valid = true}) end}
 )
 
 script.on_event(defines.events.on_script_path_request_finished,

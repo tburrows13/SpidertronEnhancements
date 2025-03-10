@@ -127,7 +127,7 @@ for _, player in pairs(game.players) do
   local surface = player.physical_surface
 
   local ideal_position = player.physical_position
-  player.teleport(10, 0)
+  player.teleport(10, 0)  ---@diagnostic disable-line: param-type-mismatch
 
   local position = surface.find_non_colliding_position(
     serialised_data.leg_name or serialised_data.name,  -- name
