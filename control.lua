@@ -38,6 +38,7 @@ script.on_event(defines.events.on_gui_opened,
 
 script.on_event(defines.events.on_object_destroyed,
   function(event)
+    if event.type ~= defines.target_type.entity then return end
     recall_spidertron.on_object_destroyed(event)
     create_corpse.on_object_destroyed(event)
   end
