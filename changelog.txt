@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.9
+Date: 02 February 2026
+  Features:
+    - Added "Keep spidertron and equipment active while on vehicle" setting (enabled by default) - when enabled, equipment bonuses (like extra inventory from Toolbelt) remain active while spidertron is attached to a vehicle
+  Bugfixes:
+    - Fixed items being dropped when a spidertron with inventory-bonus-equipment entered/exited hammerspace (proper fix for issue from 1.10.5)
+    - Equipment grid is now restored before inventories to ensure inventory size bonuses are active
+    - Replaced on_nth_tick overflow handler with queue-based system to handle rapid store/deploy clicks
+    - Overflow items are now preserved in serialised data when spidertron is stored before overflow processing completes
+---------------------------------------------------------------------------------------------------
 Version: 1.10.8
 Date: 15 January 2025
   Changes:

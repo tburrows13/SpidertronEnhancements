@@ -30,6 +30,13 @@ data:extend({
     },
     {
         type = "bool-setting",
+        name = "spidertron-enhancements-keep-equipment-active",
+        setting_type = "runtime-global",
+        default_value = true,
+        order = "ac"
+    },
+    {
+        type = "bool-setting",
         name = "spidertron-enhancements-enter-player",
         setting_type = "runtime-global",
         default_value = true,

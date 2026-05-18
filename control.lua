@@ -59,6 +59,7 @@ script.on_init(
     storage.corpse_destroy_registrations = {}  -- Indexed by registration number
 
     storage.vehicle_to_enter_this_tick = {}  -- Indexed by game.tick
+    storage.pending_overflow = {}  -- Queue for delayed inventory overflow restoration
 
     recall_spidertron.on_init()
   end
@@ -80,6 +81,7 @@ script.on_configuration_changed(
     storage.corpse_destroy_registrations = storage.corpse_destroy_registrations or {}
 
     storage.vehicle_to_enter_this_tick = storage.vehicle_to_enter_this_tick or {}
+    storage.pending_overflow = storage.pending_overflow or {}  -- Queue for delayed inventory overflow restoration
     storage.player_last_driving_change_tick = nil  -- Removed in v1.4.0
 
     storage.paths_assigned_on_tick = nil  -- Removed in v1.4.3

@@ -50,6 +50,88 @@ end
 
 script.on_event(defines.events.on_tick,
   function()
+    -- Process pending overflow queue (for toolbelt compatibility)
+    local pending = storage.pending_overflow
+    if pending and #pending > 0 then
+      local current_tick = game.tick
+      local i = 1
+      while i <= #pending do
+        local entry = pending[i]
+        if current_tick >= entry.process_tick then
+          -- Remove from queue first
+          table.remove(pending, i)
+
+          -- Use direct entity reference if available, otherwise search
+          local spidertron = entry.spidertron
+          if not (spidertron and spidertron.valid) then
+            -- Fallback: search by unit_number (for saves from older versions)
+            local surface = game.surfaces[entry.surface_index]
+            if surface then
+              local entities = surface.find_entities_filtered{
+                type = "spider-vehicle",
+                position = entry.position,
+                radius = 50
+              }
+              for _, entity in pairs(entities) do
+                if entity.unit_number == entry.unit_number then
+                  spidertron = entity
+                  break
+                end
+              end
+            end
+          end
+
+          if spidertron and spidertron.valid then
+            -- If spidertron is inactive (dummy on vehicle), equipment bonuses don't apply
+            -- Keep items in queue until it becomes active or is replaced
+            if not spidertron.active then
+              -- Re-queue with delay, items will be picked up by serialise when exiting vehicle
+              table.insert(pending, {
+                process_tick = current_tick + 1,
+                spidertron = spidertron,
+                unit_number = entry.unit_number,
+                overflow = entry.overflow,
+                surface_index = entry.surface_index,
+                position = entry.position
+              })
+            else
+              local trunk = spidertron.get_inventory(defines.inventory.spider_trunk)
+              if trunk then
+                for _, item_data in ipairs(entry.overflow) do
+                  local stack_data = {name = item_data.name, count = item_data.count, quality = item_data.quality}
+                  if item_data.health then stack_data.health = item_data.health end
+                  if item_data.durability then stack_data.durability = item_data.durability end
+
+                  local inserted = trunk.insert(stack_data)
+                  if inserted < item_data.count then
+                    spidertron.surface.spill_item_stack{
+                      position = spidertron.position,
+                      stack = {name = item_data.name, count = item_data.count - inserted, quality = item_data.quality},
+                      allow_belts = false
+                    }
+                  end
+                end
+              end
+            end
+          else
+            -- Spidertron not found or invalid, spill items at saved position
+            local surface = game.surfaces[entry.surface_index]
+            if surface then
+              for _, item_data in ipairs(entry.overflow) do
+                surface.spill_item_stack{
+                  position = entry.position,
+                  stack = {name = item_data.name, count = item_data.count, quality = item_data.quality},
+                  allow_belts = false
+                }
+              end
+            end
+          end
+        else
+          i = i + 1
+        end
+      end
+    end
+
     if settings.global["spidertron-enhancements-show-spider-on-vehicle"].value then
       for _, serialised_data in pairs(storage.stored_spidertrons) do
         local vehicle = serialised_data.on_vehicle
@@ -145,7 +227,6 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                   raise_built = true,
                 }
                 ---@cast dummy_spidertron -?
-                dummy_spidertron.active = false
 
                 -- Has to be a specific order:
                 -- Raise event when both spidertrons are valid
@@ -153,6 +234,12 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                 script.raise_event("on_spidertron_replaced", {old_spidertron = spidertron, new_spidertron = dummy_spidertron})
                 spidertron.destroy()
                 spidertron_lib.deserialise_spidertron(dummy_spidertron, serialised_data)
+
+                -- Keep dummy active so equipment bonuses (like toolbelt inventory) work
+                -- If disabled, overflow items will be buffered until exiting the vehicle
+                if not settings.global["spidertron-enhancements-keep-equipment-active"].value then
+                  dummy_spidertron.active = false
+                end
 
                 -- Only store the information that is lost because we are going via the dummy
                 serialised_dummy_data = {name = serialised_data.name, dummy_spidertron = dummy_spidertron, on_vehicle = entity_to_drive, leg_name = serialised_data.leg_name}

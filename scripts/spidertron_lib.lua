@@ -55,6 +55,7 @@
 ---@field logistic_sections SerialisedLogisticSection[]?
 ---@field players_selecting_spidertron table<PlayerIndex, boolean>?
 ---@field players_with_gui_open LuaPlayer[]?
+---@field pending_overflow table[]?
 
 
 MAP_ENTITY_INVENTORY = {["cargo-wagon"] = defines.inventory.cargo_wagon,
@@ -70,8 +71,9 @@ local spidertron_lib = {}
 ---@param old_inventory LuaInventory
 ---@param inventory LuaInventory?
 ---@param filter_table ItemFilter[]?
----@return { inventory: LuaInventory, filters: ItemFilter[] }
-local function copy_inventory(old_inventory, inventory, filter_table)
+---@param overflow_items table[]?  -- Optional table to collect items that don't fit instead of spilling
+---@return { inventory: LuaInventory, filters: ItemFilter[], overflow: table[]? }
+local function copy_inventory(old_inventory, inventory, filter_table, overflow_items)
   if not inventory then
     inventory = game.create_inventory(#old_inventory)
   end
@@ -117,13 +119,24 @@ local function copy_inventory(old_inventory, inventory, filter_table)
         inventory.set_filter(i, filter_table[i])
       end
     else
-      -- If the inventory is smaller than the old inventory, spill the remainder
-      if surface and position then
-        surface.spill_item_stack{position=position, stack=old_inventory[i], allow_belts=false}
+      -- If the inventory is smaller than the old inventory
+      local stack = old_inventory[i]
+      if stack and stack.valid_for_read then
+        if overflow_items then
+          -- Collect overflow items instead of spilling
+          local item_data = {name = stack.name, count = stack.count, quality = stack.quality.name}
+          if stack.is_tool then
+            item_data.health = stack.health
+            item_data.durability = stack.durability
+          end
+          table.insert(overflow_items, item_data)
+        elseif surface and position then
+          surface.spill_item_stack{position=position, stack=stack, allow_belts=false}
+        end
       end
     end
   end
-  return {inventory = inventory, filters = filter_table}
+  return {inventory = inventory, filters = filter_table, overflow = overflow_items}
 end
 spidertron_lib.copy_inventory = copy_inventory
 
@@ -203,6 +216,31 @@ function spidertron_lib.serialise_spidertron(spidertron)
   -- Inventories
   local spider_trunk = spidertron.get_inventory(defines.inventory.spider_trunk)  ---@cast spider_trunk -?
   serialised_data.trunk = copy_inventory(spider_trunk)
+
+  -- Collect any pending overflow items for this spidertron and store them
+  -- This handles the case when player stores spidertron before overflow was processed
+  local pending = storage.pending_overflow
+  if pending then
+    local unit_number = spidertron.unit_number
+    local i = 1
+    while i <= #pending do
+      local entry = pending[i]
+      -- Check by entity reference first, then by unit_number
+      local is_match = (entry.spidertron and entry.spidertron.valid and entry.spidertron == spidertron)
+                       or entry.unit_number == unit_number
+      if is_match then
+        -- Found pending overflow for this spidertron - save it
+        serialised_data.pending_overflow = serialised_data.pending_overflow or {}
+        for _, item in ipairs(entry.overflow) do
+          table.insert(serialised_data.pending_overflow, item)
+        end
+        table.remove(pending, i)
+      else
+        i = i + 1
+      end
+    end
+  end
+
   local spider_ammo = spidertron.get_inventory(defines.inventory.spider_ammo)  ---@cast spider_ammo -?
   serialised_data.ammo = copy_inventory(spider_ammo)
   local spider_trash = spidertron.get_inventory(defines.inventory.spider_trash)  ---@cast spider_trash -?
@@ -323,12 +361,80 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
     spidertron.health = health_ratio * spidertron.max_health
   end
 
-  -- Copy across trunk
+  -- Restore equipment grid FIRST, before inventories
+  -- This ensures toolbelt equipment is active when inventory is restored
+  local previous_grid_contents = serialised_data.equipment
+  local spidertron_grid = spidertron.grid
+
+  if previous_grid_contents then
+    for _, equipment in pairs(previous_grid_contents) do
+      if prototypes.equipment[equipment.name] then
+        -- Only attempt deserialization if equipment prototype still exists
+        if spidertron_grid then
+          local placed_equipment
+          if equipment.name == "equipment-ghost" then
+            if equipment.ghost_name then  -- Legacy check
+              placed_equipment = spidertron_grid.put( {name=equipment.ghost_name, quality=equipment.quality, position=equipment.position, ghost=true} )
+            end
+          else
+            placed_equipment = spidertron_grid.put( {name=equipment.name, quality=equipment.quality, position=equipment.position} )
+          end
+          if placed_equipment then
+            if equipment.energy then placed_equipment.energy = equipment.energy end
+            if equipment.shield and equipment.shield > 0 then placed_equipment.shield = equipment.shield end
+            if equipment.to_be_removed then spidertron_grid.order_removal(placed_equipment) end
+            if equipment.burner and placed_equipment.burner then
+              deserialise_burner(placed_equipment.burner, equipment.burner)
+            end
+          else  -- No space in the grid because we have moved to a smaller grid
+            spidertron.surface.spill_item_stack{position=spidertron.position, stack={name=equipment.name, quality=equipment.quality}}
+          end
+        else   -- No space in the grid because the grid has gone entirely
+          spidertron.surface.spill_item_stack{position=spidertron.position, stack={name=equipment.name, quality=equipment.quality}}
+        end
+      end
+    end
+  end
+
+  -- NOW restore inventories after equipment is in place
+  -- Copy across trunk with overflow protection for toolbelt equipment
+  local overflow_items = {}
   local previous_trunk = serialised_data.trunk
   if previous_trunk then
+    -- Get inventory AFTER equipment is placed to ensure correct size
     local new_trunk = spidertron.get_inventory(defines.inventory.spider_trunk)
-    copy_inventory(previous_trunk.inventory, new_trunk, previous_trunk.filters)
-    previous_trunk.inventory.destroy()
+    if new_trunk then
+      local result = copy_inventory(previous_trunk.inventory, new_trunk, previous_trunk.filters, overflow_items)
+      previous_trunk.inventory.destroy()
+
+      -- Combine new overflow with any previously saved overflow
+      local all_overflow = {}
+      if result.overflow then
+        for _, item in ipairs(result.overflow) do
+          table.insert(all_overflow, item)
+        end
+      end
+      if serialised_data.pending_overflow then
+        for _, item in ipairs(serialised_data.pending_overflow) do
+          table.insert(all_overflow, item)
+        end
+      end
+
+      -- Queue overflow items for delayed restoration (allows inventory size to update)
+      -- Uses storage queue instead of on_nth_tick to handle multiple rapid clicks
+      -- Delay of 2 ticks needed - 1 for equipment to apply, 1 for inventory size to update
+      if #all_overflow > 0 then
+        storage.pending_overflow = storage.pending_overflow or {}
+        table.insert(storage.pending_overflow, {
+          process_tick = game.tick + 2,
+          spidertron = spidertron,  -- Direct LuaEntity reference (more reliable than position search)
+          unit_number = spidertron.unit_number,
+          overflow = all_overflow,
+          surface_index = spidertron.surface.index,
+          position = {x = spidertron.position.x, y = spidertron.position.y}
+        })
+      end
+    end
   end
 
   -- Copy across ammo
@@ -378,39 +484,6 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
       end
       logistic_section.active = section.active
       logistic_section.multiplier = section.multiplier
-    end
-  end
-
-  -- Copy across equipment grid
-  local previous_grid_contents = serialised_data.equipment
-  local spidertron_grid = spidertron.grid
-  if previous_grid_contents then
-    for _, equipment in pairs(previous_grid_contents) do
-      if prototypes.equipment[equipment.name] then
-        -- Only attempt deserialization if equipment prototype still exists
-        if spidertron_grid then
-          local placed_equipment
-          if equipment.name == "equipment-ghost" then
-            if equipment.ghost_name then  -- Legacy check
-              placed_equipment = spidertron_grid.put( {name=equipment.ghost_name, quality=equipment.quality, position=equipment.position, ghost=true} )
-            end
-          else
-            placed_equipment = spidertron_grid.put( {name=equipment.name, quality=equipment.quality, position=equipment.position} )
-          end
-          if placed_equipment then
-            if equipment.energy then placed_equipment.energy = equipment.energy end
-            if equipment.shield and equipment.shield > 0 then placed_equipment.shield = equipment.shield end
-            if equipment.to_be_removed then spidertron_grid.order_removal(placed_equipment) end
-            if equipment.burner and placed_equipment.burner then
-              deserialise_burner(placed_equipment.burner, equipment.burner)
-            end
-          else  -- No space in the grid because we have moved to a smaller grid
-            spidertron.surface.spill_item_stack{position=spidertron.position, stack={name=equipment.name, quality=equipment.quality}}
-          end
-        else   -- No space in the grid because the grid has gone entirely
-          spidertron.surface.spill_item_stack{position=spidertron.position, stack={name=equipment.name, quality=equipment.quality}}
-        end
-      end
     end
   end
 
