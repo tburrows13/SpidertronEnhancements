@@ -48,6 +48,7 @@ function create_dummy_spidertron(arguments)
   dummy_spidertron.collision_mask = {layers = {}}
   dummy_spidertron.height = 0
   dummy_spidertron.alert_icon_shift = {0, 0}
+  dummy_spidertron.torso_bob_speed = 0
   dummy_spidertron.graphics_set = adjust_graphics_set(dummy_spidertron.graphics_set)
   dummy_spidertron.spider_engine =
   {

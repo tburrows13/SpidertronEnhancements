@@ -50,6 +50,43 @@ end
 
 script.on_event(defines.events.on_tick,
   function()
+    -- Process pending overflow queue (for toolbelt compatibility)
+    local pending = storage.pending_overflow or {}
+    local still_pending = {}
+    for unit_number, entry in pairs(pending) do
+      local spidertron = entry.spidertron
+      if spidertron and spidertron.valid then
+        local trunk = spidertron.get_inventory(defines.inventory.spider_trunk)
+        if trunk then
+          game.print(game.tick .. ": " .. #trunk)
+          if #trunk == entry.awaiting_inventory_size then
+            for i = 1, #entry.overflow_inventory do
+              local stack = entry.overflow_inventory[i]
+              local transferred = trunk[i + entry.inventory_offset].set_stack(stack)
+              if (not transferred) and entry.surface_index and entry.position then
+                -- If only part of the stack was transferred then the remainder will be spilled
+                entry.surface.spill_item_stack{position=entry.position, stack=stack, allow_belts=false}
+              end
+            end
+          else
+            -- Inventory isn't the expected size yet, keep waiting
+            still_pending[unit_number] = entry
+          end
+        end
+      else
+        -- Spidertron not found or invalid, spill items at saved position
+        if entry.surface and entry.position then
+          entry.surface.spill_inventory{
+            position = entry.position,
+            inventory = entry.overflow_inventory,
+            allow_belts = false,
+            drop_full_stack = true,
+          }
+        end
+      end
+    end
+    storage.pending_overflow = still_pending
+
     if settings.global["spidertron-enhancements-show-spider-on-vehicle"].value then
       for _, serialised_data in pairs(storage.stored_spidertrons) do
         local vehicle = serialised_data.on_vehicle
@@ -145,11 +182,11 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                   raise_built = true,
                 }
                 ---@cast dummy_spidertron -?
-                dummy_spidertron.disabled_by_script = true
-                dummy_spidertron.custom_status = {
+                --dummy_spidertron.disabled_by_script = true
+                --[[dummy_spidertron.custom_status = {
                   diode = defines.entity_status_diode.yellow,
                   label = {"entity-status.spe-attached-to-vehicle"},
-                }
+                }]]
 
                 -- Has to be a specific order:
                 -- Raise event when both spidertrons are valid
