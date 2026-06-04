@@ -227,6 +227,10 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                   raise_built = true,
                 }
                 ---@cast dummy_spidertron -?
+                dummy_spidertron.custom_status = {
+                  diode = defines.entity_status_diode.yellow,
+                  label = {"entity-status.spe-attached-to-vehicle"},
+                }
 
                 -- Has to be a specific order:
                 -- Raise event when both spidertrons are valid
@@ -238,7 +242,7 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                 -- Keep dummy active so equipment bonuses (like toolbelt inventory) work
                 -- If disabled, overflow items will be buffered until exiting the vehicle
                 if not settings.global["spidertron-enhancements-keep-equipment-active"].value then
-                  dummy_spidertron.active = false
+                  dummy_spidertron.disabled_by_script = true
                 end
 
                 -- Only store the information that is lost because we are going via the dummy
