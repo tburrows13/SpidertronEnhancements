@@ -145,7 +145,11 @@ local function enter_nearby_entity(player, spidertron, override_vehicle_change)
                   raise_built = true,
                 }
                 ---@cast dummy_spidertron -?
-                dummy_spidertron.active = false
+                dummy_spidertron.disabled_by_script = true
+                dummy_spidertron.custom_status = {
+                  diode = defines.entity_status_diode.yellow,
+                  label = {"entity-status.spe-attached-to-vehicle"},
+                }
 
                 -- Has to be a specific order:
                 -- Raise event when both spidertrons are valid
