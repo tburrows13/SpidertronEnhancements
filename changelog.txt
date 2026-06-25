@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.11.0
+Date: 25 June 2026
+  Features:
+    - Factorio 2.1 compatibility
+  Bugfixes:
+    - Fixed items being spilled when using spidertron with toolbelt equipment
+---------------------------------------------------------------------------------------------------
 Version: 1.10.8
 Date: 15 January 2025
   Changes:
