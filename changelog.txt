@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.11.1
+Date: 26 July 2026
+  Bugfixes:
+    - Verify that the player variable refers to a valid LuaPlayer object before attempting to create local flying text
+---------------------------------------------------------------------------------------------------
 Version: 1.11.0
 Date: 25 June 2026
   Features:
