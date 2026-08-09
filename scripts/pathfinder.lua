@@ -144,9 +144,15 @@ script.on_event(defines.events.on_script_path_request_finished,
           end
           if status_table.finished == total_path_requests then
             -- All pathfinders have failed
-            --spidertron.autopilot_destination = target_position
-
-            player.create_local_flying_text{text = {"no-path"}, create_at_cursor = true}
+            
+            -- spidertron.autopilot_destination = target_position
+            -- remote.add_interface("SpidertronEnhancementsInternal-pf",
+            --   {["use-remote"] = function(spidertron, position) request_multiple_paths(spidertron, position, -1, {valid = true}) end}
+            -- )
+            -- passes {valid = true} as the player argument, and that doesn't have a create_local_flying_text() method
+            if player.object_name == "LuaPlayer" then
+              player.create_local_flying_text{text = {"no-path"}, create_at_cursor = true}
+            end
           end
         else
           -- game.print(event.id .. " - Path found at resolution " .. resolution)
