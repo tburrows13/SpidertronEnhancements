@@ -58,16 +58,38 @@ script.on_event(defines.events.on_tick,
       if spidertron and spidertron.valid then
         local trunk = spidertron.get_inventory(defines.inventory.spider_trunk)
         if trunk then
-          game.print(game.tick .. ": " .. #trunk)
           if #trunk == entry.awaiting_inventory_size then
             for i = 1, #entry.overflow_inventory do
               local stack = entry.overflow_inventory[i]
-              local transferred = trunk[i + entry.inventory_offset].set_stack(stack)
-              if (not transferred) and entry.surface_index and entry.position then
+              local target = trunk[i + entry.inventory_offset]
+              local transferred = target.set_stack(stack)
+              if (not transferred) and stack.valid_for_read and entry.surface and entry.position then
                 -- If only part of the stack was transferred then the remainder will be spilled
-                entry.surface.spill_item_stack{position=entry.position, stack=stack, allow_belts=false}
+                local moved = 0
+                if target.valid_for_read and target.name == stack.name and target.quality == stack.quality then
+                  moved = target.count
+                end
+                if moved < stack.count then
+                  stack.count = stack.count - moved
+                  entry.surface.spill_item_stack{position=entry.position, stack=stack, allow_belts=false}
+                end
               end
             end
+            entry.overflow_inventory.destroy()
+          elseif not entry.give_up_tick then
+            -- Saved before give_up_tick existed
+            entry.give_up_tick = game.tick + 600
+            still_pending[unit_number] = entry
+          elseif game.tick > entry.give_up_tick then
+            -- The inventory never reached its old size (quality changed, equipment not placed, a mod removed): spill the
+            -- items next to the spidertron instead of keeping them in the script inventory for ever
+            spidertron.surface.spill_inventory{
+              position = spidertron.position,
+              inventory = entry.overflow_inventory,
+              allow_belts = false,
+              drop_full_stack = true,
+            }
+            entry.overflow_inventory.destroy()
           else
             -- Inventory isn't the expected size yet, keep waiting
             still_pending[unit_number] = entry

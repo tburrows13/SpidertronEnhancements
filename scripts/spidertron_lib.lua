@@ -372,7 +372,6 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
   if previous_trunk then
     local new_trunk = spidertron.get_inventory(defines.inventory.spider_trunk)
     local result = copy_inventory(previous_trunk.inventory, new_trunk, previous_trunk.filters, true)  -- collect_overflow=true
-    game.print(game.tick .. ": " .. #previous_trunk.inventory .. ", " .. #new_trunk) --- IGNORE ---
     local previous_inventory_size = #previous_trunk.inventory
     previous_trunk.inventory.destroy()
 
@@ -391,6 +390,7 @@ function spidertron_lib.deserialise_spidertron(spidertron, serialised_data, tran
         position = {x = spidertron.position.x, y = spidertron.position.y},
         awaiting_inventory_size = previous_inventory_size,
         inventory_offset = #new_trunk,
+        give_up_tick = game.tick + 600,  -- if the inventory never reaches the old size, spill instead of waiting forever
       }
     end
   end
